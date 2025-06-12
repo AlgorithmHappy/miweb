@@ -1,0 +1,138 @@
+---
+var pages = [
+    {
+        title: "Contacto",
+        url: "/contacto",
+    },
+    {
+        title: "Portafolio",
+        url: "/portafolio",
+    },
+    {
+        title: "Blog",
+        url: "/blog",
+    },
+    {
+        title: "Sobre mi",
+        url: "/",
+    },
+];
+var path = Astro.url.pathname;
+---
+
+<div class="flex items-center gap-4 w-full h-16 bg-primary md:flex-row-reverse">
+    <!-- Botón hamburguesa -->
+    <button id="toggleDrawer" class="m-4 p-2 text-secondary hover:bg-white rounded-md focus:outline-none md:hidden">
+        <!-- Icono hamburguesa -->
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16">
+            </path>
+        </svg>
+    </button>
+    {
+        pages.map((page) =>
+            page.url === path ? (
+                <a class="elementTitle cursor-pointer text-white underline text-lg font-semibold mr-10" id="titleCurrent">{page.title}</a>
+            ) : (
+                <a class="elementTitle cursor-pointer text-secondary text-lg font-semibold mr-10 hover:text-white">{page.title}</a>
+            ),
+        )
+    }
+</div>
+
+<!-- Menú lateral -->
+<div
+    id="drawer"
+    class="fixed top-0 left-0 h-full w-64 bg-primary shadow-md transform -translate-x-full transition-transform duration-300 z-50">
+    <div class="text-secondary bg-primary p-4 font-semibold text-lg border-b-2 h-16">Menú</div>
+    <nav class="flex flex-col gap-2 p-4">
+        <a href="#" class="text-secondary hover:bg-white rounded p-2">Sobre mi</a>
+        <a href="#" class="text-secondary hover:bg-white rounded p-2">Blog</a>
+        <a href="#" class="text-secondary hover:bg-white rounded p-2">Portafolio</a>
+        <a href="#" class="text-secondary hover:bg-white rounded p-2">Contacto</a>
+    </nav>
+</div>
+
+<!-- Fondo oscuro cuando el menú está abierto -->
+<div id="backdrop" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
+
+<script>
+    // Script para manejar el menú lateral
+    // ---------------------------------------------------------------------------------------------------------------------------------------------- //
+    const toggleDrawer = document.getElementById("toggleDrawer");
+    const drawer = document.getElementById("drawer");
+    const backdrop = document.getElementById("backdrop");
+
+    if (toggleDrawer && drawer && backdrop) {
+        toggleDrawer.addEventListener("click", () => {
+            drawer.classList.toggle("-translate-x-full");
+            backdrop.classList.toggle("hidden");
+        });
+
+        backdrop.addEventListener("click", () => {
+            drawer.classList.add("-translate-x-full");
+            backdrop.classList.add("hidden");
+        });
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------- //
+
+
+    // Script para ocultar los titulos de los elementos del menú en pantallas pequeñas
+    // ---------------------------------------------------------------------------------------------------------------------------------------------- //
+    const elementsTitles = document.querySelectorAll(".elementTitle");
+    if (elementsTitles && window.innerWidth < 768) { // Cuando inicia la pagina en pantallas pequeñas
+        elementsTitles.forEach((title) => {
+            if (title.id !== "titleCurrent") {
+                if (!title.classList.contains("hidden"))
+                    title.classList.add("hidden");
+            }
+
+            if (title.id === "titleCurrent") {
+                title.classList.replace("text-white", "text-secondary");
+                title.classList.remove("underline");
+                title.classList.remove("cursor-pointer");
+            }
+        });
+    }
+    window.addEventListener("resize", function () {
+        if (elementsTitles && window.innerWidth < 768) {
+            // Cuando se hace chico el ancho de la pantalla
+            elementsTitles.forEach((title) => {
+                if (title.id !== "titleCurrent") {
+                    if (!title.classList.contains("hidden"))
+                        title.classList.add("hidden");
+                }
+
+                if (title.id === "titleCurrent") {
+                    title.classList.replace("text-white", "text-secondary");
+                    title.classList.remove("underline");
+                    title.classList.remove("cursor-pointer");
+                }
+            });
+        } else {
+            // Cuando se hace grande el ancho de la pantalla
+            elementsTitles.forEach((title) => {
+                if (title.id === "titleCurrent") {
+                    title.classList.replace("text-secondary", "text-white");
+                    title.classList.add("underline");
+                    title.classList.add("cursor-pointer");
+                }
+
+                if (title.id !== "titleCurrent") {
+                    title.classList.remove("hidden");
+                }
+            });
+        }
+    });
+    // ---------------------------------------------------------------------------------------------------------------------------------------------- //
+</script>
