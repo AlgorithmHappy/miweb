@@ -4,10 +4,69 @@ import Layout from '../layouts/Layout.astro';
 import BasicCard from '../components/BasicCard.astro';
 import MyTable from '../components/MyTable.astro';
 import Description from '../components/Description.astro';
+import CarruselCard from '../components/CarruselCard.astro';
+
+const information = [
+	{
+		image: 'assets/Logo_de_Inbursa.svg',
+		imageTitle: 'Inbursa',
+		description: 'Participación activa en el desarrollo y mantenimiento de microservicios utilizando Java, Spring Boot y PL/SQL. Colaboración constante dentro de un equipo ágil bajo la metodología Scrum, resolución eficiente de incidencias en producción. Uso de Git y Jira para el control de versiones y gestión colaborativa del código.',
+		tecnologies: [
+			{
+				name: 'Años',
+				image: 'assets/experiencia_3.svg'
+			},
+			{
+				name: 'Java',
+				image: 'assets/java.svg'
+			},
+			{
+				name: 'Spring',
+				image: 'assets/springboot.svg'
+			},
+			{
+				name: 'PL/SQL',
+				image: 'assets/plsql.svg'
+			},
+			{
+				name: 'Git',
+				image: 'assets/git.svg'
+			}
+		]
+	},
+	{
+		image: 'assets/Logo_de_Inbursa.svg',
+		imageTitle: 'BillerTicket',
+		description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		tecnologies: [
+			{
+				name: 'Java',
+				image: 'assets/java.svg'
+			},
+			{
+				name: 'Spring Boot',
+				image: 'assets/springboot.svg'
+			},
+			{
+				name: 'PL/SQL',
+				image: 'assets/plsql.svg'
+			},
+			{
+				name: 'Git',
+				image: 'assets/git.svg'
+			},
+			{
+				name: 'Jira',
+				image: 'assets/jira.svg'
+			}
+		]
+	},
+]
 ---
 
 <Layout>
 	<BasicCard title="Desarrollador de software" image="assets/home_image_one.png"/>
 	<MyTable/>
 	<Description/>
+	<CarruselCard information={ information }/>
 </Layout>

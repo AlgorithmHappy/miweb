@@ -1,0 +1,57 @@
+---
+const { information = [] } = Astro.props;
+
+interface Information {
+    image: string;
+    imageTitle: string;
+    description: string;
+    tecnologies?: {
+        name: string;
+        image: string;
+    }[];
+}
+---
+<div class="w-[100%] pb-4 overflow-x-hidden">
+    <div class="border-4 border-primary rounded-lg ml-4 mt-4 mr-8 mb-4 w-[92%]">
+        <div class="flex flex-row flex-nowrap w-[200%]">
+            {
+                information.map(
+                    (item: Information) => {
+                        return (
+                            <div class="w-[100%] border-4 border-primary rounded-lg mt-2 ml-2 -mb-2 -mr-4 bg-white shadow-xl pl-5 pt-10 pr-5 contentCard">
+                                <img src={ item.image } alt={ item.imageTitle } class="" />
+                                <p class="text-center mt-6">{ item.description }</p>
+                                <div class="flex flex-nowrap justify-between mt-6 mb-6">
+                                    {
+                                        item.tecnologies?.map(
+                                            (tech) => (
+                                                <div class="flex flex-col items-center">
+                                                    <img src={ tech.image } alt={ tech.name } class="w-10" />
+                                                    <span class="text-center text-xs">{ tech.name }</span>
+                                                </div>
+                                            )
+                                        )
+                                    }
+                                </div>
+                                <div class="flex justify-between">
+                                    <a href="http://"><img src="assets/left_arrow.svg" alt="Anterior"></a>
+                                    <a href="http://"><img src="assets/right_arrow.svg" alt="Anterior"></a>
+                                </div>
+                            </div>
+                        )
+                    }
+                )
+            }
+        </div>
+    </div>
+</div>
+<script>
+    const contentCards = document.querySelectorAll('.contentCard');
+    var currentIndex = 0;
+    contentCards.forEach(card => {
+        if(currentIndex > 0) {
+            card.classList.add('invisible');
+        }
+        currentIndex++;
+    });
+</script>
