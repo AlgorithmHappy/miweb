@@ -1,0 +1,73 @@
+---
+const { title, image } = Astro.props;
+---
+<!-- Vista de smartphone -->
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="border-4 border-primary rounded-lg ml-4 mt-4 mr-8 mb-4 md:hidden lg:hidden">
+    <div class="border-4 border-primary rounded-lg mt-2 ml-2 -mb-2 -mr-4 bg-white shadow-xl">
+        <h1 class="text-primary p-4 font-semibold text-xl h-16 text-center">{ title }</h1>
+        <img src={image} alt="Imagen de bienvenida" class="block mx-auto w-72"/>
+        <div class="flex justify-evenly">
+            <a href="https://www.linkedin.com/in/luis-marquez-168080177/" target="_blank"><img src="assets/linkedin.svg" alt="Linkedin" class="w-14 mr-2 ml-2 mt-4 mb-4"/></a>
+            <a href="https://github.com/AlgorithmHappy" target="_blank"><img src="assets/github.svg" alt="GitHub" class="w-14 mr-2 ml-2 mt-4 mb-4"/></a>
+            <a href="https://www.facebook.com/luisgerardo.marquezmendez/" target="_blank"><img src="assets/facebook.svg" alt="FaceBook" class="w-14 mr-2 ml-2 mt-4 mb-4"/></a>
+        </div>
+    </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- Vista de tablet o ventana mas grande -->
+ <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="border-4 border-primary rounded-lg ml-4 mt-4 mr-8 mb-4" id="welcomeCardBig">
+    <div class="border-4 border-primary rounded-lg mt-2 ml-2 -mb-2 -mr-4 bg-white shadow-xl flex items-center justify-evenly p-4">
+        <div>
+            <h1 class="text-primary text-center font-semibold text-4xl mb-16 lg:text-6xl">{ title }</h1>
+            <div class="flex justify-evenly">
+                <a href="https://www.linkedin.com/in/luis-marquez-168080177/" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/linkedin.svg" alt="Linkedin" class="w-14 lg:w-24"/>
+                </a>
+                <a href="https://github.com/AlgorithmHappy" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/github.svg" alt="GitHub" class="w-14 lg:w-24"/>
+                </a>
+                <a href="https://www.facebook.com/luisgerardo.marquezmendez/" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/facebook.svg" alt="FaceBook" class="w-14 lg:w-24"/>
+                </a>
+            </div>
+        </div>
+        <img src={image} alt="Imagen de bienvenida" class="md:w-96" id="welcomeImage"/>
+    </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+<script>
+    const image = document.querySelector("#welcomeImage");
+    const card = document.querySelector("#welcomeCardBig");
+    if(window.innerWidth < 768) {
+        if (card) {
+            card.classList.add("hidden");
+        }
+    } 
+    if(window.innerWidth >= 1024) {
+        if (image) {
+            image.classList.remove("md:w-96");
+        }
+    } 
+    window.addEventListener("resize", function () {
+        if (image) {
+            if(window.innerWidth >= 1024) {
+                image.classList.remove("md:w-96");
+            } else {
+                if(!image.classList.contains("md:w-96") )
+                    image.classList.add("md:w-96");
+            }
+        }
+        if (card) {
+            if (window.innerWidth < 768) {
+                if (!card.classList.contains("hidden") )
+                    card.classList.add("hidden");
+            } else {
+                card.classList.remove("hidden");
+            }
+        }
+    });
+</script>
