@@ -1,6 +1,4 @@
 ---
-const { information = [] } = Astro.props;
-
 interface Information {
     image: string;
     imageTitle: string;
@@ -10,32 +8,34 @@ interface Information {
         image: string;
     }[];
 }
+
+const { information = [] } = Astro.props;
 ---
-<div class="w-[100%] pb-4 overflow-x-hidden">
-    <div class="border-4 border-primary rounded-lg ml-4 mt-4 mr-8 mb-4 w-[92%]">
-        <div class="flex flex-row flex-nowrap w-[200%]">
+<div class="w-[100%] pl-4 pt-4 pr-8 pb-4 overflow-x-hidden">
+    <div class="border-4 border-primary rounded-lg w-[100%]">
+        <div id="scrollContainer" class="relative left-2 top-2 border-4 overflow-x-auto whitespace-nowrap scrollbar-hide border-primary rounded-lg bg-white shadow-xl w-[102%]">
             {
                 information.map(
                     (item: Information) => {
                         return (
-                            <div class="w-[100%] border-4 border-primary rounded-lg mt-2 ml-2 -mb-2 -mr-4 bg-white shadow-xl pl-5 pt-10 pr-5 contentCard">
-                                <img src={ item.image } alt={ item.imageTitle } class="" />
-                                <p class="text-center mt-6">{ item.description }</p>
-                                <div class="flex flex-nowrap justify-between mt-6 mb-6">
-                                    {
-                                        item.tecnologies?.map(
-                                            (tech) => (
-                                                <div class="flex flex-col items-center">
-                                                    <img src={ tech.image } alt={ tech.name } class="w-10" />
-                                                    <span class="text-center text-xs">{ tech.name }</span>
-                                                </div>
+                            <div class="inline-block w-[100%] p-4 contentCard transform">
+                                <div class="flex flex-col justify-between items-center">
+                                    <img src={ item.image } alt={ item.imageTitle } class="" />
+                                    <div class="flex items-center h-72">
+                                        <p class="mx-auto whitespace-normal text-center">{ item.description }</p>
+                                    </div>
+                                    <div class="flex flex-nowrap justify-between w-[100%]">
+                                        {
+                                            item.tecnologies?.map(
+                                                (tech) => (
+                                                    <div class="flex flex-col items-center">
+                                                        <img src={ tech.image } alt={ tech.name } class="w-6" />
+                                                        <span class="text-center text-xs">{ tech.name }</span>
+                                                    </div>
+                                                )
                                             )
-                                        )
-                                    }
-                                </div>
-                                <div class="flex justify-between">
-                                    <a href="http://"><img src="assets/left_arrow.svg" alt="Anterior"></a>
-                                    <a href="http://"><img src="assets/right_arrow.svg" alt="Anterior"></a>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         )
@@ -44,14 +44,36 @@ interface Information {
             }
         </div>
     </div>
+    <div class="flex justify-between pl-6 pr-6">
+        <button id="btnLeft"><img width="30" src="assets/left_arrow.svg" alt="Anterior"></button>
+        <button id="btnRight"><img width="30" src="assets/right_arrow.svg" alt="Anterior"></button>
+    </div>
 </div>
+<style>
+    /* Oculta la barra de scroll en navegadores modernos */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+</style>
 <script>
-    const contentCards = document.querySelectorAll('.contentCard');
-    var currentIndex = 0;
-    contentCards.forEach(card => {
-        if(currentIndex > 0) {
-            card.classList.add('invisible');
-        }
-        currentIndex++;
-    });
+    let currentIndex = 0;
+    const container = document.getElementById('scrollContainer') as HTMLDivElement;
+    const btnLeft = document.querySelector('#btnLeft') as HTMLButtonElement;
+    const btnRight = document.querySelector('#btnRight') as HTMLButtonElement;
+    btnLeft.addEventListener('click', () => scrollToSlide(-1));
+    btnRight.addEventListener('click', () => scrollToSlide(1));
+
+    function scrollToSlide(direction: number) {
+        const slideWidth = container.offsetWidth; // 100% del contenedor
+        currentIndex += direction;
+        currentIndex = Math.max(0, Math.min(currentIndex, container.children.length - 1));
+        container.scrollTo({
+            left: currentIndex * slideWidth,
+            behavior: 'smooth'
+        });
+    }    
 </script>
