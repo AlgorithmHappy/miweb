@@ -12,15 +12,16 @@ interface Information {
 const { information = [] } = Astro.props;
 ---
 <div class="w-[100%] pl-4 pt-4 pr-8 pb-4 overflow-x-hidden">
+    <h2 class="mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi experiencia</h2>
     <div class="border-4 border-primary rounded-lg w-[100%]">
-        <div id="scrollContainer" class="relative left-2 top-2 border-4 overflow-x-auto whitespace-nowrap scrollbar-hide border-primary rounded-lg bg-white shadow-xl w-[102%]">
+        <div id="scrollContainer" class="relative left-2 top-2 border-4 overflow-x-auto whitespace-nowrap scrollbar-hide snap-x snap-mandatory border-primary rounded-lg bg-white shadow-xl w-[102%]">
             {
                 information.map(
                     (item: Information) => {
                         return (
-                            <div class="inline-block w-[100%] p-4 contentCard transform">
+                            <div class="inline-block w-[100%] p-4 snap-start contentCard transform">
                                 <div class="flex flex-col justify-between items-center">
-                                    <img src={ item.image } alt={ item.imageTitle } class="" />
+                                    <img src={ item.image } alt={ item.imageTitle } class="max-h-[100px]" />
                                     <div class="flex items-center h-72">
                                         <p class="mx-auto whitespace-normal text-center">{ item.description }</p>
                                     </div>
@@ -44,7 +45,7 @@ const { information = [] } = Astro.props;
             }
         </div>
     </div>
-    <div class="flex justify-between pl-6 pr-6">
+    <div class="flex justify-between p-3">
         <button id="btnLeft"><img width="30" src="assets/left_arrow.svg" alt="Anterior"></button>
         <button id="btnRight"><img width="30" src="assets/right_arrow.svg" alt="Anterior"></button>
     </div>
@@ -70,7 +71,11 @@ const { information = [] } = Astro.props;
     function scrollToSlide(direction: number) {
         const slideWidth = container.offsetWidth; // 100% del contenedor
         currentIndex += direction;
-        currentIndex = Math.max(0, Math.min(currentIndex, container.children.length - 1));
+        if(currentIndex < 0) {
+            currentIndex = container.children.length - 1; // Vuelve al último slide
+        } else if(currentIndex >= container.children.length) {
+            currentIndex = 0; // Vuelve al primer slide
+        }
         container.scrollTo({
             left: currentIndex * slideWidth,
             behavior: 'smooth'
