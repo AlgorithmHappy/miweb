@@ -4,7 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import BasicCard from '../components/BasicCard.astro';
 import MyTable from '../components/MyTable.astro';
 import Description from '../components/Description.astro';
-import CarruselCard from '../components/CarruselCard.astro';
+import CarruselCardPhone from '../components/CarruselCardPhone.astro';
+import CarruselCardDesktop from '../components/CarruselCardDesktop.astro';
 
 const information = [
 	{
@@ -103,5 +104,10 @@ const information = [
 	<BasicCard title="Desarrollador de software" image="assets/home_image_one.png"/>
 	<MyTable/>
 	<Description/>
-	<CarruselCard information={ information }/>
+	<div class="block md:hidden">
+		<CarruselCardPhone information={ information }/>
+	</div>
+	<div class="hidden md:block">
+		<CarruselCardDesktop information={ information } />
+	</div>
 </Layout>

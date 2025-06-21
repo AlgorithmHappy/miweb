@@ -1,0 +1,84 @@
+---
+interface Information {
+    image: string;
+    imageTitle: string;
+    description: string;
+    tecnologies?: {
+        name: string;
+        image: string;
+    }[];
+}
+
+const { information = [] } = Astro.props;
+---
+<div class="w-[100%] pl-4 pt-4 pr-8 pb-4 overflow-x-hidden">
+    <h2 class="mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi experiencia</h2>
+    <div class="border-4 border-primary rounded-lg w-[100%]">
+        <div id="scrollContainerDesktop" class="relative left-2 top-2 border-4 overflow-x-auto whitespace-nowrap scrollbar-hide snap-x snap-mandatory border-primary rounded-lg bg-white shadow-xl w-[102%]">
+            {
+                information.map(
+                    (item: Information) => {
+                        return (
+                            <div class="inline-block w-[100%] p-4 snap-start contentCard">
+                                <div class="flex flex-row justify-between items-center w-[100%]">
+                                    <img src={ item.image } alt={ item.imageTitle } class="w-[50%]" />
+                                    <div class="flex flex-col justify-between p-4 items-center w-[50%] h-[400px]">
+                                        <p class="mx-auto my-auto whitespace-normal text-center">{ item.description }</p>
+                                    </div> 
+                                </div>
+                                <div class="flex flex-nowrap justify-between w-[100%] h-[20%]">
+                                    {
+                                        item.tecnologies?.map(
+                                            (tech) => (
+                                                <div class="flex flex-col items-center">
+                                                    <img src={ tech.image } alt={ tech.name } class="w-6" />
+                                                    <span class="text-center text-xs">{ tech.name }</span>
+                                                </div>
+                                            )
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        )
+                    }
+                )
+            }
+        </div>
+    </div>
+    <div class="flex justify-between p-3">
+        <button id="btnLeftDesktop"><img width="30" src="assets/left_arrow.svg" alt="Anterior"></button>
+        <button id="btnRightDesktop"><img width="30" src="assets/right_arrow.svg" alt="Anterior"></button>
+    </div>
+</div>
+<style>
+    /* Oculta la barra de scroll en navegadores modernos */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+</style>
+<script>
+    let currentIndex = 0;
+    const container = document.getElementById('scrollContainerDesktop') as HTMLDivElement;
+    const btnLeft = document.querySelector('#btnLeftDesktop') as HTMLButtonElement;
+    const btnRight = document.querySelector('#btnRightDesktop') as HTMLButtonElement;
+    btnLeft.addEventListener('click', () => scrollToSlide(-1));
+    btnRight.addEventListener('click', () => scrollToSlide(1));
+
+    function scrollToSlide(direction: number) {
+        const slideWidth = container.offsetWidth; // 100% del contenedor
+        currentIndex += direction;
+        if(currentIndex < 0) {
+            currentIndex = container.children.length - 1; // Vuelve al último slide
+        } else if(currentIndex >= container.children.length) {
+            currentIndex = 0; // Vuelve al primer slide
+        }
+        container.scrollTo({
+            left: currentIndex * slideWidth,
+            behavior: 'smooth'
+        });
+    }    
+</script>
