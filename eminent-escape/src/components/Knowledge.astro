@@ -1,0 +1,18 @@
+---
+interface KnowledgeProps {
+    image: string;
+    imageTitle: string;
+    knowledgeTitle: string;
+    description: string;
+}
+const { knowledge } = Astro.props;
+const { image, imageTitle, knowledgeTitle, description } = knowledge as KnowledgeProps;
+---
+<div class="flex flex-row justify-between items-center w-full h-28 overflow-hidden">
+    <img class="h-24" src={image} alt={imageTitle}>
+    <div class="flex flex-col justify-between p-2 w-[90%] h-full">
+        <h3 class="text-primary font-bold">{knowledgeTitle}</h3>
+        <p class="text-xs sm:text-base">{description}</p>
+    </div>
+</div>
+<hr class="border-t-2 border-primary rounded-xl sm:border-t-4"/>
