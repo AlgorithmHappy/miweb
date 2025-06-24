@@ -7,7 +7,8 @@ import Description from '../components/Description.astro';
 import CarruselCardPhone from '../components/CarruselCardPhone.astro';
 import CarruselCardDesktop from '../components/CarruselCardDesktop.astro';
 import Knowledge from '../components/Knowledge.astro';
-import Button from '../components/Button.astro';
+import PortfolioButton from '../components/PortfolioButton.astro';
+import ContactButton from '../components/ContactButton.astro';
 
 const information = [
 	{
@@ -134,9 +135,15 @@ const knowledge = [
 	}
 ]
 
-const contentButton = {
+const contentPortfolioButton = {
 	text: 'Ver portafolio',
 	icon: 'assets/portfolio.svg',
+	alt: 'Portafolio'
+}
+
+const contentContactButton = {
+	icon: 'assets/contact.svg',
+	iconHover: 'assets/contact_hover.svg',
 	alt: 'Portafolio'
 }
 ---
@@ -164,6 +171,7 @@ const contentButton = {
 		}
 	</div>
 	<div class="mx-auto my-6 w-3/4">
-		<Button content={ contentButton }/>
+		<PortfolioButton content={ contentPortfolioButton }/>
 	</div>
+	<ContactButton content={ contentContactButton }/>
 </Layout>

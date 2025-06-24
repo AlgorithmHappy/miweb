@@ -1,0 +1,27 @@
+---
+interface ContentProps {
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
+const { content } = Astro.props;
+const { icon, iconHover, alt } = content as ContentProps;
+---
+<button id="btnContact" class="fixed bottom-5 right-5 flex flex-row justify-center items-center bg-primary rounded-full text-secondary h-12 w-12 shadow-xl hover:text-white hover:underline">
+    <img 
+        class="h-full w-full p-2" 
+        src={icon} 
+        alt={alt} 
+        onmouseover={`this.src='${iconHover}'`} 
+        onmouseout={`this.src='${icon}'`} 
+    />
+</button>
+
+<script>
+    const button = document.getElementById("btnContact") as HTMLButtonElement;
+    button.addEventListener("click", () => {
+        window.location.href = "/contacto";
+    });
+
+    //const img = document.getElementById
+</script>
