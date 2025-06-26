@@ -42,9 +42,9 @@ var path = Astro.url.pathname;
     {
         pages.map((page) =>
             page.url === path ? (
-                <a class="elementTitle cursor-pointer text-white underline text-lg font-semibold mr-10" id="titleCurrent">{page.title}</a>
+                <a href={ page.url } class="elementTitle cursor-pointer text-white underline text-lg font-semibold mr-10" id="titleCurrent">{page.title}</a>
             ) : (
-                <a class="elementTitle cursor-pointer text-secondary text-lg font-semibold mr-10 hover:text-white">{page.title}</a>
+                <a href={ page.url } class="elementTitle cursor-pointer text-secondary text-lg font-semibold mr-10 hover:text-white">{page.title}</a>
             ),
         )
     }
@@ -56,10 +56,10 @@ var path = Astro.url.pathname;
     class="fixed top-0 left-0 h-full w-64 bg-primary shadow-md transform -translate-x-full transition-transform duration-300 z-50">
     <div class="text-secondary bg-primary p-4 font-semibold text-lg border-b-2 h-16">Menú</div>
     <nav class="flex flex-col gap-2 p-4">
-        <a href="#" class="text-secondary hover:bg-white rounded p-2">Sobre mi</a>
-        <a href="#" class="text-secondary hover:bg-white rounded p-2">Blog</a>
-        <a href="#" class="text-secondary hover:bg-white rounded p-2">Portafolio</a>
-        <a href="#" class="text-secondary hover:bg-white rounded p-2">Contacto</a>
+        <a href="/" class="text-secondary hover:bg-white rounded p-2">Sobre mi</a>
+        <a href="/blog" class="text-secondary hover:bg-white rounded p-2">Blog</a>
+        <a href="/portafolio" class="text-secondary hover:bg-white rounded p-2">Portafolio</a>
+        <a href="/contacto" class="text-secondary hover:bg-white rounded p-2">Contacto</a>
     </nav>
 </div>
 
