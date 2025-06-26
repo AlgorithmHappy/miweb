@@ -1,6 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import TextInput from '../../components/TextInput.astro';
+const contentSendButton = {
+	text: 'Ver portafolio',
+	icon: 'assets/portfolio.svg',
+	iconHover: 'assets/portfolio_hover.svg',
+	alt: 'Portafolio'
+}
 ---
 <Layout>
     <h2 class="mt-20 mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Contactame</h2>
+    <div class="px-4">
+        <TextInput content={ contentSendButton }/>
+    </div>    
 </Layout>
