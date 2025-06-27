@@ -18,11 +18,11 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
     />
     <label
         for="name-input"
-        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
+        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Nombre completo
     </label>
-    <p class="mt-1 text-xs text-red-400">Ejemplo: Juan Pérez</p>
+    <p class="mt-1 text-xs text-gray-400">Ejemplo: Juan Pérez</p>
 </div>
 <h3 class="text-primary font-bold">Correo electrónico:</h3>
 <div class="relative mt-2 mb-2 wx-full">
@@ -34,11 +34,11 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
     />
     <label
         for="email-input"
-        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
+        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Correo electrónico
     </label>
-    <p class="mt-1 text-xs text-red-400">Ejemplo: micorreo@gmail.com</p>
+    <p class="mt-1 text-xs text-gray-400">Ejemplo: micorreo@gmail.com</p>
 </div>
 <h3 class="text-primary font-bold">Mensaje:</h3>
 <div class="relative mt-2 mb-2 wx-full">
@@ -49,11 +49,11 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
     />
     <label
         for="message-input"
-        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
+        class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Mensaje
     </label>
-    <p class="mt-1 text-xs text-red-400">Ejemplo: Hola, me gustaría saber más sobre tus servicios.</p>
+    <p class="mt-1 text-xs text-gray-400">Ejemplo: Hola, me gustaría saber más sobre tus servicios.</p>
 </div>
 <button id="btnSend" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
     <img
@@ -66,19 +66,56 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
     />
     {text}
 </button>
-
+<div id="modalBackground" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 hidden">
+</div>
+<div id="modalAlertOk" class="fixed inset-0 flex flex-col items-center justify-evenly w-[80%] max-w-md h-56 m-auto p-5 bg-white rounded-lg shadow-xl z-50 hidden">
+    <p class="text-center">¡Mensaje enviado correctamente!</p>
+    <button id="btnCloseAlert" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
+        <img
+            id="imgClose"
+            class="h-full px-2"
+            src="assets/close.svg"
+            alt="Cerrar"
+            data-icon="assets/close.svg"
+            data-icon-hover="assets/close_hover.svg"
+        />
+        Cerrar
+    </button>
+</div>
 <script>
-    const button = document.getElementById("btnSend") as HTMLButtonElement;
-    const img = document.getElementById("imgSend") as HTMLImageElement;
-    const icon = img.dataset.icon as string;
-    const iconHover = img.dataset.iconHover as string;
-    button.addEventListener("mouseover", () => {
-        img.src = iconHover;
+    const modalBackground = document.getElementById("modalBackground") as HTMLButtonElement;
+    const modalAlertOk = document.getElementById("modalAlertOk") as HTMLButtonElement;
+    const btnCloseAlert = document.getElementById("btnCloseAlert") as HTMLButtonElement;
+    const imgCloseAlert = document.getElementById("imgClose") as HTMLImageElement;
+    const iconClose = imgCloseAlert.dataset.icon as string;
+    const iconCloseHover = imgCloseAlert.dataset.iconHover as string;
+    const btnSend = document.getElementById("btnSend") as HTMLButtonElement;
+    const imgSend = document.getElementById("imgSend") as HTMLImageElement;
+    const iconSend = imgSend.dataset.icon as string;
+    const iconSendHover = imgSend.dataset.iconHover as string;
+    btnCloseAlert.addEventListener("mouseover", () => {
+        imgCloseAlert.src = iconCloseHover;
     });
-    button.addEventListener("mouseout", () => {
-        img.src = icon;
+    btnCloseAlert.addEventListener("mouseout", () => {
+        imgCloseAlert.src = iconClose;
     });
-    button.addEventListener("click", () => {
-        window.location.href = "/portafolio";
+    btnSend.addEventListener("mouseover", () => {
+        imgSend.src = iconSendHover;
+    });
+    btnSend.addEventListener("mouseout", () => {
+        imgSend.src = iconSend;
+    });
+    btnSend.addEventListener("click", () => {
+
+        modalBackground.classList.remove("hidden");
+        modalAlertOk.classList.remove("hidden");
+    });
+    btnCloseAlert.addEventListener("click", () => {
+        modalBackground.classList.add("hidden");
+        modalAlertOk.classList.add("hidden");
+    });
+    modalBackground.addEventListener("click", () => {
+        modalBackground.classList.add("hidden");
+        modalAlertOk.classList.add("hidden");
     });
 </script>
