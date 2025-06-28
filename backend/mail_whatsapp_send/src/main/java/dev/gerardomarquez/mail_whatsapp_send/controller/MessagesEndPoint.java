@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.ContactMessage;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.SendWhatsapp;
+import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSendEmail;
+import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSendWhatsapp;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServiceMessagesCrud;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +29,12 @@ public class MessagesEndPoint {
     @Autowired
     private ServiceMessagesCrud serviceMessagesCrud;
 
+    @Autowired
+    private ImplementationServiceSendEmail serviceSendEmail;
+
+    @Autowired
+    private ImplementationServiceSendWhatsapp serviceSendWhatsapp;
+
     /*
      * Metodo que se ejecuta al enviar una peticion de tipo pos en la url: /v1/messages/send
      * @param contactMessage Request que mando el cliente con los atributos del formulario
@@ -34,6 +43,11 @@ public class MessagesEndPoint {
     @PostMapping("/send")
     public ResponseEntity<Void> send(@RequestBody ContactMessage contactMessage) {
         serviceMessagesCrud.insertOne(contactMessage);
+        serviceSendEmail.sendEmail(contactMessage);
+        String mensaje = "Nombre: " + contactMessage.getFullName() + "\n" +
+            "Correo: " + contactMessage.getEmail() + "\n" +
+            "Mensaje: " + contactMessage.getMessage();
+        serviceSendWhatsapp.sendWhatsappMessage(new SendWhatsapp("", mensaje) );
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
