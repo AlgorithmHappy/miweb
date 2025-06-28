@@ -24,18 +24,18 @@ public class ContactMessage implements Serializable {
     /*
      * Nombre completo del usuario que lleno el formulario
      */
-    @NotBlank
+    @NotBlank(message = "{not.blank.name}")
     @Size(max = 100)
     private String fullName;
     /*
      * Correo electronico del usuario
      */
-    @Email
+    @Email(message = "{email.email}")
     private String email;
     /*
      * Mensaje del usuario
      */
-    @NotBlank
+    @NotBlank(message = "{not.blank.message}")
     private String message;
     /*
      * Fecha en la que se envio en mensaje en el formulario de contactos
