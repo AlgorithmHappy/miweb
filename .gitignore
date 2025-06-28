@@ -27,3 +27,40 @@ eminent-escape/.idea/
 !eminent-escape/
 !eminent-escape/*
 
+backend/mail_whatsapp_send/HELP.md
+backend/mail_whatsapp_send/.gradle
+backend/mail_whatsapp_send/build/
+!backend/mail_whatsapp_send/gradle/wrapper/gradle-wrapper.jar
+!backend/mail_whatsapp_send/**/src/main/**/build/
+!backend/mail_whatsapp_send/**/src/test/**/build/
+
+### STS ###
+backend/mail_whatsapp_send/.apt_generated
+backend/mail_whatsapp_send/.classpath
+backend/mail_whatsapp_send/.factorypath
+backend/mail_whatsapp_send/.project
+backend/mail_whatsapp_send/.settings
+backend/mail_whatsapp_send/.springBeans
+backend/mail_whatsapp_send/.sts4-cache
+backend/mail_whatsapp_send/bin/
+!backend/mail_whatsapp_send/**/src/main/**/bin/
+!backend/mail_whatsapp_send/**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+backend/mail_whatsapp_send/.idea
+backend/mail_whatsapp_send/*.iws
+backend/mail_whatsapp_send/*.iml
+backend/mail_whatsapp_send/*.ipr
+backend/mail_whatsapp_send/out/
+!backend/mail_whatsapp_send/**/src/main/**/out/
+!backend/mail_whatsapp_send/**/src/test/**/out/
+
+### NetBeans ###
+backend/mail_whatsapp_send/nbproject/private/
+backend/mail_whatsapp_send/nbbuild/
+backend/mail_whatsapp_send/dist/
+backend/mail_whatsapp_send/nbdist/
+backend/mail_whatsapp_send/.nb-gradle/
+
+### VS Code ###
+backend/mail_whatsapp_send/.vscode/
