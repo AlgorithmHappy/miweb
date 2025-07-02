@@ -36,7 +36,7 @@ public class MessagesEndPoint {
     private ImplementationServiceSendWhatsapp serviceSendWhatsapp;
 
     /*
-     * Metodo que se ejecuta al enviar una peticion de tipo pos en la url: /v1/messages/send
+     * Metodo que se ejecuta al enviar una peticion de tipo post en la url: /v1/messages/send
      * @param contactMessage Request que mando el cliente con los atributos del formulario
      * de contacto
      */
@@ -44,10 +44,7 @@ public class MessagesEndPoint {
     public ResponseEntity<Void> send(@RequestBody ContactMessage contactMessage) {
         serviceMessagesCrud.insertOne(contactMessage);
         serviceSendEmail.sendEmail(contactMessage);
-        String mensaje = "Nombre: " + contactMessage.getFullName() + "\n" +
-            "Correo: " + contactMessage.getEmail() + "\n" +
-            "Mensaje: " + contactMessage.getMessage();
-        serviceSendWhatsapp.sendWhatsappMessage(new SendWhatsapp("", mensaje) );
+        serviceSendWhatsapp.sendWhatsappMessage(contactMessage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

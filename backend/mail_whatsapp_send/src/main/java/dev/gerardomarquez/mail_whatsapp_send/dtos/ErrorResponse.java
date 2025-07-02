@@ -1,5 +1,10 @@
 package dev.gerardomarquez.mail_whatsapp_send.dtos;
 
+import java.io.Serializable;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +17,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
+public class ErrorResponse implements Serializable {
     /*
      * Codigo http de error devuelto 
      */
@@ -29,4 +34,17 @@ public class ErrorResponse {
      * Mensaje de error que puede mostrar el front end
      */
     private String errorFriendlyMessage;
+
+    /*
+     * Clase que convierte el objeto a string tipo json
+     */
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return super.toString();
+        }
+    }
 }

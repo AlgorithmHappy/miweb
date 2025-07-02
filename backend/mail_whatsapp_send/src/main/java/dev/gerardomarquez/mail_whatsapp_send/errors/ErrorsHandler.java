@@ -85,6 +85,7 @@ public class ErrorsHandler {
             stackTrace,
             friendlyMessage
         );
+        logger.error(response.toString() );
         return ResponseEntity.badRequest().body(response);
     }
 

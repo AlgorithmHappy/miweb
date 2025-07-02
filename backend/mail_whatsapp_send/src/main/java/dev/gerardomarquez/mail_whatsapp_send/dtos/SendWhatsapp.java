@@ -13,7 +13,6 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class SendWhatsapp implements Serializable {
-
     /*
      * Numero de telefo que va a recivir la notificacion por whatsapp
      */
