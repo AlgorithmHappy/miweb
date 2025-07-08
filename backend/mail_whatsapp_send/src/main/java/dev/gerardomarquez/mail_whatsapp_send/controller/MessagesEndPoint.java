@@ -44,7 +44,7 @@ public class MessagesEndPoint {
     public ResponseEntity<Void> send(@RequestBody ContactMessage contactMessage) {
         serviceMessagesCrud.insertOne(contactMessage);
         serviceSendEmail.sendEmail(contactMessage);
-        serviceSendWhatsapp.sendWhatsappMessage(contactMessage);
+        //serviceSendWhatsapp.sendWhatsappMessage(contactMessage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

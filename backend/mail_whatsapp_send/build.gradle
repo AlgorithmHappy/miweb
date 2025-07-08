@@ -24,6 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.postgresql:postgresql:42.7.3'
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	// https://mvnrepository.com/artifact/com.github.vladimir-bukhtoyarov/bucket4j-core
+	implementation("com.github.vladimir-bukhtoyarov:bucket4j-core:8.0.1")
 	compileOnly 'org.projectlombok:lombok'
   	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

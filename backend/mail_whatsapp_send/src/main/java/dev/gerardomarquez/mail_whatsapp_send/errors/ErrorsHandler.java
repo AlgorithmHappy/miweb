@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.ErrorResponse;
+import jakarta.servlet.ServletException;
 
 /*
  * Clase que captura los errores que pudieran darse
@@ -87,6 +89,35 @@ public class ErrorsHandler {
         );
         logger.error(response.toString() );
         return ResponseEntity.badRequest().body(response);
+    }
+
+    /*
+     * Metodo que se ejecuta al ocurrir un error en la validacion de los datos de entrada
+     * @param exception Error que fue lanzado
+     */
+    @ExceptionHandler(ServletException.class)
+    public ResponseEntity<ErrorResponse> serverError(ServletException exception){
+        Integer errorHttpStatusCode = Integer.parseInt(
+            messageSource.getMessage(
+                "http.status.code.error.rate.limit",
+                null,
+                Locale.getDefault()
+            )
+        );
+        String stackTrace = getStackTraceAsString(exception);
+        String friendlyMessage = messageSource.getMessage(
+            "http.status.code.error.rate.limit.friendly.message",
+            null,
+            Locale.getDefault()
+        );
+        ErrorResponse response = new ErrorResponse(
+            errorHttpStatusCode,
+            exception.getMessage(),
+            stackTrace,
+            friendlyMessage
+        );
+        logger.error(response.toString() );
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
     }
 
     /*
