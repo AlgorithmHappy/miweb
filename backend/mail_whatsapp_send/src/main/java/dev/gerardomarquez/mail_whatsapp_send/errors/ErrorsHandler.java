@@ -3,6 +3,7 @@ package dev.gerardomarquez.mail_whatsapp_send.errors;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -68,6 +69,12 @@ public class ErrorsHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> serverError(MethodArgumentNotValidException exception){
+        // Obtiene el error de los atributos de los dto's que esta validando
+        String message = exception.getBindingResult()
+            .getAllErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.joining("/ "));
         Integer errorHttpStatusCode = Integer.parseInt(
             messageSource.getMessage(
                 "http.status.code.error.validated",
@@ -83,7 +90,7 @@ public class ErrorsHandler {
         );
         ErrorResponse response = new ErrorResponse(
             errorHttpStatusCode,
-            exception.getMessage(),
+            message,
             stackTrace,
             friendlyMessage
         );

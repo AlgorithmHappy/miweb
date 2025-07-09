@@ -7,17 +7,23 @@ interface SendButtonProps {
 }
 const { content } = Astro.props;
 const { text, icon, iconHover, alt } = content as SendButtonProps;
+interface Response {
+    httpStatusCode: number;
+    errorMessage: string;
+    errorStack: string;
+    errorFriendlyMessage: string;
+}
 ---
 <h3 class="text-primary font-bold">Nombre completo:</h3>
 <div class="relative mt-2 mb-2 wx-full">
     <input
-        id="name-input"
+        id="nameInput"
         type="text"
         placeholder=""
         class="block px-2.5 pb-2 pt-1.5 w-full text-sm text-secondary bg-transparent rounded-lg border border-secondary appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
     />
     <label
-        for="name-input"
+        for="nameInput"
         class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Nombre completo
@@ -27,13 +33,13 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
 <h3 class="text-primary font-bold">Correo electrónico:</h3>
 <div class="relative mt-2 mb-2 wx-full">
     <input
-        id="email-input"
+        id="emailInput"
         type="email"
         placeholder=""
         class="block px-2.5 pb-2 pt-1.5 w-full text-sm text-secondary bg-transparent rounded-lg border border-secondary appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
     />
     <label
-        for="email-input"
+        for="emailInput"
         class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Correo electrónico
@@ -43,12 +49,12 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
 <h3 class="text-primary font-bold">Mensaje:</h3>
 <div class="relative mt-2 mb-2 wx-full">
     <textarea
-        id="message-input"
+        id="messageInput"
         placeholder=""
         class="h-40 block px-2.5 pb-2 pt-1.5 w-full text-sm text-secondary bg-transparent rounded-lg border border-secondary appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
     />
     <label
-        for="message-input"
+        for="messageInput"
         class="absolute text-sm text-secondary duration-300 transform -translate-y-4 scale-75 top-2 z-0 origin-[0] bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 peer-focus:text-primary"
     >
         *Mensaje
@@ -68,8 +74,8 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
 </button>
 <div id="modalBackground" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 hidden">
 </div>
-<div id="modalAlertOk" class="fixed inset-0 flex flex-col items-center justify-evenly w-[80%] max-w-md h-56 m-auto p-5 bg-white rounded-lg shadow-xl z-50 hidden">
-    <p class="text-center">¡Mensaje enviado correctamente!</p>
+<div id="modalAlert" class="fixed inset-0 flex flex-col items-center justify-evenly w-[80%] max-w-md h-56 m-auto p-5 bg-white rounded-lg shadow-xl z-50 hidden">
+    <p id="modalAlertMessage" class="text-center"></p>
     <button id="btnCloseAlert" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
         <img
             id="imgClose"
@@ -84,15 +90,24 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
 </div>
 <script>
     const modalBackground = document.getElementById("modalBackground") as HTMLButtonElement;
-    const modalAlertOk = document.getElementById("modalAlertOk") as HTMLButtonElement;
+    const modalAlert = document.getElementById("modalAlert") as HTMLButtonElement;
+    const modalAlertMessage = document.getElementById("modalAlertMessage") as HTMLParagraphElement;
     const btnCloseAlert = document.getElementById("btnCloseAlert") as HTMLButtonElement;
     const imgCloseAlert = document.getElementById("imgClose") as HTMLImageElement;
     const iconClose = imgCloseAlert.dataset.icon as string;
     const iconCloseHover = imgCloseAlert.dataset.iconHover as string;
+
+    const inputFullName = document.getElementById("nameInput") as HTMLInputElement;
+    const inputEmail = document.getElementById("emailInput") as HTMLInputElement;
+    const inputMessage = document.getElementById("messageInput") as HTMLTextAreaElement;
     const btnSend = document.getElementById("btnSend") as HTMLButtonElement;
     const imgSend = document.getElementById("imgSend") as HTMLImageElement;
     const iconSend = imgSend.dataset.icon as string;
     const iconSendHover = imgSend.dataset.iconHover as string;
+
+    var error = false as boolean;
+    var errorMessage = "" as string;
+    var okMessage = "¡Mensaje enviado correctamente!" as string;
     btnCloseAlert.addEventListener("mouseover", () => {
         imgCloseAlert.src = iconCloseHover;
     });
@@ -106,16 +121,63 @@ const { text, icon, iconHover, alt } = content as SendButtonProps;
         imgSend.src = iconSend;
     });
     btnSend.addEventListener("click", () => {
+        fetch('http://localhost:1609/v1/contact/message/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                        fullName: inputFullName.value,
+                        email: inputEmail.value,
+                        message: inputMessage.value
+                    }
+                )
+            }
+        )
+        .then(
+            async response => {
+                // ⚠️ Si es un error tipo 429, 400, etc. el fetch NO falla, pero response.ok será false
+                if (response.ok) {
+                    // 200–299
+                    error = false;
+                    return "";
+                } else {
+                    // response.json() puede fallar, por eso lo hacemos dentro de try/catch
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (e) {
+                        data = { errorFriendlyMessage: "Error desconocido del servidor" };
+                    }
+                    error = true;
+                    return data;
+                }
+            }
+        )
+        .then(
+            data => {
+                if (error) {
+                    modalAlertMessage.textContent = data?.errorFriendlyMessage || "Ocurrió un error inesperado";
+                    console.log("Error del servidor:", data);
+                } else {
+                    modalAlertMessage.textContent = okMessage;
+                }
+            }
+        )
+        .catch(exception => {
+            error = true;
+            modalAlertMessage.textContent = "Has alcanzado el límite de solicitudes. Por favor, espera 10 minutos antes de intentarlo nuevamente.";
+        });
 
         modalBackground.classList.remove("hidden");
-        modalAlertOk.classList.remove("hidden");
+        modalAlert.classList.remove("hidden");
     });
     btnCloseAlert.addEventListener("click", () => {
         modalBackground.classList.add("hidden");
-        modalAlertOk.classList.add("hidden");
+        modalAlert.classList.add("hidden");
     });
     modalBackground.addEventListener("click", () => {
         modalBackground.classList.add("hidden");
-        modalAlertOk.classList.add("hidden");
+        modalAlert.classList.add("hidden");
     });
 </script>

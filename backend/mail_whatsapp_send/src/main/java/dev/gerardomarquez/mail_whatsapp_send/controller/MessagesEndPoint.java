@@ -4,21 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.ContactMessage;
-import dev.gerardomarquez.mail_whatsapp_send.dtos.SendWhatsapp;
 import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSendEmail;
 import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSendWhatsapp;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServiceMessagesCrud;
+import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /*
  * Controlador que expone los endpoinst de los mensajes que enviad del formulario de 
  * contacto de la pagina gerardomarquez.dev
  */
+@CrossOrigin(origins = "http://localhost:4321")
 @Controller
 @RequestMapping("/v1/contact/message")
 public class MessagesEndPoint {
@@ -41,7 +44,7 @@ public class MessagesEndPoint {
      * de contacto
      */
     @PostMapping("/send")
-    public ResponseEntity<Void> send(@RequestBody ContactMessage contactMessage) {
+    public ResponseEntity<Void> send(@Valid @RequestBody ContactMessage contactMessage) {
         serviceMessagesCrud.insertOne(contactMessage);
         serviceSendEmail.sendEmail(contactMessage);
         //serviceSendWhatsapp.sendWhatsappMessage(contactMessage);

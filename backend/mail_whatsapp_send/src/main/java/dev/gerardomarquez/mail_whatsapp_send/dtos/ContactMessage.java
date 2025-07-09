@@ -31,6 +31,7 @@ public class ContactMessage implements Serializable {
      * Correo electronico del usuario
      */
     @Email(message = "{email.email}")
+    @NotBlank(message = "{not.blank.email}")
     private String email;
     /*
      * Mensaje del usuario
