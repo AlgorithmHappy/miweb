@@ -61,17 +61,19 @@ interface Response {
     </label>
     <p class="mt-1 text-xs text-gray-400">Ejemplo: Hola, me gustaría saber más sobre tus servicios.</p>
 </div>
-<button id="btnSend" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
-    <img
-        id="imgSend"
-        class="h-full px-2"
-        src={ icon }
-        alt={ alt }
-        data-icon={ icon }
-        data-icon-hover={ iconHover }
-    />
-    {text}
-</button>
+<div class="flex flex-row-reverse">
+    <button id="btnSend" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline md:w-48">
+        <img
+            id="imgSend"
+            class="h-full px-2 -ml-2"
+            src={ icon }
+            alt={ alt }
+            data-icon={ icon }
+            data-icon-hover={ iconHover }
+        />
+        {text}
+    </button>
+</div>
 <div id="modalBackground" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 hidden">
 </div>
 <div id="modalAlert" class="fixed inset-0 flex flex-col items-center justify-evenly w-[80%] max-w-md h-56 m-auto p-5 bg-white rounded-lg shadow-xl z-50 hidden">
