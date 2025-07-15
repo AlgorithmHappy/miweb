@@ -1,6 +1,64 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ProyectoCard from '../../components/PortfolioCard.astro';
+
+interface ProjectsProps {
+    information: string;
+    imageSrc: string;
+    imageAlt: string;
+}
+const projects: ProjectsProps[] = [
+    {
+        information: 'Proyecto 1',
+        imageSrc: 'assets/proyecto1.jpg',
+        imageAlt: 'Imagen del Proyecto 1'
+    },
+    {
+        information: 'Proyecto 2',
+        imageSrc: 'assets/proyecto2.jpg',
+        imageAlt: 'Imagen del Proyecto 2'
+    },
+    {
+        information: 'Proyecto 3',
+        imageSrc: 'assets/proyecto3.jpg',
+        imageAlt: 'Imagen del Proyecto 3'
+    },
+    {
+        information: 'Proyecto 4',
+        imageSrc: 'assets/proyecto4.jpg',
+        imageAlt: 'Imagen del Proyecto 4'
+    },
+    {
+        information: 'Proyecto 5',
+        imageSrc: 'assets/proyecto5.jpg',
+        imageAlt: 'Imagen del Proyecto 5'
+    },
+    {
+        information: 'Proyecto 6',
+        imageSrc: 'assets/proyecto6.jpg',
+        imageAlt: 'Imagen del Proyecto 6'
+    },
+    {
+        information: 'Proyecto 7',
+        imageSrc: 'assets/proyecto7.jpg',
+        imageAlt: 'Imagen del Proyecto 7'
+    },
+    {
+        information: 'Proyecto 8',
+        imageSrc: 'assets/proyecto8.jpg',
+        imageAlt: 'Imagen del Proyecto 8'
+    }
+];
 ---
 <Layout>
     <h2 class="mt-20 mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi portafolio</h2>
+    <section class="grid grid-cols-4 grid-rows-2 gap-4">
+        {
+            projects.map(
+                (project) => (
+                    <ProyectoCard information={project.information} imageSrc={project.imageSrc} imageAlt={project.imageAlt} />
+                )
+            )
+        }
+    </section>
 </Layout>
