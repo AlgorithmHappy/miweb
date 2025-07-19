@@ -10,16 +10,76 @@ interface Technology {
 interface ProjectsProps {
     title: string;
     information: string;
+    link?: string;
     imageSrc: string;
     imageAlt: string;
     technologies: Technology[];
 }
 const projects: ProjectsProps[] = [
     {
-        title: 'Proyecto 1',
-        information: 'Proyecto 1',
-        imageSrc: 'assets/proyecto1.jpg',
-        imageAlt: 'Imagen del Proyecto 1',
+        title: 'Desafío Técnico Full Stack',
+        information: 'Prueba técnica en la que se desarrolló una API REST con Spring Data y MySQL para consultar cobros segmentados por oficina, agente y ejecutivo, incluyendo cálculos de porcentajes. El frontend se implementó con Vue y Vuetify para visualizar la información de forma clara e interactiva utilizando estados.',
+        imageSrc: 'assets/cobranza.png',
+        link: 'https://github.com/AlgorithmHappy/gestion_de_cobranza',
+        imageAlt: 'Imagen del Proyecto del Desafío Técnico Full Stack',
+        technologies: [
+            {
+                imageSrc: 'assets/springboot.svg',
+                imageAlt: 'Icono del framework Spring',
+                name: 'Spring'
+            },
+            {
+                imageSrc: 'assets/mysql.svg',
+                imageAlt: 'Icono de base de datos de MySQL',
+                name: 'MySQL'
+            },
+            {
+                imageSrc: 'assets/vue.svg',
+                imageAlt: 'Icono del framework Vue',
+                name: 'Vue'
+            },
+            {
+                imageSrc: 'assets/vuetify.svg',
+                imageAlt: 'Icono de los componentes de Vuetify',
+                name: 'Vuetify'
+            }
+        ]
+    },
+    {
+        title: 'Landing Page para Generación de Leads',
+        information: 'Landing page creada a partir de una plantilla personalizada con HTML, CSS y JavaScript. Está conectada a una API REST desarrollada con Spring Boot, que almacena los correos electrónicos en una base de datos MongoDB.',
+        link: 'https://www.filasparabarberias.online',
+        imageSrc: 'assets/landingpage.png',
+        imageAlt: 'Imagen del Proyecto Landing Page para Generación de Leads',
+        technologies: [
+            {
+                imageSrc: 'assets/springboot.svg',
+                imageAlt: 'Icono del framework Spring',
+                name: 'Spring'
+            },
+            {
+                imageSrc: 'assets/html.svg',
+                imageAlt: 'Icono del lenguaje de marcado HTML',
+                name: 'HTML'
+            },
+            {
+                imageSrc: 'assets/css.svg',
+                imageAlt: 'Icono del lenguaje de estilo CSS',
+                name: 'CSS'
+            },
+            {
+                imageSrc: 'assets/javascript.svg',
+                imageAlt: 'Icono del lenguaje de programacion JavaScript',
+                name: 'JavaScript'
+            }
+        ]
+    },
+    {
+        title: 'Brincolin',
+        information: 'Proyecto realizado con el motor Godot Engine, usando gráficos de la página "Kenney" y programado en GDScript, un lenguaje similar a Python, el proyecto final es un APK que se puede correr en android. En este proyecto resolví problemas de lógica de programación.',
+        link: 'https://github.com/AlgorithmHappy/Brincolin',
+        imageSrc: 'assets/proyecto3.png',
+        imageAlt: 'Brincolin un videojuego realizado con Godot Engine',
         technologies: [
             {
                 imageSrc: 'assets/javascript.svg',
@@ -41,7 +101,8 @@ const projects: ProjectsProps[] = [
     {
         title: 'Proyecto 1',
         information: 'Proyecto 2',
-        imageSrc: 'assets/proyecto2.jpg',
+        link: 'https://github.com/AlgorithmHappy/Brincolin',
+        imageSrc: 'assets/proyecto2.png',
         imageAlt: 'Imagen del Proyecto 2',
         technologies: [
             {
@@ -53,21 +114,8 @@ const projects: ProjectsProps[] = [
     },
     {
         title: 'Proyecto 1',
-        information: 'Proyecto 3',
-        imageSrc: 'assets/proyecto3.jpg',
-        imageAlt: 'Imagen del Proyecto 3',
-        technologies: [
-            {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
-            }
-        ]
-    },
-    {
-        title: 'Proyecto 1',
         information: 'Proyecto 4',
-        imageSrc: 'assets/proyecto4.jpg',
+        imageSrc: 'assets/proyecto4.png',
         imageAlt: 'Imagen del Proyecto 4',
         technologies: [
             {
@@ -79,48 +127,9 @@ const projects: ProjectsProps[] = [
     },
     {
         title: 'Proyecto 1',
-        information: 'Proyecto 5',
-        imageSrc: 'assets/proyecto5.jpg',
-        imageAlt: 'Imagen del Proyecto 5',
-        technologies: [
-            {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
-            }
-        ]
-    },
-    {
-        title: 'Proyecto 1',
         information: 'Proyecto 6',
-        imageSrc: 'assets/proyecto6.jpg',
+        imageSrc: 'assets/proyecto6.png',
         imageAlt: 'Imagen del Proyecto 6',
-        technologies: [
-            {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
-            }
-        ]
-    },
-    {
-        title: 'Proyecto 1',
-        information: 'Proyecto 7',
-        imageSrc: 'assets/proyecto7.jpg',
-        imageAlt: 'Imagen del Proyecto 7',
-        technologies: [
-            {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
-            }
-        ]
-    },
-    {
-        title: 'Proyecto 1',
-        information: 'Proyecto 8',
-        imageSrc: 'assets/proyecto8.jpg',
-        imageAlt: 'Imagen del Proyecto 8',
         technologies: [
             {
                 imageSrc: 'assets/javascript.svg',
@@ -133,13 +142,14 @@ const projects: ProjectsProps[] = [
 ---
 <Layout>
     <h2 class="mt-20 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi portafolio</h2>
-    <section class="grid grid-cols-4 grid-rows-2 gap-4 mt-7 mb-7">
+    <section class="grid-cols-1 grid grid-rows-2 gap-4 mt-7 mb-7 p-4 md:grid-cols-2 md:p-0">
         {
             projects.map(
                 (project) => (
                     <ProyectoCard
                         title={ project.title }
                         information={ project.information }
+                        link={ project.link }
                         imageSrc={ project.imageSrc }
                         imageAlt={ project.imageAlt }
                         technologies={ project.technologies }

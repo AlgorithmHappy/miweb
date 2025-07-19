@@ -7,11 +7,12 @@ interface Technology {
 interface ProjectsProps {
     title: string;
     information: string;
+    link?: string;
     imageSrc: string;
     imageAlt: string;
     technologies: Technology[];
 }
-const { title, information, imageSrc, imageAlt, technologies } = Astro.props as ProjectsProps;
+const { title, information, link, imageSrc, imageAlt, technologies } = Astro.props as ProjectsProps;
 ---
 <div>
     <div>
@@ -19,16 +20,15 @@ const { title, information, imageSrc, imageAlt, technologies } = Astro.props as 
     </div>
     <div>
         <figure class="relative w-full h-full border-4 border-primary rounded-lg shadow-xl
-        overflow-hidden cursor-pointer before:absolute before:top-0
-        before:left-0 before:right-0 before:bottom-0 before:bg-primary before:text-white
+        overflow-hidden before:absolute before:top-0
+        before:left-0 before:right-0 before:bottom-0 before:bg-primary
         before:transform before:translate-x-full before:transition-transform before:duration-400
         hover:before:translate-x-0">
             <img src={ imageSrc } alt={ imageAlt } />
-            <span
-            class="absolute inset-0 flex items-center justify-center bg-primary text-white
-            opacity-0 transition-opacity duration-400 hover:opacity-100" >
-                { information }
-            </span>
+            <div class="absolute inset-0 flex items-center justify-center bg-primary 
+            opacity-0 transition-opacity duration-400 hover:opacity-100">
+                <p class="text-center text-secondary">{ information }<br/><br/><a class="text-white font-bold cursor-pointer underline" href={ link } target="_blank">Link</a></p>
+            </div>            
         </figure>
     </div>
     <div class="flex flex-row justify-between items-center">
