@@ -1,6 +1,39 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+interface BlogCardProps {
+    title: string;
+    information: string;
+    link: string;
+    imageSrc: string;
+    imageAlt: string;
+}
+const blogs : BlogCardProps[] = [
+    {
+        title: '¿Que es SQL y DML?. Estructura de una consulta con "Select"',
+        information: 'En este capítulo aprenderás qué es SQL y cómo usar el comando SELECT para hacer consultas básicas en una base de datos. También se explican los conceptos clave del DML, con ejemplos y ejercicios para practicar.',
+        link: 'blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select',
+        imageSrc: 'assets/Que es SQL y DML Estructura de una consulta con Select.png',
+        imageAlt: 'Imagen del artículo sobre cómo crear un portafolio'
+    }
+];
 ---
 <Layout>
-    <h2 class="mt-20 mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi blog</h2>
+    <h2 class="mt-20 mb-6 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi blog</h2>
+    <section class="grid-cols-1 grid grid-rows-2 gap-4 m-auto px-6 max-w-[768px]">
+        {
+            blogs.map(
+                (blog) => (
+                    <BlogCard
+                        title={ blog.title }
+                        information={ blog.information }
+                        link={ blog.link }
+                        imageSrc={ blog.imageSrc }
+                        imageAlt={ blog.imageAlt }
+                    />
+                )
+            )
+        }
+    </section>
 </Layout>

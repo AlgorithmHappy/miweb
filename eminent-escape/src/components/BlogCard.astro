@@ -1,0 +1,28 @@
+---
+interface BlogCardProps {
+    title: string;
+    information: string;
+    link: string;
+    imageSrc: string;
+    imageAlt: string;
+}
+const { title, information, link, imageSrc, imageAlt } = Astro.props as BlogCardProps;
+---
+<div>
+    <div class="mb-3">
+        <h3 class="text-center text-primary font-bold">{ title }</h3>
+    </div>
+    <div>
+        <figure class="relative w-full h-full border-4 border-primary rounded-lg shadow-xl
+        overflow-hidden before:absolute before:top-0
+        before:left-0 before:right-0 before:bottom-0 before:bg-primary
+        before:transform before:translate-x-full before:transition-transform before:duration-400
+        hover:before:translate-x-0">
+            <img src={ imageSrc } alt={ imageAlt } />
+            <div class="absolute inset-0 flex items-center justify-center bg-primary 
+            opacity-0 transition-opacity duration-400 hover:opacity-100">
+                <p class="text-center text-secondary">{ information }<br/><br/><a class="text-white font-bold cursor-pointer underline" href={ link } >Leer</a></p>
+            </div>            
+        </figure>
+    </div>
+</div>

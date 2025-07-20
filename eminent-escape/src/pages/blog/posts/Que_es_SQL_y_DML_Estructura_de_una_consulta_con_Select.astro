@@ -1,0 +1,18 @@
+---
+import PostLayout from '../../../layouts/PostLayout.astro';
+import PostContent from './Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select.md';
+
+interface ContactProps {
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
+const contentContactButton: ContactProps = {
+	icon: '../../../assets/contact.svg',
+	iconHover: '../../../assets/contact_hover.svg',
+	alt: 'Icono de contacto'
+}
+---
+<PostLayout>
+    <PostContent/>
+</PostLayout>

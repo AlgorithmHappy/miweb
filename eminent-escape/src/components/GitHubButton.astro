@@ -1,0 +1,37 @@
+---
+interface ContentProps {
+    text: string;
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
+const { content } = Astro.props;
+const { text, icon, iconHover, alt } = content as ContentProps;
+---
+<button id="btnPortfolio" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
+    <img
+        id="imgPortfolio"
+        class="h-full px-2"
+        src={ icon }
+        alt={ alt }
+        data-icon={ icon }
+        data-icon-hover={ iconHover }
+    />
+    {text}
+</button>
+
+<script>
+    const button = document.getElementById("btnPortfolio") as HTMLButtonElement;
+    const img = document.getElementById("imgPortfolio") as HTMLImageElement;
+    const icon = img.dataset.icon as string;
+    const iconHover = img.dataset.iconHover as string;
+    button.addEventListener("mouseover", () => {
+        img.src = iconHover;
+    });
+    button.addEventListener("mouseout", () => {
+        img.src = icon;
+    });
+    button.addEventListener("click", () => {
+        window.open("https://github.com/AlgorithmHappy", "_blank");
+    });
+</script>

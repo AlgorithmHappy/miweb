@@ -16,7 +16,7 @@ const { title, information, link, imageSrc, imageAlt, technologies } = Astro.pro
 ---
 <div>
     <div>
-        <h3 class="text-center text-primary font-bold">{ title }</h2>
+        <h3 class="text-center text-primary font-bold">{ title }</h3>
     </div>
     <div>
         <figure class="relative w-full h-full border-4 border-primary rounded-lg shadow-xl
@@ -31,7 +31,7 @@ const { title, information, link, imageSrc, imageAlt, technologies } = Astro.pro
             </div>            
         </figure>
     </div>
-    <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row justify-evenly items-center">
         {
             technologies.map( (technology: Technology) => {
                 return (

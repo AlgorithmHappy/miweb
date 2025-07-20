@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProyectoCard from '../../components/PortfolioCard.astro';
+import GitHubButton from '../../components/GitHubButton.astro';
+import ContactButton from '../../components/ContactButton.astro';
 
 interface Technology {
     imageSrc: string;
@@ -75,70 +77,99 @@ const projects: ProjectsProps[] = [
         ]
     },
     {
-        title: 'Brincolin',
-        information: 'Proyecto realizado con el motor Godot Engine, usando gráficos de la página "Kenney" y programado en GDScript, un lenguaje similar a Python, el proyecto final es un APK que se puede correr en android. En este proyecto resolví problemas de lógica de programación.',
-        link: 'https://github.com/AlgorithmHappy/Brincolin',
-        imageSrc: 'assets/proyecto3.png',
+        title: 'Brincolín – Videojuego para Android y PC',
+        information: 'Videojuego de plataformas inspirado en Doodle Jump. Creado con Godot Engine y programado en GDScript. Utiliza gráficos de Kenney y el objetivo es llegar lo más alto posible saltando entre plataformas. Este proyecto me ayudó a mejorar mi lógica de programación al enfrentarme a los desafíos de crear las mecánicas del juego.',
+        link: 'https://balero.itch.io/brincolin',
+        imageSrc: 'assets/brincolin.png',
         imageAlt: 'Brincolin un videojuego realizado con Godot Engine',
         technologies: [
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
+                imageSrc: 'assets/godot.svg',
+                imageAlt: 'Icono del motor Godot Engine',
+                name: 'Godot Engine'
+            },
+        ]
+    },
+    {
+        title: 'Asteroides – Videojuego para PC',
+        information: 'Videojuego de asteroides para computadora Juego desarrollado en C++ con el framework multimedia SFML, en el que el objetivo es esquivar asteroides. También integré una base de datos SQLite para manejar datos del juego. Este proyecto me permitió mejorar tanto mi lógica de programación como mis habilidades en C++ y SQL.',
+        link: 'https://balero.itch.io/asteroides',
+        imageSrc: 'assets/asteroides.png',
+        imageAlt: 'Imagen del videojuego de asteroides',
+        technologies: [
+            {
+                imageSrc: 'assets/cplusplus.svg',
+                imageAlt: 'Icono del lenguaje de programación C++',
+                name: 'C++'
             },
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
+                imageSrc: 'assets/sqlite.svg',
+                imageAlt: 'Icono del framework SQLite',
+                name: 'SQLite'
             },
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
+                imageSrc: 'assets/sfml.svg',
+                imageAlt: 'Icono del framework SFML',
+                name: 'SFML'
             }
         ]
     },
     {
-        title: 'Proyecto 1',
-        information: 'Proyecto 2',
-        link: 'https://github.com/AlgorithmHappy/Brincolin',
-        imageSrc: 'assets/proyecto2.png',
-        imageAlt: 'Imagen del Proyecto 2',
+        title: 'Geek - Videojuego para PC',
+        information: 'Juego desarrollado en C++ con SFML. En este proyecto controlas a un cuervo que debe regular su aleteo para evitar morir. Fue una excelente oportunidad para mejorar mi lógica de programación mientras trabajaba con el framework multimedia SFML y el lenguaje C++.',
+        link: 'https://balero.itch.io/geek',
+        imageSrc: 'assets/geek.png',
+        imageAlt: 'Imagen del videojuego Geek',
         technologies: [
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
+                imageSrc: 'assets/cplusplus.svg',
+                imageAlt: 'Icono del lenguaje de programación C++',
+                name: 'C++'
+            },
+            {
+                imageSrc: 'assets/sfml.svg',
+                imageAlt: 'Icono del framework SFML',
+                name: 'SFML'
             }
         ]
     },
     {
-        title: 'Proyecto 1',
-        information: 'Proyecto 4',
-        imageSrc: 'assets/proyecto4.png',
-        imageAlt: 'Imagen del Proyecto 4',
+        title: 'Calculadora de Estadistica descriptiva',
+        information: 'Proyecto escolar donde desarrollé una calculadora para obtener la media, mediana, varianza y desviación estándar a partir de datos ingresados. Usé C++ y GLUI para la interfaz gráfica. Este proyecto me ayudó a aplicar las matemáticas en la programación.',
+        imageSrc: 'assets/calculadoraestadistica.png',
+        imageAlt: 'Imagen de la calculadora de estadística descriptiva',
+        link: 'https://github.com/AlgorithmHappy/MedidasDispersion',
         technologies: [
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
-            }
-        ]
-    },
-    {
-        title: 'Proyecto 1',
-        information: 'Proyecto 6',
-        imageSrc: 'assets/proyecto6.png',
-        imageAlt: 'Imagen del Proyecto 6',
-        technologies: [
+                imageSrc: 'assets/cplusplus.svg',
+                imageAlt: 'Icono del lenguaje de programación C++',
+                name: 'C++'
+            },
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'JavaScript',
-                name: 'JavaScript'
+                imageSrc: 'assets/glui.svg',
+                imageAlt: 'Icono de la biblioteca GLUI',
+                name: 'GLUI'
             }
         ]
     }
 ];
+interface ContentProps {
+    text: string;
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
+const contentGitHubButton: ContentProps = {
+    text: 'Ver más en GitHub',
+    icon: 'assets/github.svg',
+    iconHover: 'assets/github_hover.svg',
+    alt: 'Icono de GitHub'
+};
+const contentContactButton = {
+	icon: 'assets/contact.svg',
+	iconHover: 'assets/contact_hover.svg',
+	alt: 'Portafolio'
+}
 ---
 <Layout>
     <h2 class="mt-20 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi portafolio</h2>
@@ -158,4 +189,15 @@ const projects: ProjectsProps[] = [
             )
         }
     </section>
+    <hr class="border-t-4 border-primary w-1/2 mx-auto mb-4 rounded-lg"/>
+    <div>
+        <p class="text-center text-secundary">
+            Adicionalmente, esta pagina está construido con Astro, Tailwind CSS y TypeScript. Si quieres ver más proyectos, puedes visitar mi perfil de GitHub dando click en el boton de abajo.
+        </p>
+        <div class="mx-auto my-6 w-3/4">
+            <GitHubButton content={ contentGitHubButton }/>
+        </div>
+    </div>
+    <hr class="border-t-4 border-primary w-1/2 mx-auto mb-4 rounded-lg"/>
+    <ContactButton content={ contentContactButton }/>
 </Layout>
