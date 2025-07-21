@@ -3,6 +3,9 @@ import "../styles/global.css";
 import Menu from "../components/Menu.astro";
 import Footer from "../components/Footer.astro";
 import ContactButton from '../components/ContactButton.astro';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 interface ContactProps {
     icon: string;
