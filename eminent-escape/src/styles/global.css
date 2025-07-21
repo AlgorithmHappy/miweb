@@ -53,6 +53,8 @@ p {
   color: var(--color-secondary);
 }
 
-.ulfooter1 {
-  color: var(--color-secondary);
+pre {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
 }

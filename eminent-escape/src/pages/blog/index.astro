@@ -1,7 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import ContactButton from '../../components/ContactButton.astro';
 
+interface ContactProps {
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
 interface BlogCardProps {
     title: string;
     information: string;
@@ -14,10 +20,16 @@ const blogs : BlogCardProps[] = [
         title: '¿Que es SQL y DML?. Estructura de una consulta con "Select"',
         information: 'En este capítulo aprenderás qué es SQL y cómo usar el comando SELECT para hacer consultas básicas en una base de datos. También se explican los conceptos clave del DML, con ejemplos y ejercicios para practicar.',
         link: 'blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select',
-        imageSrc: 'assets/Que es SQL y DML Estructura de una consulta con Select.png',
+        imageSrc: 'assets/Que es SQL y DML Estructura de una consulta con Select.webp',
         imageAlt: 'Imagen del artículo sobre cómo crear un portafolio'
     }
 ];
+
+const contentContactButton: ContactProps = {
+	icon: '/assets/contact.svg',
+	iconHover: '/assets/contact_hover.svg',
+	alt: 'Icono de contacto'
+}
 ---
 <Layout>
     <h2 class="mt-20 mb-6 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi blog</h2>
@@ -36,4 +48,5 @@ const blogs : BlogCardProps[] = [
             )
         }
     </section>
+    <ContactButton content={ contentContactButton }/>
 </Layout>
