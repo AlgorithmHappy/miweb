@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * Controlador que expone los endpoinst de los mensajes que enviad del formulario de 
  * contacto de la pagina gerardomarquez.dev
  */
-@CrossOrigin(origins = "http://localhost:4321")
+@CrossOrigin(origins = "https://www.gerardomarquez.dev")
 @Controller
 @RequestMapping("/v1/contact/message")
 public class MessagesEndPoint {
