@@ -123,7 +123,7 @@ interface Response {
         imgSend.src = iconSend;
     });
     btnSend.addEventListener("click", () => {
-        fetch('http://localhost:1609/v1/contact/message/send', {
+        fetch('https://api-gerardomarquez-dev.app.gerardomarquez.dev/v1/contact/message/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
