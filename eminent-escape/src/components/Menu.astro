@@ -17,7 +17,8 @@ var pages = [
         url: "/",
     },
 ];
-var path = Astro.url.pathname;
+var path = "/" + Astro.url.pathname.split("/")[ Astro.url.pathname.split("/").length - 1 ]; // Obtiene la ruta actual, por defecto es "/"
+console.log(path);
 ---
 
 <div class="fixed top-0 left-0 z-10 flex items-center gap-4 w-full h-16 bg-primary md:flex-row-reverse">
