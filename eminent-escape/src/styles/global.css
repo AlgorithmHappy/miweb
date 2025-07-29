@@ -58,3 +58,15 @@ pre {
   border-radius: 0.5rem;
   overflow-x: auto;
 }
+
+#titleCurrent {
+  color: white;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  #titleCurrent {
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+}

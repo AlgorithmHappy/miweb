@@ -18,7 +18,6 @@ var pages = [
     },
 ];
 var path = "/" + Astro.url.pathname.split("/")[ Astro.url.pathname.split("/").length - 1 ]; // Obtiene la ruta actual, por defecto es "/"
-console.log(path);
 ---
 
 <div class="fixed top-0 left-0 z-10 flex items-center gap-4 w-full h-16 bg-primary md:flex-row-reverse">
@@ -42,11 +41,7 @@ console.log(path);
     </button>
     {
         pages.map((page) =>
-            page.url === path ? (
-                <a href={ page.url } class="elementTitle cursor-pointer text-white underline text-lg font-semibold mr-10" id="titleCurrent">{page.title}</a>
-            ) : (
-                <a href={ page.url } class="elementTitle cursor-pointer text-secondary text-lg font-semibold mr-10 hover:text-white">{page.title}</a>
-            ),
+            <a href={ page.url } class="elementTitle cursor-pointer text-secondary text-lg font-semibold mr-10 hover:text-white">{page.title}</a>
         )
     }
 </div>
@@ -68,6 +63,9 @@ console.log(path);
 <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
 
 <script>
+    // Path
+    const path = window.location.pathname;
+
     // Script para manejar el menú lateral
     // ---------------------------------------------------------------------------------------------------------------------------------------------- //
     const toggleDrawer = document.getElementById("toggleDrawer");
@@ -90,7 +88,15 @@ console.log(path);
 
     // Script para ocultar los titulos de los elementos del menú en pantallas pequeñas
     // ---------------------------------------------------------------------------------------------------------------------------------------------- //
-    const elementsTitles = document.querySelectorAll(".elementTitle");
+    const elementsTitles = document.querySelectorAll(".elementTitle") as NodeListOf<HTMLAnchorElement>;
+
+    elementsTitles.forEach((title) => {
+        const href = "/" + title.href.split("/")[title.href.split("/").length - 1];
+        if(href === path){
+            title.id = "titleCurrent";
+        }
+    });
+
     if (elementsTitles && window.innerWidth < 768) { // Cuando inicia la pagina en pantallas pequeñas
         elementsTitles.forEach((title) => {
             if (title.id !== "titleCurrent") {
