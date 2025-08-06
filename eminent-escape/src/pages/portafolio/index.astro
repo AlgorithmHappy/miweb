@@ -49,7 +49,7 @@ const projects: ProjectsProps[] = [
     },
     {
         title: 'Landing Page para Generación de Leads',
-        information: 'Landing page creada a partir de una plantilla personalizada con HTML, CSS y JavaScript. Está conectada a una API REST desarrollada con Spring Boot, que almacena los correos electrónicos en una base de datos MongoDB.',
+        information: 'Landing page desarrollada a partir de una plantilla personalizada utilizando HTML, CSS y JavaScript. Está conectada a una API REST construida con Spring Boot, la cual almacena correos electrónicos en una base de datos MongoDB y envía notificaciones por WhatsApp cuando un usuario se une a la lista de espera con la tecnologia de Evolution API.',
         link: 'https://www.filasparabarberias.online',
         imageSrc: 'assets/landingpage.webp',
         imageAlt: 'Imagen del Proyecto Landing Page para Generación de Leads',
@@ -192,7 +192,9 @@ const contentContactButton = {
     <hr class="border-t-4 border-primary w-1/2 mx-auto mb-4 rounded-lg"/>
     <div>
         <p class="text-center text-secundary">
-            Adicionalmente, esta pagina está construido con Astro, Tailwind CSS y TypeScript. Si quieres ver más proyectos, puedes visitar mi perfil de GitHub dando click en el boton de abajo.
+            Además, esta página fue desarrollada utilizando Astro, Tailwind CSS y TypeScript. En la sección de contacto,
+            se integra un sistema de envío de notificaciones por WhatsApp mediante Java, Spring y Evolution API.
+            Si deseas conocer más de mis proyectos, puedes visitar mi perfil de GitHub haciendo clic en el botón de abajo.
         </p>
         <div class="mx-auto my-6 w-3/4">
             <GitHubButton content={ contentGitHubButton }/>

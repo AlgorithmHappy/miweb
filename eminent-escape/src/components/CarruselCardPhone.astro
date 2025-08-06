@@ -10,13 +10,21 @@ interface Information {
 }
 
 const { information = [] } = Astro.props;
+var finalInformation: Information[] = structuredClone(information);
+for (let index = 0; index < finalInformation.length; index++) {
+    var element: string = finalInformation[index].description;
+    if(element.length > 340)
+        element = element.substring(0, 337) + '...';
+
+    finalInformation[index].description = element;
+}
 ---
 <div class="w-[100%] pl-4 pt-4 pr-8 pb-4 overflow-x-hidden">
     <h2 class="mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi experiencia</h2>
     <div class="border-4 border-primary rounded-lg w-[100%]">
         <div id="scrollContainer" class="relative left-2 top-2 border-4 overflow-x-auto whitespace-nowrap scrollbar-hide snap-x snap-mandatory border-primary rounded-lg bg-white shadow-xl w-[102%]">
             {
-                information.map(
+                finalInformation.map(
                     (item: Information) => {
                         return (
                             <div class="inline-block w-[100%] p-4 snap-start contentCard transform">
