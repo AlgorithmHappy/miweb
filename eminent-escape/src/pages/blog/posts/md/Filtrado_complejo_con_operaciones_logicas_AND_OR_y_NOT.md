@@ -75,7 +75,7 @@ SELECT * FROM CURSOS WHERE (creador_id > 0 AND creador_id < 3) AND (TITULO = 'Di
 
 ## Enlaces relacionados
 
-**GitHub**: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/Filtrado%20complejo%20con%20operaciones%20lógicas%3A%20AND%2C%20OR%20y%20NOT.md" target="_blank">Filtrado complejo con operaciones lógicas: AND, OR y NOT</a>
+**GitHub**: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/Filtrado%20complejo%20con%20operaciones%20logicas%20AND%20OR%20y%20NOT.md" target="_blank">Filtrado complejo con operaciones lógicas: AND, OR y NOT</a>
 
 **Pagina WEB**: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Filtrado_complejo_con_operaciones_logicas_AND_OR_y_NOT" target="_blank">Filtrado complejo con operaciones lógicas: AND, OR y NOT</a>
 
