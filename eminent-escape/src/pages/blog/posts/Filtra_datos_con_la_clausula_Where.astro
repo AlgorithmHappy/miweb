@@ -1,0 +1,18 @@
+---
+import PostLayout from '../../../layouts/PostLayout.astro';
+import PostContent from './md/Filtra_datos_con_la_clausula_Where.md';
+
+interface ContactProps {
+    icon: string;
+    iconHover: string;
+    alt: string;
+}
+const contentContactButton: ContactProps = {
+	icon: '../../../assets/contact.svg',
+	iconHover: '../../../assets/contact_hover.svg',
+	alt: 'Icono de contacto'
+}
+---
+<PostLayout>
+    <PostContent/>
+</PostLayout>

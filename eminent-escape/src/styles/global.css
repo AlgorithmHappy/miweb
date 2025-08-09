@@ -59,6 +59,11 @@ pre {
   overflow-x: auto;
 }
 
+.postLinks {
+  text-decoration: underline;
+  font-style: italic;
+}
+
 #titleCurrent {
   color: white;
   text-decoration: underline;

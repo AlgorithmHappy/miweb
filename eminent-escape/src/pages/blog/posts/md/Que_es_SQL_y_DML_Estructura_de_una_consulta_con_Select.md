@@ -45,3 +45,15 @@ ORA-00942: table or view does not exist"
 2. *Consulta las columnas "BIOGRAFIA" y "SITIO_WEB" de la tabla "PERFILES"*
 3. *¿Que columnas tiene la tabla "INSCRIPCIONES"?*
 4. *¿Que cursos existen en la base de datos?*
+
+## Enlaces relacionados
+
+**GitHub**: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/¿Que%20es%20SQL%20y%20DML%3F%20Estructura%20de%20una%20consulta%20con%20Select.md" target="_blank">¿Que es SQL y DML?. Estructura de una consulta con "Select"</a>
+
+**Pagina WEB**: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select" target="_blank">¿Que es SQL y DML?. Estructura de una consulta con "Select"</a>
+
+**YouTube**: <a class="postLinks" href="https://www.youtube.com/watch?v=Oh9TlzXZ01Q&t=23s" target="_blank">Curso de SQL "SELECT" Facil y Rapido cap 1</a>
+
+## APA
+
+Marquez Mendez, L. G. (2025, 8 de agosto). *¿Que es SQL y DML?. Estructura de una consulta con "Select"*. Recuperado de <span style="word-break: break-all;">https://www.gerardomarquez.dev/blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select</span>
