@@ -8,6 +8,7 @@ Los principales comandos de **DML** son:
 - **INSERT**: *para insertar nuevos registros*
 - **UPDATE**: *para actualizar datos existentes*
 - **DELETE**: *para eliminar registros*
+
 En este curso nos enfocaremos exclusivamente en el comando **SELECT** y en todo lo que se puede lograr con él.
 
 ### Glosario

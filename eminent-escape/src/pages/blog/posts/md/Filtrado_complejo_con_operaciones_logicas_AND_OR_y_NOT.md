@@ -24,11 +24,9 @@ SELECT * FROM CURSOS WHERE id > 0 AND titulo = 'Curso de SQL Básico' AND creado
 
 SELECT * FROM PERFILES WHERE usuario_id = 2 OR usuario_id = -1;
 -- Con el operador OR se filtran los datos que cumplan al menos una
--- de las condiciones. Igual que con AND, se pueden agregar
--- tantas condiciones como se necesiten y usar cualquier operador (=, <, >, !=, <>).
-
-SELECT * FROM PERFILES WHERE usuario_id = 2 OR usuario_id = 1;
--- El operador OR permite obtener más de un resultado que cumpla alguna de las condiciones.
+-- de las condiciones. Es decir, no devolvera resultados para "usuario_id = 1" pero si
+-- para "usuario_id = 2." Igual que con AND, se pueden agregar tantas condiciones como
+-- se necesiten y usar cualquier operador (=, <, >, !=, <>).
 
 SELECT * FROM INSCRIPCIONES WHERE NOT curso_id = 1;
 -- El operador NOT niega la condición, es decir, filtra todos los
@@ -57,7 +55,7 @@ SELECT * FROM CURSOS WHERE (creador_id > 0 AND creador_id < 3) AND (TITULO = 'Di
 
 **Nota**: Se pueden realizar todas las combinaciones necesarias, sin importar su nivel de complejidad.
 
-**Nota**: El operador mas ocupado y necesario es el **`AND`**
+**Nota**: El operador mas ocupado y necesario en el aspecto laboral es el **`AND`**. El **`OR`** y **`NOT`** se ocupane en filtrados máas particulares.
 
 ## Ejercicios:
 
