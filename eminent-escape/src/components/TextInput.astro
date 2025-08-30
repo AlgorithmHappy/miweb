@@ -77,7 +77,7 @@ interface Response {
 <div id="modalBackground" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 hidden">
 </div>
 <div id="modalAlert" class="fixed inset-0 flex flex-col items-center justify-evenly w-[80%] max-w-md h-56 m-auto p-5 bg-white rounded-lg shadow-xl z-50 hidden">
-    <p id="modalAlertMessage" class="text-center"></p>
+    <p id="modalAlertMessage" class="text-center">Cargando...</p>
     <button id="btnCloseAlert" class="flex flex-row justify-center items-center bg-primary rounded-lg text-secondary p-1 w-full h-9 hover:text-white hover:underline">
         <img
             id="imgClose"
@@ -168,17 +168,23 @@ interface Response {
         )
         .catch(exception => {
             error = true;
-            modalAlertMessage.textContent = "Has alcanzado el límite de solicitudes. Por favor, espera 10 minutos antes de intentarlo nuevamente.";
+            modalAlertMessage.textContent = "Ha ocurrido un error, valide su informacion. Si ha hecho muchos intentos, intentelo mas tarde.";
         });
 
         modalBackground.classList.remove("hidden");
         modalAlert.classList.remove("hidden");
     });
     btnCloseAlert.addEventListener("click", () => {
+        inputFullName.value = "";
+        inputEmail.value = "";
+        inputMessage.value = "";
         modalBackground.classList.add("hidden");
         modalAlert.classList.add("hidden");
     });
     modalBackground.addEventListener("click", () => {
+        inputFullName.value = "";
+        inputEmail.value = "";
+        inputMessage.value = "";
         modalBackground.classList.add("hidden");
         modalAlert.classList.add("hidden");
     });
