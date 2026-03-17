@@ -13,6 +13,8 @@ Aprende a realizar consultas SQL de forma clara y práctica. En este curso domin
 
 4. <a class="postLinks" href="Filtrado_de_datos_con_el_operador_LIKE" target="_blank">Filtrado de datos con el operador "LIKE"</a>
 
+5. <a class="postLinks" href="Filtrado_de_datos_con_el_operador_IN" target="_blank">Filtrado de datos con el operador "IN"</a>
+
 ## Consideraciones
 
 En este curso trabajaremos con el gestor de bases de datos **Oracle**. Si bien el lenguaje SQL es estándar y puede utilizarse en diferentes gestores, existen pequeñas variaciones en la sintaxis que pueden hacer que cada sistema lo interprete de forma distinta, lo que en algunos casos podría generar errores.
