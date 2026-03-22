@@ -20,3 +20,19 @@ import SideBar from '../components/SideBar.astro';
         </main>
     </body>
 </html>
+
+<style>
+    main {
+        margin-left: var(--sidebar-w);
+        padding: 24px;
+        transition: margin-left var(--transition);
+    }
+    main.main-collapsed {
+        margin-left: var(--sidebar-w-col);
+    }
+    @media (max-width: 768px) {
+        main {
+            margin-left: var(--sidebar-w-col);
+        }
+    }
+</style>

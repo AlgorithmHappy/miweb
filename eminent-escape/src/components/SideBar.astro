@@ -184,6 +184,17 @@
         margin-left: 3px;
         margin-top: 10px;
     }
+    @media (max-width: 768px) {
+        #toggle-btn {
+            display: none;
+        }
+        .sidebar { 
+            width: var(--sidebar-w-col); 
+        }
+        .sidebar-brand, .nav-text {
+            display: none;
+        }
+    }
 </style>
 
 
@@ -192,7 +203,7 @@
     const toggleBtn = document.getElementById("toggle-btn") as HTMLElement;
     const sidebar = document.getElementById("sidebar")  as HTMLElement;
     const sidebarHeader = document.getElementById("sidebar-header") as HTMLElement;
-    const main = document.getElementById("main") as HTMLElement;
+    const main = document.getElementsByTagName("main")[0] as HTMLElement;
     const icon = document.getElementById("toggle-icon") as HTMLElement;
     const navLinks = document.querySelectorAll(".nav-link") as NodeListOf<HTMLElement>;
 
@@ -203,7 +214,7 @@
             sidebar.classList.toggle("collapsed", collapsed);
             sidebarHeader.classList.toggle("collapsed", collapsed);
             icon.textContent = collapsed ? 'menu' : 'close';
-            //main.classList.toggle("expanded", collapsed);
+            main.classList.toggle("main-collapsed", collapsed);
         }
     );
 
