@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Portfolio | Material Design 3</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #2E2E2E;
+      --bg2: #383838;
+      --bg3: #424242;
+      --accent: #40E0D0;
+      --accent2: #2ab8aa;
+      --accent-dim: rgba(64,224,208,0.12);
+      --white: #FFFFFF;
+      --muted: rgba(255,255,255,0.6);
+      --muted2: rgba(255,255,255,0.35);
+      --border: rgba(255,255,255,0.08);
+      --card-bg: #383838;
+      --sidebar-w: 260px;
+      --sidebar-w-col: 72px;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.4);
+      --shadow-card: 0 2px 12px rgba(0,0,0,0.3);
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: #262626;
+      border-right: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: width var(--transition);
+      overflow: hidden;
+    }
+    .sidebar.collapsed { width: var(--sidebar-w-col); }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border);
+      min-height: 72px;
+    }
+    .sidebar-logo {
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #1a8c82);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600; font-size: 16px; color: #1a1a1a;
+    }
+    .sidebar-brand {
+      font-weight: 600; font-size: 15px;
+      white-space: nowrap; opacity: 1;
+      transition: opacity var(--transition);
+    }
+    .sidebar.collapsed .sidebar-brand { opacity: 0; pointer-events: none; }
+
+    .toggle-btn {
+      margin-left: auto; min-width: 32px;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; width: 32px; height: 32px;
+      transition: background var(--transition), color var(--transition);
+    }
+    .toggle-btn:hover { background: var(--accent-dim); color: var(--accent); }
+
+    .nav-list { list-style: none; padding: 12px 8px; flex: 1; }
+    .nav-item {
+      margin-bottom: 2px;
+    }
+    .nav-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 12px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px; font-weight: 500;
+      white-space: nowrap;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-link::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--accent-dim);
+      opacity: 0; border-radius: var(--radius-sm);
+      transition: opacity var(--transition);
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-link:hover::before { opacity: 1; }
+    .nav-link.active { color: var(--accent); background: var(--accent-dim); }
+    .nav-link .material-icons-round { font-size: 22px; min-width: 22px; }
+    .nav-text { transition: opacity var(--transition); }
+    .sidebar.collapsed .nav-text { opacity: 0; }
+
+    .sidebar-footer { padding: 16px 8px; border-top: 1px solid var(--border); }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">&lt;/&gt;</div>
+      <span class="sidebar-brand">DevPortfolio</span>
+      <button class="toggle-btn" onclick="toggleSidebar()" title="Toggle sidebar">
+        <span class="material-icons-round" id="toggle-icon">menu_open</span>
+      </button>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="#home" class="nav-link active" onclick="setActive(this)">
+          <span class="material-icons-round">home</span>
+          <span class="nav-text">Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#sobre-mi" class="nav-link" onclick="setActive(this)">
+          <span class="material-icons-round">person</span>
+          <span class="nav-text">Sobre mí</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#blog" class="nav-link" onclick="setActive(this)">
+          <span class="material-icons-round">article</span>
+          <span class="nav-text">Blog</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#portafolio" class="nav-link" onclick="setActive(this)">
+          <span class="material-icons-round">work</span>
+          <span class="nav-text">Portafolio</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#contacto" class="nav-link" onclick="setActive(this)">
+          <span class="material-icons-round">mail</span>
+          <span class="nav-text">Contacto</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="#contacto" class="nav-link" onclick="setActive(this)">
+        <span class="material-icons-round">settings</span>
+        <span class="nav-text">Configuración</span>
+      </a>
+    </div>
+  </aside>
+  <script>
+    let collapsed = false;
+    let carouselPos = 0;
+
+    function toggleSidebar() {
+      collapsed = !collapsed;
+      const sidebar = document.getElementById('sidebar');
+      const main = document.getElementById('main');
+      const icon = document.getElementById('toggle-icon');
+      sidebar.classList.toggle('collapsed', collapsed);
+      main.classList.toggle('expanded', collapsed);
+      icon.textContent = collapsed ? 'menu' : 'menu_open';
+      const articleView = document.getElementById('article-view');
+      if (collapsed) {
+        articleView.style.marginLeft = 'var(--sidebar-w-col)';
+      } else {
+        articleView.style.marginLeft = 'var(--sidebar-w)';
+      }
+    }
+
+    function setActive(el) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function scrollCarousel(dir) {
+      const track = document.getElementById('carousel');
+      const cardW = 320;
+      carouselPos = Math.max(0, Math.min(carouselPos + dir * cardW, track.scrollWidth - track.parentElement.offsetWidth));
+      track.style.transform = `translateX(-${carouselPos}px)`;
+    }
+
+    function filterBlogCat(btn, cat) {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.blog-card');
+      cards.forEach(card => {
+        const show = cat === 'todos' || card.dataset.cat === cat;
+        card.style.display = show ? 'block' : 'none';
+      });
+    }
+
+    function filterBlog() {
+      const q = document.getElementById('blog-search').value.toLowerCase();
+      document.querySelectorAll('.blog-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    function openArticle() {
+      document.getElementById('article-view').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeArticle() {
+      document.getElementById('article-view').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.innerHTML = '<span class="material-icons-round" style="font-size:18px;animation:spin 1s linear infinite">refresh</span> Enviando...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-icons-round" style="font-size:18px">check_circle</span> ¡Mensaje enviado!';
+        btn.style.background = '#2ab87a';
+        setTimeout(() => {
+          btn.innerHTML = '<span class="material-icons-round" style="font-size:18px">send</span> Enviar mensaje';
+          btn.style.background = '';
+          btn.disabled = false;
+          e.target.reset();
+        }, 3000);
+      }, 1800);
+    }
+
+    // Animate progress bars on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.progress-bar-wrap').forEach(el => observer.observe(el));
+
+    // Animate stat numbers
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = el.textContent;
+          const num = parseFloat(target);
+          const isK = target.includes('k');
+          let current = 0;
+          const step = num / 40;
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= num) {
+              current = num;
+              clearInterval(timer);
+            }
+            el.textContent = isK ? current.toFixed(1) + 'k' : Math.round(current);
+          }, 30);
+          statObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Active nav on scroll
+    const sections = ['home', 'sobre-mi', 'blog', 'portafolio', 'contacto'];
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) current = id;
+      });
+      document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', href === '#' + current);
+      });
+    });
+  </script>
+</body>
+
+</html>
