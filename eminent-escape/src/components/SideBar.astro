@@ -1,0 +1,220 @@
+---
+
+---
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header" id="sidebar-header">
+        <div class="sidebar-logo">&lt;/&gt;</div>
+        <span class="sidebar-brand">Gerardo Marquez Dev</span>
+        <button
+            id="toggle-btn"
+            class="toggle-btn"
+            title="Toggle sidebar"
+        >
+            <span class="material-icons-round" id="toggle-icon">menu_open</span>
+        </button>
+    </div>
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="#sobre-mi" class="nav-link">
+                <span class="material-icons-round">person</span>
+                <span class="nav-text">Sobre mí</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#blog" class="nav-link">
+                <span class="material-icons-round">article</span>
+                <span class="nav-text">Blog</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#portafolio" class="nav-link">
+                <span class="material-icons-round">work</span>
+                <span class="nav-text">Portafolio</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#contacto" class="nav-link">
+                <span class="material-icons-round">mail</span>
+                <span class="nav-text">Contacto</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-w);
+        background: #262626;
+        border-right: 1px solid var(--border);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        transition: width var(--transition);
+        overflow: hidden;
+    }
+    .sidebar.collapsed {
+        width: var(--sidebar-w-col);
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px 16px;
+        border-bottom: 1px solid var(--border);
+        min-height: 72px;
+    }
+    .sidebar-header.collapsed {
+        flex-direction: column;
+        align-items: center;
+    }
+    .sidebar-logo {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #1a8c82);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 600;
+        font-size: 16px;
+        color: #1a1a1a;
+    }
+    .sidebar-brand {
+        font-weight: 600;
+        font-size: 15px;
+        white-space: nowrap;
+        opacity: 1;
+        transition: opacity var(--transition);
+    }
+    .sidebar.collapsed .sidebar-brand {
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+    }
+
+    .toggle-btn {
+        margin-left: auto;
+        min-width: 32px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        transition:
+            background var(--transition),
+            color var(--transition);
+    }
+    .toggle-btn:hover {
+        background: var(--accent-dim);
+        color: var(--accent);
+    }
+
+    .nav-list {
+        list-style: none;
+        padding: 12px 8px;
+        flex: 1;
+    }
+    .nav-item {
+        margin-bottom: 2px;
+    }
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 12px;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--accent-dim);
+        opacity: 0;
+        border-radius: var(--radius-sm);
+        transition: opacity var(--transition);
+    }
+    .nav-link:hover {
+        color: var(--accent);
+    }
+    .nav-link:hover::before {
+        opacity: 1;
+    }
+    .nav-link.active {
+        color: var(--accent);
+        background: var(--accent-dim);
+    }
+    .nav-link .material-icons-round {
+        font-size: 22px;
+        min-width: 22px;
+    }
+    .nav-text {
+        transition: opacity var(--transition);
+    }
+    .sidebar.collapsed .nav-text {
+        opacity: 0;
+        display: none;
+    }
+    .collapsed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .toggle-btn-position-fixed {
+        margin-left: 3px;
+        margin-top: 10px;
+    }
+</style>
+
+<script>
+    let collapsed: boolean = false;
+    const toggleBtn = document.getElementById("toggle-btn") as HTMLElement;
+    const sidebar = document.getElementById("sidebar")  as HTMLElement;
+    const sidebarHeader = document.getElementById("sidebar-header") as HTMLElement;
+    const main = document.getElementById("main") as HTMLElement;
+    const icon = document.getElementById("toggle-icon") as HTMLElement;
+    const articleView = document.getElementById("article-view") as HTMLElement;
+    const navLinks = document.querySelectorAll(".nav-link") as NodeListOf<HTMLElement>;
+
+    toggleBtn.addEventListener(
+        "click", () => {
+            collapsed = !collapsed;
+            toggleBtn.classList.toggle("toggle-btn-position-fixed", collapsed);
+            sidebar.classList.toggle("collapsed", collapsed);
+            sidebarHeader.classList.toggle("collapsed", collapsed);
+            main.classList.toggle("expanded", collapsed);
+            icon.textContent = collapsed ? "menu" : "menu_open";
+        }
+    );
+
+    navLinks.forEach(
+        (link) => {
+            link.addEventListener(
+                "click", () => {
+                    navLinks.forEach( (l) => l.classList.remove("active") );
+                    link.classList.add("active");
+                }
+            );
+        }
+    );
+</script>
