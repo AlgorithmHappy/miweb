@@ -10,7 +10,7 @@
             class="toggle-btn"
             title="Toggle sidebar"
         >
-            <span class="material-icons-round" id="toggle-icon">menu_open</span>
+            <span class="material-icons-round" id="toggle-icon">close</span>
         </button>
     </div>
     <ul class="nav-list">
@@ -202,8 +202,8 @@
             toggleBtn.classList.toggle("toggle-btn-position-fixed", collapsed);
             sidebar.classList.toggle("collapsed", collapsed);
             sidebarHeader.classList.toggle("collapsed", collapsed);
-            main.classList.toggle("expanded", collapsed);
-            icon.textContent = collapsed ? "menu" : "menu_open";
+            icon.textContent = collapsed ? 'menu' : 'close';
+            //main.classList.toggle("expanded", collapsed);
         }
     );
 
