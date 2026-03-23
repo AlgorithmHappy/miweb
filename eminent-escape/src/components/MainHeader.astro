@@ -1,0 +1,22 @@
+---
+const {firstText, secondText} = Astro.props;
+---
+<h1 class="hero-name fade-in">
+    {firstText}
+    <br>
+    <span>
+        {secondText}
+    </span>
+</h1>
+
+<style>
+    .hero-name {
+        font-size: clamp(36px, 5vw, 64px);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 16px;
+    }
+    .hero-name span { 
+        color: var(--accent); 
+    }
+</style>
