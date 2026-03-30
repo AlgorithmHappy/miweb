@@ -2,6 +2,8 @@
 import MainLayout from "../../layouts/MainLayout.astro"
 import SocialButton from "../../components/SocialButton.astro"
 import MainHeader from "../../components/MainHeader.astro"
+import MainButton from "../../components/MainButton.astro"
+import SecundaryButton from "../../components/SecondaryButton.astro"
 ---
 
 <MainLayout>
@@ -43,5 +45,9 @@ import MainHeader from "../../components/MainHeader.astro"
             <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
         </svg>
     </SocialButton>
-    <MainHeader firstText="Hola, Soy" secondText="Gerardo Márquez Dev"/>
+    <div class="fade-in">
+        <MainHeader firstText="Hola, Soy" secondText="Gerardo Márquez Dev"/>
+    </div>
+    <MainButton hrefCustom="/contacto" materialIcon="email" text="Contáctame"/>
+    <SecundaryButton hrefCustom="/proyectos" materialIcon="code" text="Mis Proyectos"/>
 </MainLayout>
