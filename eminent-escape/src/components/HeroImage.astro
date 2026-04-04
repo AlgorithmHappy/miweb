@@ -1,0 +1,68 @@
+---
+---
+<div class="hero-image-wrap">
+    <div class="hero-img-ring">
+    </div>
+    <div class="hero-img">
+        <div class="hero-img-inner">
+            <img src="/assets/Mi imagen de perfil.webp" alt="Profile Image">
+            <!--<span class="material-icons-round" style="font-size:90px; color:var(--accent); opacity:0.8">person</span>-->
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-image-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .hero-img-ring {
+        position: absolute;
+        width: 340px;
+        height: 340px;
+        border: 2px solid rgba(64,224,208,0.2);
+        border-radius: 50%;
+        animation: spin 12s linear infinite;
+    }
+    .hero-img-ring::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 50%;
+    }
+    @keyframes spin { 
+        to { 
+            transform: rotate(360deg); 
+        } 
+    }
+    .hero-img {
+        width: 280px; height: 280px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--bg3), var(--bg2));
+        border: 3px solid rgba(64,224,208,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+    .hero-img-inner {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        color: var(--accent);
+    }
+</style>

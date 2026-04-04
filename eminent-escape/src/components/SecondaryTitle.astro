@@ -1,0 +1,30 @@
+---
+const {class: className, firstText, secondText} = Astro.props;
+---
+<h2 class={`hero-title ${className}`}>
+    &lt; {firstText} <span class="word-accent">{secondText}</span> <span class="blink">|</span> &gt;
+</h2>
+
+<style>
+    .hero-title {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--muted);
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+    .hero-title .blink {
+        color: var(--accent);
+        animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+        0%,100% {
+             opacity:1;
+        }
+        50% {
+            opacity:0;
+        }
+    }
+    .hero-title .word-accent {
+        color: var(--accent);
+    }
+</style>

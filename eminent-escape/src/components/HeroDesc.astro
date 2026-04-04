@@ -1,0 +1,17 @@
+---
+const {class: className} = Astro.props;
+---
+<p class={`hero-desc ${className}`}>
+    <slot>
+    </slot>
+</p>
+
+<style>
+    .hero-desc {
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.7;
+        max-width: 520px;
+        margin-bottom: 36px;
+    }
+</style>

@@ -4,11 +4,28 @@ import SocialButton from "../../components/SocialButton.astro"
 import MainHeader from "../../components/MainHeader.astro"
 import MainButton from "../../components/MainButton.astro"
 import SecundaryButton from "../../components/SecondaryButton.astro"
+import SecondaryTitle from "../../components/SecondaryTitle.astro"
+import MainBadge from "../../components/MainBadge.astro"
+import HeroDesc from "../../components/HeroDesc.astro"
+import HeroImage from "../../components/HeroImage.astro"
 ---
 
 <MainLayout>
-    <h1 class="text-3xl font-bold text-center mt-10">Prueba</h1>
-    <p class="text-center mt-4">Esta es una página de prueba para verificar el funcionamiento del layout principal.</p>
+    <!--<section id="home" class="hero">
+        <div class="hero-grid">
+        </div>
+        <div>
+        </div>
+      </section>-->
+    <MainBadge class="fade-in" text="Disponible para cualquier proyecto"/>
+    
+    <MainHeader class="fade-in" firstText="Hola, Soy" secondText="Gerardo Márquez Dev"/>
+    
+    <SecondaryTitle class="fade-in" firstText="Desarrollador de" secondText="Software"/>
+
+    <HeroDesc class="fade-in">
+        Cuento con 5 años de experiencia profesional en el desarrollo de software utilizando Java, Spring y bases de datos relacionales con SQL.
+    </HeroDesc>
 
     <SocialButton>
         <svg slot="svgIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -45,9 +62,11 @@ import SecundaryButton from "../../components/SecondaryButton.astro"
             <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
         </svg>
     </SocialButton>
-    <div class="fade-in">
-        <MainHeader firstText="Hola, Soy" secondText="Gerardo Márquez Dev"/>
-    </div>
     <MainButton hrefCustom="/contacto" materialIcon="email" text="Contáctame"/>
-    <SecundaryButton hrefCustom="/proyectos" materialIcon="code" text="Mis Proyectos"/>
+
+    <SecundaryButton hrefCustom="/proyectos" materialIcon="account_box" text="Sobre mi"/>
+
+    <SecundaryButton hrefCustom="/proyectos" materialIcon="work" text="Mis Proyectos"/>
+
+    <HeroImage
 </MainLayout>

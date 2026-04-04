@@ -1,7 +1,7 @@
 ---
-const {firstText, secondText} = Astro.props;
+const {class: className, firstText, secondText} = Astro.props;
 ---
-<h1 class="hero-name">
+<h1 class={`hero-name ${className}`}>
     {firstText}
     <br>
     <span>
