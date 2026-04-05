@@ -40,6 +40,12 @@ body {
     overflow-x: hidden;
 }
 
+section {
+    padding: 80px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .fade-in {
     opacity: 0;
     transform: translateY(24px);
@@ -65,4 +71,16 @@ body {
 }
 .fade-in:nth-child(5) {
     animation-delay: 0.5s;
+}
+
+@media (max-width: 1024px) {
+    section {
+        padding: 60px 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    section { 
+        padding: 48px 20px;
+    }
 }

@@ -1,17 +1,28 @@
 ---
+const {class: className, pathImage} = Astro.props;
 ---
-<div class="hero-image-wrap">
+<div class={`hero-image-wrap ${className}`}>
     <div class="hero-img-ring">
     </div>
     <div class="hero-img">
-        <div class="hero-img-inner">
-            <img src="/assets/Mi imagen de perfil.webp" alt="Profile Image">
-            <!--<span class="material-icons-round" style="font-size:90px; color:var(--accent); opacity:0.8">person</span>-->
-        </div>
+        <img class="hero-img-inner" src={pathImage} alt="Imagen de perfil de Gerardo Márquez Dev"/>
     </div>
 </div>
 
 <style>
+    .hero-img {
+        width: 280px; height: 280px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--bg3), var(--bg2));
+        border: 3px solid rgba(64,224,208,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
     .hero-image-wrap {
         display: flex;
         justify-content: center;
@@ -42,19 +53,6 @@
             transform: rotate(360deg); 
         } 
     }
-    .hero-img {
-        width: 280px; height: 280px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--bg3), var(--bg2));
-        border: 3px solid rgba(64,224,208,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 80px;
-        position: relative;
-        z-index: 1;
-        overflow: hidden;
-    }
     .hero-img-inner {
         width: 100%;
         height: 100%;
@@ -64,5 +62,10 @@
         justify-content: center;
         font-size: 80px;
         color: var(--accent);
+    }
+    @media (max-width: 1024px) {
+        .hero-image-wrap {
+            display: none;
+        }
     }
 </style>

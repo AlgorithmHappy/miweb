@@ -1,6 +1,16 @@
 ---
 import '../styles/global.css';
 import SideBar from '../components/SideBar.astro';
+
+const {title, description} = Astro.props as { title: string, description: string };
+
+const navItems = [
+  {customHref: "/", icon: "home", navText: "Inicio"},
+  {customHref: "/sobre-mi", icon: "person", navText: "Sobre mí"},
+  {customHref: "/blog", icon: "article", navText: "Blog"},
+  {customHref: "/portafolio", icon: "work", navText: "Portafolio"},
+  {customHref: "/contacto", icon: "mail", navText: "Contacto"},
+];
 ---
 <!doctype html>
 <html lang="es-Mx">
@@ -11,27 +21,35 @@ import SideBar from '../components/SideBar.astro';
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
         <meta name="generator" content={Astro.generator} />
-        <title>gerardomarquez.dev</title>
+        <meta name="author" content="Luis Gerardo Márquez Méndez" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
     </head>
     <body class="bg-primary text-secondary">
-        <SideBar/>
-        <main>
+        <SideBar navItems={navItems}/>
+        <main class="main">
             <slot/>
         </main>
     </body>
 </html>
 
 <style>
-    main {
+    .main {
         margin-left: var(--sidebar-w);
         padding: 24px;
         transition: margin-left var(--transition);
     }
-    main.main-collapsed {
+    .main.main-collapsed {
+        margin-left: var(--sidebar-w-col);
+    }
+    .main.expanded {
         margin-left: var(--sidebar-w-col);
     }
     @media (max-width: 768px) {
-        main {
+        .main {
+            margin-left: var(--sidebar-w-col);
+        }
+        .main.expanded {
             margin-left: var(--sidebar-w-col);
         }
     }

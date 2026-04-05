@@ -1,7 +1,7 @@
 ---
-const {hrefCustom, materialIcon, text} = Astro.props;
+const {class: className, hrefCustom, materialIcon, text} = Astro.props;
 ---
-<a href={hrefCustom} class="btn-outline">
+<a href={hrefCustom} class={`btn-outline ${className}`}>
     <span class="material-icons-round">{materialIcon}</span>
     {text}
 </a>

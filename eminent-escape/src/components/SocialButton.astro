@@ -1,6 +1,7 @@
 ---
+const {customHref, customTitle} = Astro.props;
 ---
-<a href="#" class="social-btn" title="GitHub">
+<a href={customHref} class="social-btn" title={customTitle} target="_blank">
     <slot name="svgIcon"/>
 </a>
 
