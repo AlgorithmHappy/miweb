@@ -235,6 +235,12 @@ const { navItems = [] } = Astro.props as { navItems?: NavItem[] };
             sidebarHeader.classList.toggle("collapsed", collapsed);
             icon.textContent = collapsed ? 'menu' : 'close';
             main.classList.toggle("main-collapsed", collapsed);
+            window.dispatchEvent(
+                new CustomEvent('collapsed-changed', {
+                        detail: { collapse: collapsed }
+                    }
+                )
+            );
         }
     );
 

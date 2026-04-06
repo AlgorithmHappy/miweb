@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SideBar from '../components/SideBar.astro';
+import Footer from '../components/Footer.astro';
 
 const {title, description} = Astro.props as { title: string, description: string };
 
@@ -16,7 +17,7 @@ const navItems = [
 <html lang="es-Mx">
 	<head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -30,6 +31,7 @@ const navItems = [
         <main class="main">
             <slot/>
         </main>
+        <Footer/>
     </body>
 </html>
 
