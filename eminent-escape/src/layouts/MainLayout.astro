@@ -12,6 +12,15 @@ const navItems = [
   {customHref: "/portafolio", icon: "work", navText: "Portafolio"},
   {customHref: "/contacto", icon: "mail", navText: "Contacto"},
 ];
+
+const links = [
+  {href: "/", text: "Inicio"},
+  {href: "/sobre-mi", text: "Sobre mí"},
+  {href: "/blog", text: "Blog"},
+  {href: "/portafolio", text: "Portafolio"},
+  {href: "/contacto", text: "Contacto"},
+  {href: "/politica-de-privacidad", text: "Política de privacidad"}
+];
 ---
 <!doctype html>
 <html lang="es-Mx">
@@ -31,7 +40,7 @@ const navItems = [
         <main class="main">
             <slot/>
         </main>
-        <Footer/>
+        <Footer links={links} />
     </body>
 </html>
 
