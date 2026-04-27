@@ -1,0 +1,95 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro"
+import SideBar from '../../components/SideBar.astro';
+import Footer from '../../components/Footer.astro';
+import HeroImage from "../../components/HeroImage.astro";
+import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
+import InfoCard from "../../components/InformationCard.astro";
+import DescriptionCard from "../../components/DescriptionCard.astro";
+import PruebaCarrusel from "../../components/PruebaCarrusel.astro"
+import type { CarouselItem } from '../../components/PruebaCarrusel.astro';
+
+const projects: CarouselItem[] = [
+  {
+    image: '/assets/logo_Inbursa.png',
+    title: 'Dashboard Analytics',
+    description: 'Plataforma de visualización de datos en tiempo real con gráficas interactivas.',
+    tag: 'React',
+    link: '/projects/dashboard',
+  },
+  {
+    image: '/assets/logo_biller_ticket.png',
+    title: 'E-Commerce Platform',
+    description: 'Tienda online con carrito de compras, pagos y panel de administración.',
+    tag: 'Next.js',
+    link: '/projects/ecommerce',
+  },
+  {
+    image: '/assets/logo_triplede.png',
+    title: 'Portfolio Website',
+    description: 'Sitio web personal con animaciones y modo oscuro.',
+    tag: 'Astro',
+    link: '/projects/portfolio',
+  }
+];
+---
+<MainLayout
+	title="Conoce mi historia"
+	description=`Desarrollador de software con más de 4 años de experiencia en Java y bases de datos SQL, enfocado en soluciones de calidad, aprendizaje continuo
+    y resolución analítica de problemas, guiado por valores como la honestidad y la proactividad.`
+>
+    <SideBar slot="nav"/>
+
+    <section slot="main">
+        <MainHeaderCenter class="fade-in" firstText="Conoce mi" secondText="Historia"/>
+
+        <div class="margin-image">
+            <HeroImage class="fade-in" pathImage="/assets/Mi imagen de perfil.webp"/>
+        </div>
+        
+        <div class="fade-in info-grid">
+            <InfoCard icon="badge" infoLabel="Nombre" infoValue="Gerardo Márquez"/>
+
+            <InfoCard icon="cake" infoLabel="Edad" infoValue="30 años"/>
+
+            <InfoCard icon="school" infoLabel="Estudios" infoValue="Lic. en Informática"/>
+
+            <InfoCard icon="work_history" infoLabel="Experiencia" infoValue="Más de 4 años"/>
+
+            <InfoCard icon="language" infoLabel="Inglés" infoValue="B1"/>
+        </div>
+
+        <DescriptionCard description=`Cuento con más de 4 años de experiencia profesional en el desarrollo de software utilizando Java y bases de datos relacionales con SQL.
+        Me destaco no solo por mis habilidades técnicas, sino también por mis valores personales: honestidad, transparencia, nobleza, perfeccionador, pensamiento analítico y
+        un enfoque proactivo para la resolución de problemas. Soy una persona comprometida con el aprendizaje continuo, apasionado por la programación y atento a las nuevas
+        tendencias tecnológicas.`/>
+
+        <PruebaCarrusel
+          items={projects.slice(0, 4)}
+          autoPlay={true}
+          interval={3000}
+          visibleDesktop={2}
+          visibleTablet={1}
+          id="carousel-auto"
+        />        
+    </section>
+
+    <Footer slot="footer"/>
+</MainLayout>
+
+<style>
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+    .text-center {
+        display: block;
+        text-align: center;
+    }
+    .margin-image {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+</style>

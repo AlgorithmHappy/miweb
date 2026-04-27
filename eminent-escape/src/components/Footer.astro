@@ -1,11 +1,14 @@
 ---
 import SocialButton from './SocialButton.astro';
-interface Links {
-    href: string;
-    text: string;
-}
 
-const { links = [] } = Astro.props as { links?: Links[] };
+const links = [
+  {href: "/", text: "Inicio"},
+  {href: "/sobre-mi", text: "Sobre mí"},
+  {href: "/blog", text: "Blog"},
+  {href: "/portafolio", text: "Portafolio"},
+  {href: "/contacto", text: "Contacto"},
+  {href: "/politica-de-privacidad", text: "Política de privacidad"}
+];
 ---
 
 <footer class="footer">
@@ -23,7 +26,7 @@ const { links = [] } = Astro.props as { links?: Links[] };
             <div class="footer-links">
                 {
                     links.map(
-                        (link: Links) => (
+                        (link) => (
                             <a href={link.href}>{link.text}</a>
                         )
                     )

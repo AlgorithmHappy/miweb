@@ -8,13 +8,16 @@ import SecondaryTitle from "../components/SecondaryTitle.astro"
 import MainBadge from "../components/MainBadge.astro"
 import HeroDesc from "../components/HeroDesc.astro"
 import HeroImage from "../components/HeroImage.astro"
+import SideBar from '../components/SideBar.astro';
+import Footer from '../components/Footer.astro';
 ---
-
 <MainLayout
 	title="Gerardo Márquez Dev - Desarrollador de Software"
 	description="Bienvenido a mi portafolio personal. Soy Luis Gerardo Márquez Méndez (Gerardo Márquez Dev), un desarrollador de software con experiencia en Java, Spring y bases de datos relacionales. Explora mis proyectos, blog y contáctame para colaborar en tu próximo proyecto."
 >
-    <section id="home" class="hero">
+    <SideBar slot="nav"/>
+
+    <section slot="main" id="home" class="hero">
         <div class="hero-grid">
             <div>
                 <MainBadge class="fade-in" text="Disponible para tu proyecto"/>
@@ -24,7 +27,7 @@ import HeroImage from "../components/HeroImage.astro"
                 <SecondaryTitle class="fade-in" firstText="Desarrollador de" secondText="Software"/>
 
                 <HeroDesc class="fade-in">
-                    Cuento con 5 años de experiencia profesional en el desarrollo de software utilizando Java, Spring y bases de datos relacionales con SQL.
+                    Bienvenido a mi portafolio personal. Soy Luis Gerardo Márquez Méndez (Gerardo Márquez Dev), un desarrollador de software con experiencia en Java, Spring y bases de datos relacionales. Explora mis proyectos, blog y contáctame para colaborar en tu próximo proyecto.
                 </HeroDesc>
 
                 <div class="hero-socials fade-in">
@@ -68,15 +71,17 @@ import HeroImage from "../components/HeroImage.astro"
                 <div class="hero-cta fade-in">
                     <MainButton hrefCustom="/contacto" materialIcon="email" text="Contáctame"/>
 
-                    <SecundaryButton hrefCustom="/proyectos" materialIcon="work" text="Proyectos"/>
+                    <SecundaryButton hrefCustom="/portafolio" materialIcon="work" text="Portafolio"/>
 
-                    <SecundaryButton hrefCustom="/proyectos" materialIcon="account_box" text="Sobre mi"/>
+                    <SecundaryButton hrefCustom="/sobre-mi" materialIcon="account_box" text="Sobre mi"/>
                 </div>
             </div>
 
             <HeroImage class="fade-in" pathImage="/assets/Mi imagen de perfil.webp"/>
         </div>
     </section>
+
+    <Footer slot="footer" />
 </MainLayout>
 
 <style>

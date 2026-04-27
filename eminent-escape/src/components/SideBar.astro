@@ -1,11 +1,11 @@
 ---
-interface NavItem {
-    customHref: string;
-    icon: string;
-    navText: string;
-}
-
-const { navItems = [] } = Astro.props as { navItems?: NavItem[] };
+const navItems = [
+  {customHref: "/", icon: "home", navText: "Inicio"},
+  {customHref: "/sobre-mi", icon: "person", navText: "Sobre mí"},
+  {customHref: "/blog", icon: "article", navText: "Blog"},
+  {customHref: "/portafolio", icon: "work", navText: "Portafolio"},
+  {customHref: "/contacto", icon: "mail", navText: "Contacto"},
+];
 ---
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header" id="sidebar-header">
@@ -22,7 +22,7 @@ const { navItems = [] } = Astro.props as { navItems?: NavItem[] };
     <ul class="nav-list">
         {
             navItems.map(
-                (item: NavItem) => (
+                (item) => (
                     <li class="nav-item">
                         <a href={item.customHref} class="nav-link">
                             <span class="material-icons-round">{item.icon}</span>

@@ -1,0 +1,31 @@
+---
+const {description} = Astro.props;
+---
+<div class="desc-card">
+    { description }
+</div>
+
+<style>
+    .desc-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        border-radius: var(--radius);
+        padding: 32px;
+        line-height: 1.8;
+        color: var(--muted);
+        font-size: 16px;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    .desc-card::before {
+        content: '"';
+        position: absolute;
+        top: -10px; left: 24px;
+        font-size: 80px;
+        color: var(--accent);
+        opacity: 0.15;
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+</style>

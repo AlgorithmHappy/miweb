@@ -1,0 +1,584 @@
+---
+// Carousel.astro — Componente reutilizable de carrusel
+// Autor: Senior Frontend Dev | Astro + TypeScript + Vanilla JS
+
+export interface CarouselItem {
+  image: string;
+  title: string;
+  description?: string;
+  tag?: string;
+  link?: string;
+}
+
+export interface Props {
+  items: CarouselItem[];
+  autoPlay?: boolean;
+  interval?: number;
+  visibleDesktop?: number;
+  visibleTablet?: number;
+  id?: string;
+}
+
+const {
+  items = [],
+  autoPlay = false,
+  interval = 3000,
+  visibleDesktop = 3,
+  visibleTablet = 2,
+  id = `carousel-${Math.random().toString(36).slice(2, 8)}`,
+} = Astro.props;
+
+const safeItems = items.length > 0 ? items : [];
+---
+
+<div
+  class="carousel-wrapper"
+  data-carousel-id={id}
+  data-autoplay={autoPlay ? "true" : "false"}
+  data-interval={interval}
+  data-visible-desktop={visibleDesktop}
+  data-visible-tablet={visibleTablet}
+>
+  <!-- Header slot -->
+  <slot name="header" />
+
+  <div class="carousel-stage" aria-label="Carrusel de elementos" role="region">
+    <!-- Track -->
+    <div class="carousel-track-outer">
+      <div class="carousel-track" id={`track-${id}`} role="list">
+        {
+          safeItems.map((item, index) => (
+            <article
+              class="carousel-card"
+              role="listitem"
+              aria-label={item.title}
+              data-index={index}
+            >
+              <div class="card-image-wrapper">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="card-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {item.tag && <span class="card-tag">{item.tag}</span>}
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">{item.title}</h3>
+                {item.description && (
+                  <p class="card-description">{item.description}</p>
+                )}
+                {item.link && (
+                  <a href={item.link} class="card-link" aria-label={`Ver ${item.title}`}>
+                    Ver proyecto
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Prev button -->
+    <button
+      class="carousel-btn carousel-btn--prev"
+      id={`btn-prev-${id}`}
+      aria-label="Anterior"
+      type="button"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M12.5 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Next button -->
+    <button
+      class="carousel-btn carousel-btn--next"
+      id={`btn-next-${id}`}
+      aria-label="Siguiente"
+      type="button"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M7.5 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Dots -->
+  <div
+    class="carousel-dots"
+    id={`dots-${id}`}
+    role="tablist"
+    aria-label="Indicadores del carrusel"
+  >
+    {
+      safeItems.map((item, index) => (
+        <button
+          class={`carousel-dot${index === 0 ? " is-active" : ""}`}
+          data-index={index}
+          role="tab"
+          aria-label={`Ir a ${item.title}`}
+          aria-selected={index === 0 ? "true" : "false"}
+          type="button"
+        />
+      ))
+    }
+  </div>
+
+  <!-- Footer slot -->
+  <slot name="footer" />
+</div>
+
+<style>
+  /* ───────────── Tokens ───────────── */
+  .carousel-wrapper {
+    --bg: #2e2e2e;
+    --bg2: #383838;
+    --bg3: #424242;
+    --accent: #40e0d0;
+    --accent2: #2ab8aa;
+    --accent-dim: rgba(64, 224, 208, 0.12);
+    --white: #ffffff;
+    --muted: rgba(255, 255, 255, 0.6);
+    --muted2: rgba(255, 255, 255, 0.35);
+    --border: rgba(255, 255, 255, 0.08);
+    --card-bg: #383838;
+
+    --radius-card: 14px;
+    --radius-btn: 50%;
+    --gap: 1.25rem;
+    --btn-size: 42px;
+    --transition: 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+
+    width: 100%;
+    position: relative;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--white);
+  }
+
+  /* ───────────── Stage ───────────── */
+  .carousel-stage {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ───────────── Track ───────────── */
+  .carousel-track-outer {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    /* Extra padding lateral para que las sombras de hover no se corten */
+    padding: 0.5rem 0 0.75rem;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: var(--gap);
+    transition: transform var(--transition);
+    will-change: transform;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .carousel-track.is-dragging {
+    cursor: grabbing;
+    transition: none;
+  }
+
+  /* ───────────── Cards ───────────── */
+  .carousel-card {
+    flex: 0 0 calc((100% - var(--gap) * (var(--cols) - 1)) / var(--cols));
+    background: var(--card-bg);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    /* Mobile default: 1 col */
+    --cols: 1;
+  }
+
+  .carousel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--accent-dim);
+    border-color: rgba(64, 224, 208, 0.25);
+  }
+
+  /* Tablet: 2 cols */
+  @media (min-width: 640px) {
+    .carousel-card { --cols: 2; }
+  }
+
+  /* Desktop: variable via prop */
+  @media (min-width: 1024px) {
+    .carousel-card { --cols: var(--cols-desktop, 3); }
+  }
+
+  /* ───────────── Card image ───────────── */
+  .card-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .carousel-card:hover .card-image {
+    transform: scale(1.04);
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(64, 224, 208, 0.3);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ───────────── Card body ───────────── */
+  .card-body {
+    padding: 1.1rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 0.25rem;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+
+  .card-link:hover {
+    color: var(--accent2);
+    gap: 0.6rem;
+  }
+
+  /* ───────────── Nav buttons ───────────── */
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--btn-size);
+    height: var(--btn-size);
+    border-radius: var(--radius-btn);
+    border: 1px solid rgba(64, 224, 208, 0.3);
+    background: var(--bg2);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease,
+      opacity 0.2s ease,
+      box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+
+  .carousel-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(64, 224, 208, 0.35);
+  }
+
+  .carousel-btn:active {
+    transform: translateY(-50%) scale(0.93);
+  }
+
+  .carousel-btn:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .carousel-btn--prev {
+    left: -1.1rem;
+  }
+
+  .carousel-btn--next {
+    right: -1.1rem;
+  }
+
+  @media (max-width: 480px) {
+    .carousel-btn--prev { left: -0.6rem; }
+    .carousel-btn--next { right: -0.6rem; }
+  }
+
+  /* ───────────── Dots ───────────── */
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.25rem;
+    padding: 0.25rem;
+  }
+
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted2);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition:
+      background 0.3s ease,
+      width 0.3s ease,
+      border-radius 0.3s ease,
+      transform 0.2s ease;
+  }
+
+  .carousel-dot:hover {
+    background: var(--muted);
+    transform: scale(1.3);
+  }
+
+  .carousel-dot.is-active {
+    width: 22px;
+    border-radius: 4px;
+    background: var(--accent);
+  }
+</style>
+
+<script define:vars={{ id, autoPlay, interval, visibleDesktop, visibleTablet, totalItems: safeItems.length }}>
+  // ─────────────────────────────────────────────
+  //  CarouselController — Vanilla TS logic
+  // ─────────────────────────────────────────────
+
+  (function initCarousel() {
+    const wrapper   = document.querySelector(`[data-carousel-id="${id}"]`);
+    if (!wrapper) return;
+
+    const track     = document.getElementById(`track-${id}`);
+    const btnPrev   = document.getElementById(`btn-prev-${id}`);
+    const btnNext   = document.getElementById(`btn-next-${id}`);
+    const dotsEl    = document.getElementById(`dots-${id}`);
+
+    if (!track || !btnPrev || !btnNext || !dotsEl) return;
+
+    const cards     = Array.from(track.children);
+    const dots      = Array.from(dotsEl.querySelectorAll('.carousel-dot'));
+    const total     = totalItems;
+
+    // ── Responsive cols ──
+    function getCols() {
+      const w = window.innerWidth;
+      if (w >= 1024) return visibleDesktop;
+      if (w >= 640)  return visibleTablet;
+      return 1;
+    }
+
+    // ── State ──
+    let current      = 0;
+    let autoTimer    = null;
+    let isDragging   = false;
+    let startX       = 0;
+    let currentX     = 0;
+    let dragOffset   = 0;
+
+    // ── CSS cols variable ──
+    function setColsVar() {
+      cards.forEach(c => {
+        c.style.setProperty('--cols-desktop', String(visibleDesktop));
+      });
+    }
+
+    // ── Card width calculation ──
+    function getCardWidth() {
+      const cols    = getCols();
+      const gapPx   = parseFloat(getComputedStyle(track).gap) || 20;
+      return (track.offsetWidth - gapPx * (cols - 1)) / cols;
+    }
+
+    // ── Translate to index ──
+    function getOffset(index) {
+      const cardW = getCardWidth();
+      const gapPx = parseFloat(getComputedStyle(track).gap) || 20;
+      return index * (cardW + gapPx);
+    }
+
+    function applyTransform(offset, animated = true) {
+      track.style.transition = animated
+        ? 'transform 0.42s cubic-bezier(0.4, 0, 0.2, 1)'
+        : 'none';
+      track.style.transform = `translateX(-${offset}px)`;
+    }
+
+    // ── Max index considering cols ──
+    function maxIndex() {
+      return Math.max(0, total - getCols());
+    }
+
+    // ── Go to slide ──
+    function goTo(index, animated = true) {
+      const cols = getCols();
+      current = Math.max(0, Math.min(index, maxIndex()));
+      applyTransform(getOffset(current), animated);
+      updateDots();
+      updateButtons();
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    // ── Loop wraparound ──
+    function nextLoop() {
+      if (current >= maxIndex()) goTo(0);
+      else next();
+    }
+
+    // ── Dots ──
+    function updateDots() {
+      dots.forEach((d, i) => {
+        const active = i === current;
+        d.classList.toggle('is-active', active);
+        d.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    // ── Buttons ──
+    function updateButtons() {
+      btnPrev.disabled = false;
+      btnNext.disabled = false;
+    }
+
+    // ── Autoplay ──
+    function startAuto() {
+      if (!autoPlay) return;
+      stopAuto();
+      autoTimer = setInterval(nextLoop, interval);
+    }
+
+    function stopAuto() {
+      if (autoTimer) clearInterval(autoTimer);
+    }
+
+    function resetAuto() {
+      stopAuto();
+      startAuto();
+    }
+
+    // ── Button listeners ──
+    btnPrev.addEventListener('click', () => { prev(); resetAuto(); });
+    btnNext.addEventListener('click', () => { next(); resetAuto(); });
+
+    // ── Dot listeners ──
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+    });
+
+    // ── Swipe / Drag ──
+    function onDragStart(x) {
+      isDragging = true;
+      startX     = x;
+      currentX   = x;
+      dragOffset = 0;
+      track.classList.add('is-dragging');
+      stopAuto();
+    }
+
+    function onDragMove(x) {
+      if (!isDragging) return;
+      currentX   = x;
+      dragOffset = currentX - startX;
+      applyTransform(getOffset(current) - dragOffset, false);
+    }
+
+    function onDragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('is-dragging');
+      const threshold = 60;
+      if (dragOffset < -threshold)      next();
+      else if (dragOffset > threshold)  prev();
+      else                              goTo(current);
+      resetAuto();
+    }
+
+    // Touch
+    track.addEventListener('touchstart', e => onDragStart(e.touches[0].clientX), { passive: true });
+    track.addEventListener('touchmove',  e => onDragMove(e.touches[0].clientX),  { passive: true });
+    track.addEventListener('touchend',   onDragEnd);
+
+    // Mouse
+    track.addEventListener('mousedown',  e => { e.preventDefault(); onDragStart(e.clientX); });
+    window.addEventListener('mousemove', e => onDragMove(e.clientX));
+    window.addEventListener('mouseup',   onDragEnd);
+
+    // ── Keyboard ──
+    wrapper.setAttribute('tabindex', '0');
+    wrapper.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  { prev(); resetAuto(); }
+      if (e.key === 'ArrowRight') { next(); resetAuto(); }
+    });
+
+    // ── Pause on hover ──
+    wrapper.addEventListener('mouseenter', stopAuto);
+    wrapper.addEventListener('mouseleave', startAuto);
+
+    // ── Resize ──
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => goTo(current, false), 120);
+    });
+
+    // ── Init ──
+    setColsVar();
+    goTo(0, false);
+    startAuto();
+  })();
+</script>
