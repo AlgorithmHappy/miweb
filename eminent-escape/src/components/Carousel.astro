@@ -1,0 +1,291 @@
+---
+import CarouselCard from './CarouselCard.astro';
+
+import type { InformationIcons } from '../components/CarouselCard.astro'
+
+const icons: InformationIcons[][] = [
+    [
+        {
+            srcImage:'/assets/java.svg',
+            altImage: 'Logo del lenguaje de programación Java',
+            description: 'Java'
+        },
+        {
+            srcImage:'/assets/kotlin.svg',
+            altImage: 'Logo del lenguaje de programación Kotlin',
+            description: 'Kotlin'
+        },
+        {
+            srcImage:'/assets/springboot.svg',
+            altImage: 'Logo del framework Spring',
+            description: 'Spring'
+        },
+        {
+            srcImage:'/assets/plsql.svg',
+            altImage: 'Logo del lenguaje de programación de la base de datos Oracle',
+            description: 'PL/SQL'
+        },
+        {
+            srcImage:'/assets/git.svg',
+            altImage: 'Logo del control de versiones GIT',
+            description: 'GIT'
+        }
+    ],
+    [
+        {
+            srcImage:'/assets/java.svg',
+            altImage: 'Logo del lenguaje de programación Java',
+            description: 'Java'
+        },
+        {
+            srcImage:'/assets/springboot.svg',
+            altImage: 'Logo del framework Spring',
+            description: 'Spring'
+        },
+        {
+            srcImage:'/assets/plsql.svg',
+            altImage: 'Logo del lenguaje de programación de la base de datos Oracle',
+            description: 'PL/SQL'
+        },
+        {
+            srcImage:'/assets/git.svg',
+            altImage: 'Logo del control de versiones GIT',
+            description: 'GIT'
+        }
+    ],
+    [
+        {
+            srcImage:'/assets/java.svg',
+            altImage: 'Logo del lenguaje de programación Java',
+            description: 'Java'
+        },
+        {
+            srcImage:'/assets/javascript.svg',
+            altImage: 'Logo del lenguaje de programación JavaScript',
+            description: 'JavaScript'
+        },
+        {
+            srcImage:'/assets/springboot.svg',
+            altImage: 'Logo del framework Spring',
+            description: 'Spring'
+        },
+        {
+            srcImage:'/assets/vue.svg',
+            altImage: 'Logo del framework Vue',
+            description: 'Vue'
+        },
+        {
+            srcImage:'/assets/vuetify.svg',
+            altImage: 'Logo del modulo de Vue Vuetify',
+            description: 'Vuetify'
+        },
+        {
+            srcImage:'/assets/git.svg',
+            altImage: 'Logo del control de versiones GIT',
+            description: 'GIT'
+        }
+    ],
+    [
+        {
+            srcImage:'/assets/java.svg',
+            altImage: 'Logo del lenguaje de programación Java',
+            description: 'Java'
+        },
+        {
+            srcImage:'/assets/java_server_faces.svg',
+            altImage: 'Logo del famework Java Server Faces',
+            description: 'JSF'
+        },
+        {
+            srcImage:'/assets/mysql.svg',
+            altImage: 'Logo de la base de datos MySQL',
+            description: 'MySQL'
+        },
+        {
+            srcImage:'/assets/netsuite.svg',
+            altImage: 'Logo del ERP NetSuite',
+            description: 'NetSuite'
+        }
+    ],
+]
+
+const cards = [
+  {
+    srcImage: '/assets/logo_globalhitss.webp',
+    altImage: 'Logo de Global Hitss',
+    title: 'Desarrollador de Microservicios con Kotlin y Java',
+    description: `Colaboracion en el desarrollo de servicios backend con spring y kotlin, participando en la migración de sistemas legacy de Java a microservicios con Kotlin y
+    Spring. Trabajo en equipo bajo metodología Scrum, utilizando GitHub para control de versiones. Uso de Docker para contenerización de microservicios y OpenShift para despliegue
+    de servicios. Implementación de acceso a datos con JDBC Template y consumo de servicios SOAP con wsimport. Corrección de bugs para asegurar la estabilidad de los servicios.`,
+    experience: "08-10-2025 hasta hoy",
+    technologyIcons: icons[0]
+  },
+  {
+    srcImage: '/assets/logo_Inbursa.webp',
+    altImage: 'Logo de Inbursa',
+    title: 'Desarrollador de Miroservicios Java',
+    description: `Desarrollo y mantenimiento de microservicios con Java, Spring Boot y PL/SQL para la exposición de APIs REST. Resolución de incidencias en producción de tickets
+    gestionados con Jira. Trabajo en equipos ágiles bajo la metodología Scrum. Uso de Git para control de versiones y coordinación entre los miembros del equipo. Escritura de
+    código limpio y escalable bajo las normas propuestas por la empresa supervisados con SonarQube. Mantenimiento de proyectos con Spring JMS para el envió de notificaciones a los
+    clientes mediante colas. Optimización de procedimientos almacenados y consultas en base de datos Oracle utilizando PL/SQL.`,
+    experience: '3 años 1 mes',
+    technologyIcons: icons[1]
+  },
+  {
+    srcImage: '/assets/logo_biller_ticket.webp',
+    altImage: 'Logo de BillerTicket',
+    title: 'Desarrollador de Miroservicios Java',
+    description: `Participación en el mantenimiento y mejora continua de una aplicación web desarrollada con Java y Spring Boot en el backend, y Vue.js con Vuetify en el frontend.
+    Participación en la corrección de errores, implementación de nuevas funcionalidades, ajustes visuales y optimización de la experiencia de usuario.`,
+    experience: '5 meses',
+    technologyIcons: icons[2]
+  },
+  {
+    srcImage: '/assets/logo_triplede.webp',
+    altImage: 'Logo de TripleDe',
+    title: 'Desarrollador BackEnd con Java',
+    description: `Colaboración en el mantenimiento y mejora de una aplicación web desarrollada con Java y JSF, integrada con el ERP NetSuite. Desarrollo de tareas programadas
+    ("cron job") para sincronizar datos entre NetSuite y base de datos.`,
+    experience: '10 meses',
+    technologyIcons: icons[3]
+  }
+]
+---
+<div class="carousel-stage">
+    <div id="scrollContainerDesktop" class="carousel-track-outer">
+        {
+            cards.map(
+                (item, index) => (
+                    <CarouselCard
+                    srcImage={ item.srcImage }
+                    altImage={ item.altImage }
+                    title={ item.title }
+                    description={ item.description }
+                    experience={ item.experience }
+                    technologyIcons={ item.technologyIcons }
+                    />
+                )
+            )
+        }
+    </div>
+
+    <!-- Boton anterior -->
+    <button
+        class="carousel-btn carousel-btn--prev"
+        id="btn-prev"
+        aria-label="Anterior"
+        type="button"
+    >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+    <!-- Boton siguiente -->
+    <button
+        class="carousel-btn carousel-btn--next"
+        id="btn-next"
+        aria-label="Siguiente"
+        type="button"
+    >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M7.5 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+</div>
+
+<style>
+    .carousel-stage {
+        position: relative;
+        width: 100%;
+    }
+    .carousel-track-outer {
+        overflow-x: auto;
+        border-radius: var(--radius-card);
+        padding: 0.75rem 0.75rem 0.75rem;
+        display: flex;
+        width: 100%;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE y Edge */
+        scroll-snap-type: x mandatory;
+    }
+    .carousel-track-outer::-webkit-scrollbar {
+        display: none; /* Chrome, Safari y Opera */
+    }
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: var(--btn-size);
+        height: var(--btn-size);
+        border-radius: var(--radius-btn);
+        border: 1px solid rgba(64, 224, 208, 0.3);
+        background: var(--bg2);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease,
+            opacity 0.2s ease,
+            box-shadow 0.2s ease;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+    .carousel-btn:hover {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+        box-shadow: 0 0 20px rgba(64, 224, 208, 0.35);
+    }
+    .carousel-btn:active {
+        transform: translateY(-50%) scale(0.93);
+    }
+    .carousel-btn:disabled {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+    .carousel-btn--prev {
+        left: -1.1rem;
+    }
+    .carousel-btn--next {
+        right: -1.1rem;
+    }
+
+    @media (max-width: 480px) {
+        .carousel-btn--prev { left: -0.6rem; }
+        .carousel-btn--next { right: -0.6rem; }
+    }
+</style>
+
+<script>
+    let currentIndex = 0;
+    const container = document.getElementById('scrollContainerDesktop') as HTMLDivElement;
+    const btnLeft = document.querySelector('#btn-prev') as HTMLButtonElement;
+    const btnRight = document.querySelector('#btn-next') as HTMLButtonElement;
+    btnLeft.addEventListener('click', () => scrollToSlide(-1));
+    btnRight.addEventListener('click', () => scrollToSlide(1));
+
+    function scrollToSlide(direction: number) {
+        // ✅ Convertir 3rem a px
+        const rootFontSize = parseFloat(
+            getComputedStyle(document.documentElement).fontSize
+        );
+        const extraOffset = (3 * rootFontSize)/2; // 3rem en px (que es el margin drecho que se pone en cada card)
+
+        const slideWidth = container.offsetWidth + extraOffset; // 100% del contenedor
+        currentIndex += direction;
+        if(currentIndex < 0) {
+            currentIndex = container.children.length - 1; // Vuelve al último slide
+        } else if(currentIndex >= container.children.length) {
+            currentIndex = 0; // Vuelve al primer slide
+        }
+        container.scrollTo({
+            left: currentIndex * slideWidth,
+            behavior: 'smooth'
+        });
+    }
+</script>

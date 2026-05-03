@@ -6,32 +6,28 @@ import HeroImage from "../../components/HeroImage.astro";
 import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
 import InfoCard from "../../components/InformationCard.astro";
 import DescriptionCard from "../../components/DescriptionCard.astro";
-import PruebaCarrusel from "../../components/PruebaCarrusel.astro"
-import type { CarouselItem } from '../../components/PruebaCarrusel.astro';
+import Carousel from "../../components/Carousel.astro";
 
-const projects: CarouselItem[] = [
-  {
-    image: '/assets/logo_Inbursa.png',
-    title: 'Dashboard Analytics',
-    description: 'Plataforma de visualización de datos en tiempo real con gráficas interactivas.',
-    tag: 'React',
-    link: '/projects/dashboard',
-  },
-  {
-    image: '/assets/logo_biller_ticket.png',
-    title: 'E-Commerce Platform',
-    description: 'Tienda online con carrito de compras, pagos y panel de administración.',
-    tag: 'Next.js',
-    link: '/projects/ecommerce',
-  },
-  {
-    image: '/assets/logo_triplede.png',
-    title: 'Portfolio Website',
-    description: 'Sitio web personal con animaciones y modo oscuro.',
-    tag: 'Astro',
-    link: '/projects/portfolio',
-  }
-];
+import type { InformationIcons } from '../../components/CarouselCard.astro'
+import SecondaryHeaderCenter from "../../components/SecondaryHeaderCenter.astro";
+
+const icons: InformationIcons[] = [
+    {
+        srcImage:'/assets/java.svg',
+        altImage: 'Logo del lenguaje de programación Java',
+        description: 'Java'
+    },
+    {
+        srcImage:'/assets/springboot.svg',
+        altImage: 'Logo del framework Spring',
+        description: 'Spring'
+    },
+    {
+        srcImage:'/assets/mysql.svg',
+        altImage: 'Logo de base de datos MySQL',
+        description: 'MySQL'
+    }
+]
 ---
 <MainLayout
 	title="Conoce mi historia"
@@ -59,19 +55,15 @@ const projects: CarouselItem[] = [
             <InfoCard icon="language" infoLabel="Inglés" infoValue="B1"/>
         </div>
 
-        <DescriptionCard description=`Cuento con más de 4 años de experiencia profesional en el desarrollo de software utilizando Java y bases de datos relacionales con SQL.
+        <DescriptionCard class="fade-in" description=`Cuento con más de 4 años de experiencia profesional en el desarrollo de software utilizando Java y bases de datos relacionales con SQL.
         Me destaco no solo por mis habilidades técnicas, sino también por mis valores personales: honestidad, transparencia, nobleza, perfeccionador, pensamiento analítico y
         un enfoque proactivo para la resolución de problemas. Soy una persona comprometida con el aprendizaje continuo, apasionado por la programación y atento a las nuevas
         tendencias tecnológicas.`/>
 
-        <PruebaCarrusel
-          items={projects.slice(0, 4)}
-          autoPlay={true}
-          interval={3000}
-          visibleDesktop={2}
-          visibleTablet={1}
-          id="carousel-auto"
-        />        
+        <SecondaryHeaderCenter firstText="Mi" secondText="Experiencia"/>
+
+        <Carousel/>
+
     </section>
 
     <Footer slot="footer"/>

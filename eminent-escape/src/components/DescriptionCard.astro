@@ -1,7 +1,7 @@
 ---
-const {description} = Astro.props;
+const {class: className, description} = Astro.props;
 ---
-<div class="desc-card">
+<div class={ `desc-card ${className}` }>
     { description }
 </div>
 

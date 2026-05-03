@@ -1,0 +1,25 @@
+---
+const {class: className, firstText, secondText} = Astro.props;
+---
+<h2 class={`hero-name ${className}`}>
+    {firstText}
+    <br>
+    <span>
+        {secondText}
+    </span>
+</h2>
+
+<style>
+    .hero-name {
+        font-size: clamp(28px, 4vw, 54px);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 16px;
+        margin-top: 16px;
+        display: block;
+        text-align: center;
+    }
+    .hero-name span { 
+        color: var(--accent);
+    }
+</style>

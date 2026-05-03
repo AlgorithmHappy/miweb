@@ -18,6 +18,9 @@
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.3);
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --gap: 1.25rem;
+    --radius-btn: 50%;
+    --btn-size: 42px;
 }
 
 *,
