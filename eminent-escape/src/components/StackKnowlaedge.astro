@@ -1,0 +1,54 @@
+---
+import Knowlaedge from './Knowlaedge.astro';
+
+import type { KnowledgeProps } from './Knowlaedge.astro'
+
+const knowledges: KnowledgeProps[] = [
+    {
+        image: '/assets/java.svg',
+        imageTitle: 'Logo del lenguaje de programación Java',
+        knowledgeTitle: 'Programación en Java',
+        description: `Cuento con 5 años de experiencia desarrollando software con Java, siendo este el lenguaje de programacion que mejor domino hasta el día de hoy. Tambien, tengo
+        sólidos conocimientos en programación orientada a objetos en Java, incluyendo los principios de encapsulación, herencia y polimorfismo. Me mantengo actualizado en el lenguaje,
+        utilizando características modernas como Records y Optional, así como la API de Streams para el procesamiento declarativo y eficiente de datos en colecciones.`
+    },
+    {
+        image: '/assets/springboot.svg',
+        imageTitle: 'Logo del framework SpringBoot',
+        knowledgeTitle: 'Desarrollo con framework Spring',
+        description: `Cuento con más de 4 años de experiencia trabajando con Spring Boot, siendo el framework en el que tengo mayor dominio. Manejo ampliamente la inyección de
+        dependencias, así como Spring Data y su submódulo JPA. Tengo experiencia en la creación de APIs REST con Spring Web y conocimientos básicos en Spring Batch, Spring Security y
+        Spring Cloud, este último aplicado en el desarrollo de arquitecturas de microservicios.`
+    },
+    {
+        image: '/assets/plsql.svg',
+        imageTitle: 'Logo de base de datos relacionales',
+        knowledgeTitle: 'Dominio de Bases de Datos SQL',
+        description: `Cuento con sólidos conocimientos en bases de datos relacionales como MySQL, PostgreSQL, Oracle y SQL Server. Tengo experiencia en la creación y optimización de
+        consultas para la obtención eficiente de datos, así como en el diseño de tablas con índices adecuados. Manejo programación en PL/SQL para implementar lógica de negocio en la base de datos,
+        incluyendo la creación de triggers, jobs y procedimientos almacenados.`
+    },
+    {
+        image: '/assets/kotlin.svg',
+        imageTitle: 'Lenguaje de programación Kotlin',
+        knowledgeTitle: 'Manejo del lenguaje Kotlin',
+        description: `Kotlin es actualmente mi segundo lenguaje de programación y me encuentro en constante aprendizaje. Ya domino características clave como la programación reactiva y
+        el uso de Jetpack Compose para el desarrollo de aplicaciones móviles modernas. Además, he utilizado Kotlin con Spring como alternativa a Java en el desarrollo backend,
+        aprovechando su sintaxis concisa y mejoras en productividad.`
+    }
+]
+---
+<article>
+    {
+        knowledges.map(
+            (item) => (
+                <Knowlaedge
+                    image={ item.image }
+                    imageTitle={ item.imageTitle }
+                    knowledgeTitle={ item.knowledgeTitle }
+                    description={ item.description }
+                />
+            )
+        )
+    }
+</article>

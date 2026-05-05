@@ -10,6 +10,7 @@ import Carousel from "../../components/Carousel.astro";
 
 import type { InformationIcons } from '../../components/CarouselCard.astro'
 import SecondaryHeaderCenter from "../../components/SecondaryHeaderCenter.astro";
+import StackKnowlaedge from "../../components/StackKnowlaedge.astro";
 
 const icons: InformationIcons[] = [
     {
@@ -55,14 +56,21 @@ const icons: InformationIcons[] = [
             <InfoCard icon="language" infoLabel="Inglés" infoValue="B1"/>
         </div>
 
-        <DescriptionCard class="fade-in" description=`Cuento con más de 4 años de experiencia profesional en el desarrollo de software utilizando Java y bases de datos relacionales con SQL.
-        Me destaco no solo por mis habilidades técnicas, sino también por mis valores personales: honestidad, transparencia, nobleza, perfeccionador, pensamiento analítico y
-        un enfoque proactivo para la resolución de problemas. Soy una persona comprometida con el aprendizaje continuo, apasionado por la programación y atento a las nuevas
-        tendencias tecnológicas.`/>
+        <DescriptionCard class="fade-in" description=`Cuento con 5 años de experiencia profesional en el desarrollo de software utilizando Java y bases de datos relacionales con
+        SQL. Me destaco no solo por mis habilidades técnicas, sino también por mis valores personales: honestidad, transparencia, nobleza, perfeccionador, pensamiento analítico y un
+        enfoque proactivo para la resolución de problemas. Soy una persona comprometida con el aprendizaje continuo, apasionado por la programación y atento a las nuevas tendencias
+        tecnológicas.`/>
 
         <SecondaryHeaderCenter firstText="Mi" secondText="Experiencia"/>
 
         <Carousel/>
+
+        <br>
+        <br>
+
+        <SecondaryHeaderCenter firstText="Mis" secondText="Conocimientos"/>
+
+        <StackKnowlaedge/>
 
     </section>
 

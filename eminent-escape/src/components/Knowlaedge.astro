@@ -1,0 +1,76 @@
+---
+export interface KnowledgeProps {
+    image: string;
+    imageTitle: string;
+    knowledgeTitle: string;
+    description: string;
+}
+const { image, imageTitle, knowledgeTitle, description } = Astro.props as KnowledgeProps;
+---
+<div class="knowledge-card">
+  <img class="knowledge-image" src={ image } alt={ imageTitle } />
+  <div class="knowledge-body">
+    <h3 class="knowledge-title">{ knowledgeTitle }</h3>
+    <p class="knowledge-description">{ description }</p>
+  </div>
+</div>
+
+<hr class="knowledge-divider" />
+
+<style>
+    .knowledge-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 10rem;
+        overflow: hidden;
+    }
+    .knowledge-image {
+        height: 6rem;
+        width: auto;
+        filter: brightness(0) saturate(100%) invert(1);
+        opacity: 0.35;
+    }
+    .knowledge-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.5rem;
+        width: 90%;
+        height: 100%;
+    }
+    .knowledge-title {
+        color: var(--primary);
+        font-weight: 700;
+        margin: 0;
+    }
+    .knowledge-description {
+        font-size: 0.75rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+        overflow-y: auto;
+        min-height: 0;
+    }
+    .knowledge-divider {
+        border-top-width: 2px;
+        border-top-style: solid;
+        border-color: var(--accent);
+        border-radius: 0.75rem;
+    }
+
+    @media (max-width: 640px) {
+        .knowledge-card {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 15rem;
+            overflow: hidden;
+        }
+    }
+</style>
