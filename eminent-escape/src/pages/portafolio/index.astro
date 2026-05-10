@@ -1,8 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ProyectoCard from '../../components/PortfolioCard.astro';
-import GitHubButton from '../../components/GitHubButton.astro';
-import ContactButton from '../../components/ContactButton.astro';
+import MainLayout from "../../layouts/MainLayout.astro";
+import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
+import ProyectoCard from "../../components/PortfolioCard.astro";
+import GitHubButton from "../../components/GitHubButton.astro";
+import ContactButton from "../../components/ContactButton.astro";
+import SideBar from "../../components/SideBar.astro";
+import Footer from "../../components/Footer.astro";
 
 interface Technology {
     imageSrc: string;
@@ -19,139 +22,145 @@ interface ProjectsProps {
 }
 const projects: ProjectsProps[] = [
     {
-        title: 'Desafío Técnico Full Stack',
-        information: 'Prueba técnica en la que se desarrolló una API REST con Spring Data y MySQL para consultar cobros segmentados por oficina, agente y ejecutivo, incluyendo cálculos de porcentajes. El frontend se implementó con Vue y Vuetify para visualizar la información de forma clara e interactiva utilizando estados.',
-        imageSrc: 'assets/cobranza.webp',
-        link: 'https://github.com/AlgorithmHappy/gestion_de_cobranza',
-        imageAlt: 'Imagen del Proyecto del Desafío Técnico Full Stack',
+        title: "Desafío técnico Full Stack",
+        information:
+            "Prueba técnica en la que se desarrolló una API REST con Spring Data y MySQL para consultar cobros segmentados por oficina, agente y ejecutivo, incluyendo cálculos de porcentajes. El frontend se implementó con Vue y Vuetify para visualizar la información de forma clara e interactiva utilizando estados.",
+        imageSrc: "assets/cobranza.webp",
+        link: "https://github.com/AlgorithmHappy/gestion_de_cobranza",
+        imageAlt: "Imagen del Proyecto del Desafío Técnico Full Stack",
         technologies: [
             {
-                imageSrc: 'assets/springboot.svg',
-                imageAlt: 'Icono del framework Spring',
-                name: 'Spring'
+                imageSrc: "assets/springboot.svg",
+                imageAlt: "Icono del framework Spring",
+                name: "Spring",
             },
             {
-                imageSrc: 'assets/mysql.svg',
-                imageAlt: 'Icono de base de datos de MySQL',
-                name: 'MySQL'
+                imageSrc: "assets/mysql.svg",
+                imageAlt: "Icono de base de datos de MySQL",
+                name: "MySQL",
             },
             {
-                imageSrc: 'assets/vue.svg',
-                imageAlt: 'Icono del framework Vue',
-                name: 'Vue'
+                imageSrc: "assets/vue.svg",
+                imageAlt: "Icono del framework Vue",
+                name: "Vue",
             },
             {
-                imageSrc: 'assets/vuetify.svg',
-                imageAlt: 'Icono de los componentes de Vuetify',
-                name: 'Vuetify'
-            }
-        ]
+                imageSrc: "assets/vuetify.svg",
+                imageAlt: "Icono de los componentes de Vuetify",
+                name: "Vuetify",
+            },
+        ],
     },
     {
-        title: 'Landing Page para Generación de Leads',
-        information: 'Landing page desarrollada a partir de una plantilla personalizada utilizando HTML, CSS y JavaScript. Está conectada a una API REST construida con Spring Boot, la cual almacena correos electrónicos en una base de datos MongoDB y envía notificaciones por WhatsApp cuando un usuario se une a la lista de espera con la tecnologia de Evolution API.',
-        link: 'https://www.filasparabarberias.online',
-        imageSrc: 'assets/landingpage.webp',
-        imageAlt: 'Imagen del Proyecto Landing Page para Generación de Leads',
+        title: "Landing page para leads",
+        information:
+            "Landing page desarrollada a partir de una plantilla personalizada utilizando HTML, CSS y JavaScript. Está conectada a una API REST construida con Spring Boot, la cual almacena correos electrónicos en una base de datos MongoDB y envía notificaciones por WhatsApp cuando un usuario se une a la lista de espera con la tecnologia de Evolution API.",
+        link: "https://www.filasparabarberias.online",
+        imageSrc: "assets/landingpage.webp",
+        imageAlt: "Imagen del Proyecto Landing Page para Generación de Leads",
         technologies: [
             {
-                imageSrc: 'assets/springboot.svg',
-                imageAlt: 'Icono del framework Spring',
-                name: 'Spring'
+                imageSrc: "assets/springboot.svg",
+                imageAlt: "Icono del framework Spring",
+                name: "Spring",
             },
             {
-                imageSrc: 'assets/html.svg',
-                imageAlt: 'Icono del lenguaje de marcado HTML',
-                name: 'HTML'
+                imageSrc: "assets/html.svg",
+                imageAlt: "Icono del lenguaje de marcado HTML",
+                name: "HTML",
             },
             {
-                imageSrc: 'assets/css.svg',
-                imageAlt: 'Icono del lenguaje de estilo CSS',
-                name: 'CSS'
+                imageSrc: "assets/css.svg",
+                imageAlt: "Icono del lenguaje de estilo CSS",
+                name: "CSS",
             },
             {
-                imageSrc: 'assets/javascript.svg',
-                imageAlt: 'Icono del lenguaje de programacion JavaScript',
-                name: 'JavaScript'
-            }
-        ]
+                imageSrc: "assets/javascript.svg",
+                imageAlt: "Icono del lenguaje de programacion JavaScript",
+                name: "JavaScript",
+            },
+        ],
     },
     {
-        title: 'Brincolín – Videojuego para Android y PC',
-        information: 'Videojuego de plataformas inspirado en Doodle Jump. Creado con Godot Engine y programado en GDScript. Utiliza gráficos de Kenney y el objetivo es llegar lo más alto posible saltando entre plataformas. Este proyecto me ayudó a mejorar mi lógica de programación al enfrentarme a los desafíos de crear las mecánicas del juego.',
-        link: 'https://balero.itch.io/brincolin',
-        imageSrc: 'assets/brincolin.webp',
-        imageAlt: 'Brincolin un videojuego realizado con Godot Engine',
+        title: "Videojuego de android y PC",
+        information:
+            "Videojuego de plataformas inspirado en Doodle Jump. Creado con Godot Engine y programado en GDScript. Utiliza gráficos de Kenney y el objetivo es llegar lo más alto posible saltando entre plataformas. Este proyecto me ayudó a mejorar mi lógica de programación al enfrentarme a los desafíos de crear las mecánicas del juego.",
+        link: "https://balero.itch.io/brincolin",
+        imageSrc: "assets/brincolin.webp",
+        imageAlt: "Brincolin un videojuego realizado con Godot Engine",
         technologies: [
             {
-                imageSrc: 'assets/godot.svg',
-                imageAlt: 'Icono del motor Godot Engine',
-                name: 'Godot Engine'
+                imageSrc: "assets/godot.svg",
+                imageAlt: "Icono del motor Godot Engine",
+                name: "Godot Engine",
             },
-        ]
+        ],
     },
     {
-        title: 'Asteroides – Videojuego para PC',
-        information: 'Videojuego de asteroides para computadora Juego desarrollado en C++ con el framework multimedia SFML, en el que el objetivo es esquivar asteroides. También integré una base de datos SQLite para manejar datos del juego. Este proyecto me permitió mejorar tanto mi lógica de programación como mis habilidades en C++ y SQL.',
-        link: 'https://balero.itch.io/asteroides',
-        imageSrc: 'assets/asteroides.webp',
-        imageAlt: 'Imagen del videojuego de asteroides',
+        title: "Videojuego para PC",
+        information:
+            "Videojuego de asteroides para computadora Juego desarrollado en C++ con el framework multimedia SFML, en el que el objetivo es esquivar asteroides. También integré una base de datos SQLite para manejar datos del juego. Este proyecto me permitió mejorar tanto mi lógica de programación como mis habilidades en C++ y SQL.",
+        link: "https://balero.itch.io/asteroides",
+        imageSrc: "assets/asteroides.webp",
+        imageAlt: "Imagen del videojuego de asteroides",
         technologies: [
             {
-                imageSrc: 'assets/cplusplus.svg',
-                imageAlt: 'Icono del lenguaje de programación C++',
-                name: 'C++'
+                imageSrc: "assets/cplusplus.svg",
+                imageAlt: "Icono del lenguaje de programación C++",
+                name: "C++",
             },
             {
-                imageSrc: 'assets/sqlite.svg',
-                imageAlt: 'Icono del framework SQLite',
-                name: 'SQLite'
+                imageSrc: "assets/sqlite.svg",
+                imageAlt: "Icono del framework SQLite",
+                name: "SQLite",
             },
             {
-                imageSrc: 'assets/sfml.svg',
-                imageAlt: 'Icono del framework SFML',
-                name: 'SFML'
-            }
-        ]
+                imageSrc: "assets/sfml.svg",
+                imageAlt: "Icono del framework SFML",
+                name: "SFML",
+            },
+        ],
     },
     {
-        title: 'Geek - Videojuego para PC',
-        information: 'Juego desarrollado en C++ con SFML. En este proyecto controlas a un cuervo que debe regular su aleteo para evitar morir. Fue una excelente oportunidad para mejorar mi lógica de programación mientras trabajaba con el framework multimedia SFML y el lenguaje C++.',
-        link: 'https://balero.itch.io/geek',
-        imageSrc: 'assets/geek.webp',
-        imageAlt: 'Imagen del videojuego Geek',
+        title: "Videojuego para PC",
+        information:
+            "Juego desarrollado en C++ con SFML. En este proyecto controlas a un cuervo que debe regular su aleteo para evitar morir. Fue una excelente oportunidad para mejorar mi lógica de programación mientras trabajaba con el framework multimedia SFML y el lenguaje C++.",
+        link: "https://balero.itch.io/geek",
+        imageSrc: "assets/geek.webp",
+        imageAlt: "Imagen del videojuego Geek",
         technologies: [
             {
-                imageSrc: 'assets/cplusplus.svg',
-                imageAlt: 'Icono del lenguaje de programación C++',
-                name: 'C++'
+                imageSrc: "assets/cplusplus.svg",
+                imageAlt: "Icono del lenguaje de programación C++",
+                name: "C++",
             },
             {
-                imageSrc: 'assets/sfml.svg',
-                imageAlt: 'Icono del framework SFML',
-                name: 'SFML'
-            }
-        ]
+                imageSrc: "assets/sfml.svg",
+                imageAlt: "Icono del framework SFML",
+                name: "SFML",
+            },
+        ],
     },
     {
-        title: 'Calculadora de Estadistica descriptiva',
-        information: 'Proyecto escolar donde desarrollé una calculadora para obtener la media, mediana, varianza y desviación estándar a partir de datos ingresados. Usé C++ y GLUI para la interfaz gráfica. Este proyecto me ayudó a aplicar las matemáticas en la programación.',
-        imageSrc: 'assets/calculadoraestadistica.webp',
-        imageAlt: 'Imagen de la calculadora de estadística descriptiva',
-        link: 'https://github.com/AlgorithmHappy/MedidasDispersion',
+        title: "Calculadora de estadistica",
+        information:
+            "Proyecto escolar donde desarrollé una calculadora para obtener la media, mediana, varianza y desviación estándar a partir de datos ingresados. Usé C++ y GLUI para la interfaz gráfica. Este proyecto me ayudó a aplicar las matemáticas en la programación.",
+        imageSrc: "assets/calculadoraestadistica.webp",
+        imageAlt: "Imagen de la calculadora de estadística descriptiva",
+        link: "https://github.com/AlgorithmHappy/MedidasDispersion",
         technologies: [
             {
-                imageSrc: 'assets/cplusplus.svg',
-                imageAlt: 'Icono del lenguaje de programación C++',
-                name: 'C++'
+                imageSrc: "assets/cplusplus.svg",
+                imageAlt: "Icono del lenguaje de programación C++",
+                name: "C++",
             },
             {
-                imageSrc: 'assets/glui.svg',
-                imageAlt: 'Icono de la biblioteca GLUI',
-                name: 'GLUI'
-            }
-        ]
-    }
+                imageSrc: "assets/glui.svg",
+                imageAlt: "Icono de la biblioteca GLUI",
+                name: "GLUI",
+            },
+        ],
+    },
 ];
 interface ContentProps {
     text: string;
@@ -160,23 +169,31 @@ interface ContentProps {
     alt: string;
 }
 const contentGitHubButton: ContentProps = {
-    text: 'Ver más en GitHub',
-    icon: 'assets/github.svg',
-    iconHover: 'assets/github_hover.svg',
-    alt: 'Icono de GitHub'
+    text: "Ver más en GitHub",
+    icon: "assets/github.svg",
+    iconHover: "assets/github_hover.svg",
+    alt: "Icono de GitHub",
 };
 const contentContactButton = {
-	icon: 'assets/contact.svg',
-	iconHover: 'assets/contact_hover.svg',
-	alt: 'Portafolio'
-}
+    icon: "assets/contact.svg",
+    iconHover: "assets/contact_hover.svg",
+    alt: "Portafolio",
+};
 ---
-<Layout>
-    <h2 class="mt-20 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi portafolio</h2>
-    <section class="grid-cols-1 grid grid-rows-2 gap-4 mt-7 mb-7 p-4 md:grid-cols-2 md:p-0">
-        {
-            projects.map(
-                (project) => (
+
+<MainLayout
+    title="Gerardo Márquez Dev - Portafolio"
+    description=`Bienvenido a mi portafolio personal. En esta sección encontrarás una selección de proyectos en los que he trabajado, tanto personales como profesionales. Cada uno refleja
+    mi enfoque para resolver problemas reales, aplicar buenas prácticas y aprender continuamente nuevas tecnologías. Más allá del resultado final, estos proyectos representan mi forma de
+    pensar, diseñar y construir soluciones funcionales, escalables y bien estructuradas.`
+>
+    <SideBar slot="nav" />
+
+    <section slot="main">
+        <MainHeaderCenter class="fade-in" firstText="Mi" secondText="Portafolio"/>
+        <section class="grid-container">
+            {
+                projects.map((project) => (
                     <ProyectoCard
                         title={ project.title }
                         information={ project.information }
@@ -185,21 +202,88 @@ const contentContactButton = {
                         imageAlt={ project.imageAlt }
                         technologies={ project.technologies }
                     />
-                )
-            )
-        }
+                ))
+            }
+        </section>
+
+        <br>
+        <br>
+        <hr class="divider" />
+
+        <div>
+            <p class="description">
+                Además, esta página fue desarrollada utilizando Astro, Tailwind CSS
+                y TypeScript. En la sección de contacto, se integra un sistema de
+                envío de notificaciones por WhatsApp mediante Java, Spring y
+                Evolution API. Si deseas conocer más de mis proyectos, puedes
+                visitar mi perfil de GitHub haciendo clic en el botón de abajo.
+            </p>
+            <div class="elements">
+                <GitHubButton content={contentGitHubButton} />
+            </div>
+        </div>    
+
+        <hr class="divider" />
+
+        <ContactButton content={contentContactButton} />
     </section>
-    <hr class="border-t-4 border-primary w-1/2 mx-auto mb-4 rounded-lg"/>
-    <div>
-        <p class="text-center text-secundary">
-            Además, esta página fue desarrollada utilizando Astro, Tailwind CSS y TypeScript. En la sección de contacto,
-            se integra un sistema de envío de notificaciones por WhatsApp mediante Java, Spring y Evolution API.
-            Si deseas conocer más de mis proyectos, puedes visitar mi perfil de GitHub haciendo clic en el botón de abajo.
-        </p>
-        <div class="mx-auto my-6 w-3/4">
-            <GitHubButton content={ contentGitHubButton }/>
-        </div>
-    </div>
-    <hr class="border-t-4 border-primary w-1/2 mx-auto mb-4 rounded-lg"/>
-    <ContactButton content={ contentContactButton }/>
-</Layout>
+
+    <Footer slot="footer" />
+</MainLayout>
+
+<style>
+    .title {
+        margin-top: 5rem;
+        text-align: center;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1.75rem;
+        margin-bottom: 1.75rem;
+        padding: 1rem;
+    }
+    .divider {
+        border: none;
+        height: 3px;
+        background-color: var(--accent);
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+    }
+    .description {
+        text-align: center;
+        color: var(--muted);
+    }    
+    .elements {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        width: 75%;
+    }
+
+    @media (min-width: 768px) {
+        .title {
+            font-size: 2.25rem;
+        }
+        .grid-container {
+            grid-template-columns: repeat(2, 1fr);
+            padding: 0;
+        }
+    }
+    @media (min-width: 1024px) {
+        .title {
+            font-size: 3.75rem;
+        }
+        .grid-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
