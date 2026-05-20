@@ -1,0 +1,66 @@
+---
+import ContactComponent from "./ContactComponent.astro"
+import WhatsappSvg from "../../public/assets/whatsapp.svg"
+import TelegramSvg from "../../public/assets/telegram.svg"
+import DiscordSvg from "../../public/assets/discord.svg"
+import EmailSvg from "../../public/assets/email.svg"
+
+const contactMethods = [
+    { 
+        text: "Whatsapp",
+        user: "KzUyMTU1MTA1OTcwMjM=", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://wa.me/qr/ZLYAGL3422HQC1",
+        icon: WhatsappSvg,
+        class: "icon-color"
+    },
+    { 
+        text: "Telegram",
+        user: "R2VyYXJkb01hcnF1ZXpfRGV2", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://t.me/GerardoMarquez_Dev",
+        icon: TelegramSvg,
+        class: "icon-color"
+    },
+    { 
+        text: "Discord",
+        user: "Z2VyYXJkb21hcnF1ZXpkZXY=", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://discord.com/users/1503830739869761637",
+        icon: DiscordSvg,
+        class: "icon-color"
+    },
+    { 
+        text: "Email",
+        user: "Y29udGFjdG9AZ2VyYXJkb21hcnF1ZXouZGV2", // En base 64 para que los bots no escrapeen el dato
+        customHref: "mailto:contacto@gerardomarquez.dev",
+        icon: EmailSvg,
+        class: "icon-color"
+    }
+]
+---
+<div class="contacts-container">
+    {
+        contactMethods.map(
+            (item) => (
+                <ContactComponent
+                    text={ item.text }
+                    user={ item.user }
+                    customHref={ item.customHref }
+                    icon={ item.icon }
+                    class={ item.class }
+                />
+            )
+        )      
+    }
+</div>
+
+<style>    
+    .contacts-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+    .icon-color {
+        color: var(--accent);
+        fill: var(--accent);
+    }
+</style>

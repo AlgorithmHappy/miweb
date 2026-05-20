@@ -1,0 +1,61 @@
+---
+import ContactComponent from "./ContactComponent.astro"
+import WhatsappSvg from "../../public/assets/whatsapp.svg"
+import TelegramSvg from "../../public/assets/telegram.svg"
+import DiscordSvg from "../../public/assets/discord.svg"
+
+
+const contactMethods = [
+    { 
+        text: "Canal de Whatsapp",
+        user: "R2VyYXJkbyBNYXJxdWV6IERldg==", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://whatsapp.com/channel/0029Vb81gCZKLaHthF1daI0s",
+        icon: WhatsappSvg,
+        class: "icon-color"
+    },
+    { 
+        text: "Canal de Telegram",
+        user: "R2VyYXJkbyBNYXJxdWV6IERldg==", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://t.me/gerardomarquezdev",
+        icon: TelegramSvg,
+        class: "icon-color"
+    },
+    { 
+        text: "Canal de Discord",
+        user: "R2VyYXJkbyBNYXJxdWV6IERldg==", // En base 64 para que los bots no escrapeen el dato
+        customHref: "https://discord.gg/BvmeBMTDu",
+        icon: DiscordSvg,
+        class: "icon-color"
+    }
+]
+
+const {class: className} = Astro.props;
+---
+<div class={`contacts-container ${className}`}>
+    {
+        contactMethods.map(
+            (item) => (
+                <ContactComponent
+                    text={ item.text }
+                    user={ item.user }
+                    customHref={ item.customHref }
+                    icon={ item.icon }
+                    class={ item.class }
+                />
+            )
+        )      
+    }
+</div>
+
+<style>    
+    .contacts-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+    .icon-color {
+        color: var(--accent);
+        fill: var(--accent);
+    }
+</style>

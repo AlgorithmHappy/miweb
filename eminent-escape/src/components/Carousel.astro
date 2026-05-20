@@ -150,8 +150,10 @@ const cards = [
     technologyIcons: icons[3]
   }
 ]
+
+const {class: className} = Astro.props;
 ---
-<div class="carousel-stage">
+<div class={ `${className} carousel-stage` }>
     <div id="scrollContainerDesktop" class="carousel-track-outer">
         {
             cards.map(

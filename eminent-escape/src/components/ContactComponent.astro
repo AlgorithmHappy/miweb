@@ -1,0 +1,79 @@
+---
+const { text, user, customHref, icon: Icon, class: className } = Astro.props;
+---
+<a href={ customHref } class="contact-icon-btn" target="_blank">
+    <div class="contact-icon-circle">
+        <Icon class={ `${className}` }/>
+    </div>
+    <div>
+        <div class="contact-text">{ text }</div>
+        <div class="contact-user" data-encoded={ user }></div>
+    </div>
+</a>
+
+<style>
+    .contact-icon-btn {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--muted);
+        text-decoration: none;
+        transition: all var(--transition);
+        font-size: clamp(10px, 3.5vw, 17px);;
+        word-break: break-word;
+    }
+    .contact-icon-btn:hover {
+        border-color: rgba(64,224,208,0.3);
+        color: var(--accent);
+        background: var(--accent-dim);
+        transform: translateX(6px);
+    }
+    .contact-icon-circle {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
+        background: var(--accent-dim);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-size: 20px;
+    }
+    .contact-icon-circle > * {
+        width: 24px;
+        height: 24px;
+    }
+    .contact-icon-btn:hover .contact-icon-circle {
+        background: var(--accent);
+        color: #1a1a1a;
+    }
+    .contact-text {
+        font-weight: 600;
+        color: var(--white);
+    }
+    .contact-user {
+        font-size: clamp(8px, 3vw, 14px);
+    }
+</style>
+
+
+<script>
+    console.log("SCRIPT");
+    document.querySelectorAll('.contact-user').forEach(
+        el => {
+            console.log("ENTRO");
+            const element = el as HTMLElement;
+            console.log(element);
+            const encoded = element.dataset.encoded;
+            console.log(encoded);
+            if (encoded) {
+                el.textContent = atob(encoded);
+            }
+        }
+    );
+</script>

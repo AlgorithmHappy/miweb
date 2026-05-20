@@ -77,8 +77,10 @@ const knowledges: KnowledgeProps[] = [
         para la resolución de problemas técnicos. Destaco este lenguaje por el alto nivel de control que ofrece sobre los recursos del sistema.`
     }
 ]
+
+const {class: className} = Astro.props;
 ---
-<article>
+<article class={ `${className}` }>
     {
         knowledges.map(
             (item) => (

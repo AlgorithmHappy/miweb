@@ -7,6 +7,7 @@ interface Technology {
     name: string;
 }
 interface ProjectsProps {
+    class?: string;
     title: string;
     information: string;
     link?: string;
@@ -14,9 +15,9 @@ interface ProjectsProps {
     imageAlt: string;
     technologies: Technology[];
 }
-const { title, information, link, imageSrc, imageAlt, technologies } = Astro.props as ProjectsProps;
+const { class: className, title, information, link, imageSrc, imageAlt, technologies } = Astro.props as ProjectsProps;
 ---
-<article>
+<article class={ `${className}` }>
     <div>
         <h2 class="card-title">{ title }</h3>
     </div>
@@ -61,6 +62,9 @@ const { title, information, link, imageSrc, imageAlt, technologies } = Astro.pro
         border-radius: var(--radius);
         box-shadow: 0 7px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--accent-dim);
         overflow: hidden;
+    }
+    .figure-container:hover{
+        border-color: rgba(64, 224, 208, 0.25);
     }
     .figure-container::before {
         content: "";

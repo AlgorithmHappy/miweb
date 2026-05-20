@@ -1,0 +1,78 @@
+---
+import MainButton from "../components/MainButton.astro"
+import SubmitButton from "./SubmitButton.astro"
+
+---
+
+<div>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="field-wrap">
+            <input type="text" id="nombre" placeholder=" " required>
+            <label for="nombre">Tu nombre</label>
+        </div>
+        <div class="field-wrap">
+            <input type="email" id="correo" placeholder=" " required>
+            <label for="correo">Tu correo electrónico</label>
+        </div>
+        <div class="field-wrap">
+            <textarea id="mensaje" rows="5" placeholder=" " required></textarea>
+            <label for="mensaje">Tu mensaje</label>
+        </div>
+        
+        <SubmitButton class="send-button" type="submit" materialIcon="send" text="Enviar mensaje"/>
+    </form>
+</div>
+
+<style>
+    .field-wrap {
+        position: relative;
+    }
+    .field-wrap input, .field-wrap textarea {
+        width: 100%;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px 20px;
+        color: var(--white);
+        font-size: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        outline: none;
+        transition: all var(--transition);
+        resize: none;
+    }
+    .field-wrap input:focus, .field-wrap textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .field-wrap label {
+        position: absolute;
+        top: 16px; left: 20px;
+        color: var(--muted);
+        font-size: 15px;
+        pointer-events: none;
+        transition: all var(--transition);
+    }
+    .field-wrap input:focus + label,
+    .field-wrap input:not(:placeholder-shown) + label,
+    .field-wrap textarea:focus + label,
+    .field-wrap textarea:not(:placeholder-shown) + label {
+        top: -15px;
+        left: 12px;
+        font-size: 12px;
+        color: var(--accent);
+        background: transparent;
+        padding: 0 6px;
+    }
+    .field-wrap input::placeholder,
+    .field-wrap textarea::placeholder {
+        opacity: 0;
+    }
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 38px;
+    }
+    .send-button {
+        width:100%;
+    }
+</style>

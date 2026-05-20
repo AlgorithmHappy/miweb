@@ -1,14 +1,22 @@
 ---
-const {class: className, hrefCustom, materialIcon, text} = Astro.props;
+interface SubmitButtonPops{
+    class?: string
+    type?: 'button' | 'submit' | 'reset'
+    materialIcon: string
+    text: string
+}
+
+const {class: className, type, materialIcon, text} = Astro.props as SubmitButtonPops;
 ---
-<a href={hrefCustom} class={`${className} btn-primary`} target="_blank">
-    <span class="material-icons-round">{materialIcon}</span>
-    {text}
-</a>
+<button type={ type } class={ `${className} btn-primary` }>
+    <span class="material-icons-round">{ materialIcon }</span>{ text }
+</button>
 
 <style>
     .btn-primary {
         display: inline-flex;
+        justify-content: center;
+        text-align: center;
         align-items: center;
         gap: 8px;
         background: var(--accent);

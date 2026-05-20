@@ -1,6 +1,14 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import TextInput from '../../components/TextInput.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+import SideBar from "../../components/SideBar.astro";
+import Footer from "../../components/Footer.astro";
+import ListContactComponents from '../../components/ListContactComponents.astro';
+import ListChannelComponents from '../../components/ListChannelComponents.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
+import SecondaryTitle from "../../components/SecondaryTitle.astro";
+import SecondaryHeaderCenter from '../../components/SecondaryHeaderCenter.astro';
+
 const contentSendButton = {
 	text: 'Enviar',
 	icon: 'assets/send.svg',
@@ -8,10 +16,56 @@ const contentSendButton = {
 	alt: 'Portafolio'
 }
 ---
-<Layout>
-    <h2 class="mt-20 mb-2 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Contactame</h2>
-    <div class="px-4">
-        <TextInput content={ contentSendButton }/>
-        <p>*Al enviar este formulario, aceptas nuestra <a class="text-primary decor" href="../privacidad/politicas" target="_blank">Política de Privacidad.</a></p>
-    </div>
+<MainLayout
+    title="Gerardo Márquez Dev - Contacto"
+    description=`Bienvenido a mi portafolio personal. En esta sección encontrarás diversos medios para ponerte en contacto conmigo y convertir tu idea de negocio o proyecto de software en
+    una solución real. Mi objetivo es ayudarte a optimizar procesos y escalar la productividad de tu empresa mediante soluciones tecnológicas eficientes y a la medida.`
+>
+    <SideBar slot="nav" />
+
+    <section slot="main">
+        <MainHeaderCenter  class="fade-in" firstText="Trabajemos" secondText="Juntos"/>
+
+        <br>
+        <br>
+
+        <SecondaryTitle class="fade-in" firstText="Hagamos tu" secondText="app"/>
+
+        <div class="fade-in contact-grid">
+            <ContactForm/>
+            <ListContactComponents/>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <SecondaryHeaderCenter class="fade-in" firstText="Unete a mi" secondText="comunidad"/>
+
+        <br>
+        <br>
+
+        <ListChannelComponents  class="fade-in">
+    </section>
+    
+    <Footer slot="footer" />
 </Layout>
+
+<style>
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+    }
+    .icon-color {
+        color: var(--accent);
+        fill: green;
+    }
+
+    @media (max-width: 1024px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
