@@ -1,0 +1,95 @@
+---
+import BlogCard from "../components/BlogCard.astro";
+import PaginationArrowButton from "../components/PaginationArrowButton.astro";
+
+type SortParam = `${string},${'asc' | 'desc'}`;
+interface ListBlogCardsProps {
+    page: number;
+    size: number;
+    sort: SortParam; // Ejemplos: "date,desc", "title,asc", ""tag,desc""
+    search?: {
+        tag?: string;
+        title?: string;
+    };
+}
+
+interface BlogCardProps {
+    title: string;
+    date: string;
+    duration: number; // Duracion en minutos
+    description: string;
+    tags: string[];
+    link: string;
+    imageSrc: string;
+    imageAlt: string;
+};
+
+const { request } = Astro.props as {
+    request: ListBlogCardsProps;
+};
+
+
+const res = await fetch(
+  `http://localhost:1690/api/blog-cards?page=${request.page}&size=${request.size}&sort=${request.sort}`
+);
+const data = await res.json();
+const cards: BlogCardProps[] = data.content;
+const nextPage = `/blog?page=${request.page + 1}&size=${request.size}&sort=${request.sort}`
+const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)}&size=${request.size}&sort=${request.sort}`
+
+---
+<section class="grid-container">
+    
+    {
+        cards.map(
+            (card) => (
+                <BlogCard
+                    title={ card.title }
+                    date={ card.date }
+                    duration={ card.duration }
+                    description={ card.description }
+                    tags={ card.tags }
+                    link={ card.link }
+                    imageSrc={ card.imageSrc }
+                    imageAlt={ card.imageAlt }
+                />
+            )
+        )
+    }
+</section>
+<div class="arrow-container">
+    <PaginationArrowButton customHref={ previusPage } customTitle="Página anterior">
+        <span class="material-icons-round" slot="arrowIcon">arrow_back</span>
+    </PaginationArrowButton>
+    <PaginationArrowButton customHref={ nextPage } customTitle="Página siguiente">
+        <span class="material-icons-round" slot="arrowIcon">arrow_forward</span>
+    </PaginationArrowButton>
+</div>
+
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1.75rem;
+        margin-bottom: 1.75rem;
+        padding: 1rem;
+    }
+    .arrow-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    @media (min-width: 768px) {
+        .grid-container {
+            grid-template-columns: repeat(2, 1fr);
+            padding: 0;
+        }
+    }
+    @media (min-width: 1024px) {
+        .grid-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>

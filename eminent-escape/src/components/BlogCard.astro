@@ -1,28 +1,148 @@
 ---
 interface BlogCardProps {
     title: string;
-    information: string;
+    date: string;
+    duration: number; // Duracion en minutos
+    description: string;
+    tags: string[];
     link: string;
     imageSrc: string;
     imageAlt: string;
 }
-const { title, information, link, imageSrc, imageAlt } = Astro.props as BlogCardProps;
+const { title, date, duration, description, tags, link, imageSrc, imageAlt } = Astro.props as BlogCardProps;
 ---
-<div>
-    <div class="mb-3">
-        <h3 class="text-center text-primary font-bold">{ title }</h3>
+<div class="blog-card" data-cat="web">
+    <div class="blog-img">
+        <img src={ imageSrc } alt={ imageAlt } >
     </div>
-    <div>
-        <figure class="relative w-full h-full border-4 border-primary rounded-lg shadow-xl
-        overflow-hidden before:absolute before:top-0
-        before:left-0 before:right-0 before:bottom-0 before:bg-primary
-        before:transform before:translate-x-full before:transition-transform before:duration-400
-        hover:before:translate-x-0">
-            <img src={ imageSrc } alt={ imageAlt } />
-            <div class="absolute inset-0 flex items-center justify-center bg-primary 
-            opacity-0 transition-opacity duration-400 hover:opacity-100">
-                <p class="text-center text-secondary">{ information }<br/><br/><a class="text-white font-bold cursor-pointer underline" href={ link } >Leer</a></p>
+    <div class="blog-body">
+        <div class="blog-meta">
+            <div class="container-tags">
+                {
+                    tags.map(
+                        (tag) => (
+                            <span class="blog-tag">{ tag }</span>
+                        )
+                    )
+                }
             </div>            
-        </figure>
+            <span>{ date }</span>
+            <span>⏱ { duration } min</span>
+        </div>
+        <h3 class="blog-title">{ title }</h3>
+        <p class="blog-desc">{ description }</p>
+        <a class="btn-text" href={ link }>
+            Leer más <span class="material-icons-round" style="font-size:16px">arrow_forward</span>
+        </a>
     </div>
 </div>
+
+<style>
+    .blog-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: all var(--transition);
+        width: 100%;
+    }
+    .blog-card:hover {
+        border-color: rgba(64,224,208,0.3);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow);
+    }
+    .blog-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        background: linear-gradient(135deg,#0d2a2a,#1a3a4a);
+    }
+    .blog-img > img{
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+    .blog-body {
+        padding: 24px;
+        width: 100%;
+    }
+    .blog-meta {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 12px;
+        font-size: 12px;
+        color: var(--muted2);
+        font-family: 'JetBrains Mono', monospace;
+        align-items: center;
+        width: 100%;
+    }
+    .container-tags {
+        display: inline-flex;
+        width: 40%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        align-items: center;
+    }
+    .container-tags::-webkit-scrollbar {
+        display: none;
+    }
+    .blog-tag {
+        color: var(--accent);
+        background: var(--accent-dim);
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 11px;
+        display: block;
+    }
+    .blog-desc {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    .btn-text {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: gap var(--transition);
+    }
+    .btn-text:hover {
+        gap: 10px;
+    }
+</style>
+
+<script is:inline>
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.container-tags').forEach((container) => {
+      let speed = 0.3;
+      let position = 0;
+
+      function autoScroll() {
+        position += speed;
+        container.scrollLeft = position;
+
+        if (position >= container.scrollWidth - container.clientWidth) {
+          position = 0;
+        }
+
+        requestAnimationFrame(autoScroll);
+      }
+
+      autoScroll();
+    });
+  });
+</script>

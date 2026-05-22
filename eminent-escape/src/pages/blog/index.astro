@@ -1,87 +1,52 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogCard from '../../components/BlogCard.astro';
-import ContactButton from '../../components/ContactButton.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+import SideBar from "../../components/SideBar.astro";
+import Footer from "../../components/Footer.astro";
+import ListBlogCards from '../../components/ListBlogCards.astro';
+import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
 
-interface ContactProps {
-    icon: string;
-    iconHover: string;
-    alt: string;
+export const prerender = false;
+
+type SortParam = `${string},${'asc' | 'desc'}`;
+interface ListBlogCardsProps {
+    page: number;
+    size: number;
+    sort: SortParam; // Ejemplos: "date,desc", "title,asc", ""tag,desc""
+    search?: {
+        tag?: string;
+        title?: string;
+    };
 }
-interface BlogCardProps {
-    title: string;
-    information: string;
-    link: string;
-    imageSrc: string;
-    imageAlt: string;
-}
-const blogs : BlogCardProps[] = [
-    {
-        title: 'Curso de SQL SELECT Facil y Rapido',
-        information: 'Curso de SQL SELECT Fácil y Rápido: Aprende a consultar bases de datos de manera clara y práctica usando SELECT. Desde los fundamentos hasta filtros avanzados con WHERE.',
-        link: 'blog/posts/Curso_de_SQL_SELECT_Facil_y_Rapido',
-        imageSrc: 'assets/Curso de SQL SELECT Facil y Rapido.webp',
-        imageAlt: 'Imagen del artículo sobre "Curso de SQL SELECT Facil y Rapido"'
-    },
-    {
-        title: '¿Que es SQL y DML?. Estructura de una consulta con "Select"',
-        information: 'En este capítulo aprenderás qué es SQL y cómo usar el comando SELECT para hacer consultas básicas en una base de datos. También se explican los conceptos clave del DML, con ejemplos y ejercicios para practicar.',
-        link: 'blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select',
-        imageSrc: 'assets/Que es SQL y DML Estructura de una consulta con Select.webp',
-        imageAlt: 'Imagen del artículo sobre "¿Que es SQL y DML?. Estructura de una consulta con "Select""'
-    },
-    {
-        title: 'Filtra datos con la cláusula "Where"',
-        information: 'Este artículo explica de forma clara y práctica cómo usar la cláusula WHERE en SQL para filtrar datos según condiciones específicas. Aprenderás a utilizar operadores de comparación con números y textos.',
-        link: 'blog/posts/Filtra_datos_con_la_clausula_Where',
-        imageSrc: 'assets/Filtra datos con la cláusula Where.webp',
-        imageAlt: 'Imagen del artículo sobre "Filtra datos con la clausula Where"'
-    },
-    {
-        title: 'Filtrado complejo con operaciones lógicas: AND, OR y NOT',
-        information: 'El filtrado complejo en SQL se logra combinando condiciones en la cláusula WHERE mediante operadores lógicos: AND, OR y NOT. Estos filtros permiten realizar búsquedas precisas y adaptadas a múltiples criterios.',
-        link: 'blog/posts/Filtrado_complejo_con_operaciones_logicas_AND_OR_y_NOT',
-        imageSrc: 'assets/Filtrado complejo con operaciones lógicas AND, OR y NOT.webp',
-        imageAlt: 'Imagen del artículo sobre "Filtrado complejo con operaciones lógicas AND, OR y NOT"'
-    },
-    {
-        title: 'Filtrado de datos con el operador LIKE',
-        information: 'Aprende a filtrar datos de texto en SQL de forma flexible con el operador LIKE. Descubre cómo usar sus comodines (% y _) para buscar patrones en cadenas, escapar caracteres especiales y crear consultas más precisas.',
-        link: 'blog/posts/Filtrado_de_datos_con_el_operador_LIKE',
-        imageSrc: 'assets/Filtrado de datos con el operador LIKE.webp',
-        imageAlt: 'Imagen del artículo sobre "Filtrado de datos con el operador LIKE.webp"'
-    },
-    {
-        title: 'Filtrado de datos con el operador IN',
-        information: 'Aprende a filtrar renglones en SQL de con el operador IN. Descubre que tan potente puede ser este operador.',
-        link: 'blog/posts/Filtrado_de_datos_con_el_operador_IN',
-        imageSrc: 'assets/Filtrado de datos con el operador IN.webp',
-        imageAlt: 'Imagen del artículo sobre "Filtrado de datos con el operador IN"'
+
+const url = new URL(Astro.request.url);
+const page = Number(url.searchParams.get('page')) || 0;
+const size = Number(url.searchParams.get('size')) || 6;
+const sort = url.searchParams.get('sort') || "date,desc" as SortParam;
+const search = url.searchParams.get('search') as string;
+
+const request = {
+    page: page,
+    size: size,
+    sort: sort,
+    search: {
+        tag: search,
+        title: search
     }
-];
+} as ListBlogCardsProps;
 
-const contentContactButton: ContactProps = {
-	icon: '/assets/contact.svg',
-	iconHover: '/assets/contact_hover.svg',
-	alt: 'Icono de contacto'
-}
 ---
-<Layout>
-    <h2 class="mt-20 mb-6 text-center text-primary font-semibold text-2xl lg:text-6xl md:text-4xl">Mi blog</h2>
-    <section class="grid-cols-1 grid grid-rows-2 gap-4 m-auto px-6 max-w-[768px]">
-        {
-            blogs.map(
-                (blog) => (
-                    <BlogCard
-                        title={ blog.title }
-                        information={ blog.information }
-                        link={ blog.link }
-                        imageSrc={ blog.imageSrc }
-                        imageAlt={ blog.imageAlt }
-                    />
-                )
-            )
-        }
+<MainLayout
+    title="Gerardo Márquez Dev - Blog"
+    description=`Bienvenido a mi Blog. En esta sección encontrarás diversos articulos escritos por mi, aportaciones para los desarrolladores, temas interesantes, cursos de programacion
+    y demas cosas que te haran mejorar como desarrollador.`
+>
+    <SideBar slot="nav" />
+
+    <section slot="main" class="fade-in">
+        <MainHeaderCenter firstText="Mi" secondText="Blog"/>
+    
+        <ListBlogCards request={ request } />
     </section>
-    <ContactButton content={ contentContactButton }/>
-</Layout>
+
+    <Footer slot="footer" />
+</MainLayout>
