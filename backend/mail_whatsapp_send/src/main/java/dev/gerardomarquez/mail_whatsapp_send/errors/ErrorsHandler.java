@@ -102,7 +102,7 @@ public class ErrorsHandler {
      * Metodo que se ejecuta al ocurrir un error en la validacion de los datos de entrada
      * @param exception Error que fue lanzado
      */
-    @ExceptionHandler(ServletException.class)
+    /*@ExceptionHandler(ServletException.class)
     public ResponseEntity<ErrorResponse> serverError(ServletException exception){
         Integer errorHttpStatusCode = Integer.parseInt(
             messageSource.getMessage(
@@ -125,7 +125,7 @@ public class ErrorsHandler {
         );
         logger.error(response.toString() );
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
-    }
+    }*/
 
     /*
      * Metodo para convertir el stacktrace en un string

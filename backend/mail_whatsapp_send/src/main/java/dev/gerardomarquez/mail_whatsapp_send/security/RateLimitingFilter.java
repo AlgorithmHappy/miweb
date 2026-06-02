@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.ErrorResponse;
-import dev.gerardomarquez.mail_whatsapp_send.errors.ErrorsHandler;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -33,7 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * denegacion de servicio
  */
 @Component
-public class RateLimitingFilter implements Filter {
+public class RateLimitingFilter /*implements Filter*/ {
 
     /*
      * Log que escribira los errores
@@ -64,7 +62,7 @@ public class RateLimitingFilter implements Filter {
      * {@inheritDoc}
      * Metodo que se ejecuta al llegar la peticion
      */
-    @Override
+    /*@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         
@@ -98,11 +96,19 @@ public class RateLimitingFilter implements Filter {
             );
             httpResponse.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             httpResponse.setContentType("application/json");
-            httpResponse.getWriter().write(errorResponse.toString() );
+            String json = """
+            {
+            "code": %d,
+            "message": "Rate limit exceeded",
+            "stackTrace": "",
+            "friendlyMessage": "%s"
+            }
+            """.formatted(errorHttpStatusCode, friendlyMessage);
+            httpResponse.getWriter().write(json );
             logger.error(errorResponse.toString() );
             return;
         }
-    }
+    }*/
 
     /*
      * Crea un limite de 3 peticiones seguidas con un reposo de 10 minutos para agregar

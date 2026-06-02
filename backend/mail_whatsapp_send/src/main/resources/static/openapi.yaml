@@ -1,0 +1,252 @@
+openapi: 3.0.3
+
+info:
+  title: API Backend de mi Sitio Web
+  version: 1.0.0
+  description: API encargada de gestionar y exponer la información del sitio web.
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Blog
+    description: Operaciones relacionadas con las entradas del blog.
+
+paths:
+  /v1/blog/posts:
+    get:
+      tags:
+        - Blog
+
+      summary: Obtiene las entradas del blog.
+
+      description: >
+        Devuelve una lista paginada de entradas del blog. La paginación permite
+        optimizar el rendimiento y reducir la cantidad de datos transferidos
+        en cada solicitud.
+
+      parameters:
+        - name: page
+          in: query
+          description: Número de página que se desea consultar. La numeración comienza en 0.
+          schema:
+            type: integer
+            minimum: 0
+          example: 0
+
+        - name: size
+          in: query
+          description: Cantidad de elementos que contendrá cada página.
+          schema:
+            type: integer
+            minimum: 1
+          example: 6
+
+        - name: tag
+          in: query
+          description: >
+            Permite filtrar las entradas por etiqueta. La búsqueda no distingue
+            entre mayúsculas y minúsculas y se realiza mediante una comparación
+            parcial (LIKE), por lo que no es necesario proporcionar el nombre
+            exacto de la etiqueta.
+          schema:
+            type: string
+          example: Spring
+
+        - name: title
+          in: query
+          description: >
+            Permite filtrar las entradas por título. La búsqueda no distingue
+            entre mayúsculas y minúsculas y se realiza mediante una comparación
+            parcial (LIKE), por lo que no es necesario proporcionar el título
+            exacto.
+          schema:
+            type: string
+          example: Spring Boot
+
+      responses:
+        '200':
+          description: >
+            Solicitud procesada correctamente. Devuelve una respuesta estándar
+            de la API que contiene una página de resultados con las entradas
+            del blog que coinciden con los filtros proporcionados.
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponsePageInformationPostResponse'
+
+              example:
+                success: true
+                message: "Posts obtenidos correctamente"
+                timestamp: "2026-08-09T14:30:00"
+
+                data:
+                  content:
+                    - title: "Introducción a Spring Boot"
+                      date: "2026-08-01"
+                      duration: 12
+                      description: "Aprende los fundamentos de Spring Boot."
+                      tags:
+                        - Spring
+                        - Java
+                        - Backend
+                      imageSrc: "/images/spring-boot.webp"
+                      imageAlt: "Logo de Spring Boot"
+                      urlRawMarkDown: "https://raw.githubusercontent.com/user/repo/post.md"
+                      titleNextPost: "Spring Security desde Cero"
+                      titlePreviousPost: null
+
+                  page: 0
+                  size: 6
+                  totalElements: 35
+                  totalPages: 6
+
+components:
+  schemas:
+
+    ApiResponsePageInformationPostResponse:
+      type: object
+      description: Respuesta estándar utilizada por la API.
+
+      properties:
+
+        success:
+          type: boolean
+          description: Indica si la operación fue exitosa.
+          example: true
+
+        message:
+          type: string
+          description: Mensaje descriptivo del resultado de la operación.
+          example: Posts obtenidos correctamente
+
+        timestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora en que se generó la respuesta.
+          example: "2026-08-09T14:30:00"
+
+        data:
+          $ref: '#/components/schemas/PageInformationPostResponse'
+
+      required:
+        - success
+        - message
+        - timestamp
+
+    PageInformationPostResponse:
+      type: object
+      description: Información paginada de los posts.
+
+      properties:
+
+        content:
+          type: array
+          description: Lista de posts pertenecientes a la página solicitada.
+
+          items:
+            $ref: '#/components/schemas/InformationPostResponse'
+
+        page:
+          type: integer
+          description: Número de página actual.
+          example: 0
+
+        size:
+          type: integer
+          description: Cantidad de elementos por página.
+          example: 6
+
+        totalElements:
+          type: integer
+          format: int64
+          description: Número total de registros encontrados.
+          example: 35
+
+        totalPages:
+          type: integer
+          description: Número total de páginas disponibles.
+          example: 6
+
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+
+    InformationPostResponse:
+      type: object
+      description: Información resumida de una entrada del blog.
+
+      properties:
+
+        title:
+          type: string
+          description: Título del post.
+          example: Introducción a Spring Boot
+
+        date:
+          type: string
+          format: date
+          description: Fecha de publicación del post.
+          example: "2026-08-01"
+
+        duration:
+          type: integer
+          description: Tiempo estimado de lectura en minutos.
+          example: 12
+
+        description:
+          type: string
+          description: Resumen del contenido del artículo.
+          example: Aprende los fundamentos de Spring Boot.
+
+        tags:
+          type: array
+          description: Palabras clave asociadas al artículo.
+
+          items:
+            type: string
+
+          example:
+            - Spring
+            - Java
+            - Backend
+
+        imageSrc:
+          type: string
+          description: Ruta o URL de la imagen de previsualización.
+          example: /images/spring-boot.webp
+
+        imageAlt:
+          type: string
+          description: Texto alternativo de la imagen.
+          example: Logo de Spring Boot
+
+        urlRawMarkDown:
+          type: string
+          format: uri
+          description: URL del archivo Markdown que contiene el artículo.
+          example: https://raw.githubusercontent.com/user/repo/post.md
+
+        titleNextPost:
+          type: string
+          nullable: true
+          description: Título del siguiente artículo.
+          example: Spring Security desde Cero
+
+        titlePreviousPost:
+          type: string
+          nullable: true
+          description: Título del artículo anterior.
+          example: Introducción a Java
+
+      required:
+        - title
+        - date
+        - duration
+        - description
+        - tags
+        - urlRawMarkDown

@@ -1,22 +1,18 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
-import java.util.List;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.requests.ContactFormRequest;
 
-import dev.gerardomarquez.mail_whatsapp_send.dtos.ContactMessage;
-
-/*
- * Interface que define el crud para insertar a la base de datos los usuarios que me han
- * contactado
+/**
+ * Interfaz que define el metodo para insertar los mensajes del formultario de contacto
+ * en la base de datos
  */
 public interface ServiceMessagesCrud {
-    /*
-     * Inserta un usuario con su mensaje
-     * @param contactMessage El mensaje del contacto con el nombre y el correo
+
+    /**
+     * Inserta en base de datos el mensaje que se puso en el formulario de contacto de la
+     * pagina
+     * @param request Request que despues se convertira a entidad para poder ser insertada
+     * en la base de datos
      */
-    public void insertOne(ContactMessage contactMessage);
-    /*
-     * Devuelve todos los usuarios que me han contactado
-     * @return Lista de todos los mensajes de contacto recibidos
-     */
-    public List<ContactMessage> findAll();
+    public void insertOne(ContactFormRequest request);
 }

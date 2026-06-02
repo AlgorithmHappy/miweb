@@ -1,9 +1,6 @@
-package dev.gerardomarquez.mail_whatsapp_send.dtos;
+package dev.gerardomarquez.mail_whatsapp_send.dtos.requests;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import dev.gerardomarquez.mail_whatsapp_send.entities.MessagesFromContactForm;
 import jakarta.validation.constraints.Email;
@@ -20,12 +17,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ContactMessage implements Serializable {
+public class ContactFormRequest implements Serializable {
     /*
      * Nombre completo del usuario que lleno el formulario
      */
     @NotBlank(message = "{not.blank.name}")
-    @Size(max = 100)
+    @Size(max = 70)
     private String fullName;
     /*
      * Correo electronico del usuario
@@ -37,13 +34,8 @@ public class ContactMessage implements Serializable {
      * Mensaje del usuario
      */
     @NotBlank(message = "{not.blank.message}")
+    @Size(max = 500, message = "{validation.size}")
     private String message;
-    /*
-     * Fecha en la que se envio en mensaje en el formulario de contactos
-     * este es ignorado al realizar el parseo a json
-     */
-    @JsonIgnore
-    private LocalDateTime createdAt;
 
     /*
      * Metodo que convierte el objeto actual "this" a una entidad compatible con
@@ -61,12 +53,11 @@ public class ContactMessage implements Serializable {
      * Metodo que convierte un objeto de tipo MessagesFromContactForm a tipo ContactMessage
      * @param messagesFromContactForm Objeto que se va a converti a ContactMessage
      */
-    public static ContactMessage entityToContactMessage(MessagesFromContactForm messagesFromContactForm) {
-        ContactMessage entityConverted = new ContactMessage(
+    public static ContactFormRequest entityToContactMessage(MessagesFromContactForm messagesFromContactForm) {
+        ContactFormRequest entityConverted = new ContactFormRequest(
             messagesFromContactForm.getName(),
             messagesFromContactForm.getEmail(),
-            messagesFromContactForm.getMessage(),
-            messagesFromContactForm.getCreatedAt()
+            messagesFromContactForm.getMessage()
         );
         return entityConverted;
     }
