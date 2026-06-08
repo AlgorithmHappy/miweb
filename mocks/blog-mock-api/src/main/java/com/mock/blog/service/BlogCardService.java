@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -24,9 +25,10 @@ public class BlogCardService {
                     8,
                     "Explore the power of Project Loom and virtual threads introduced in Java 21 for high-concurrency applications.",
                     List.of("java", "concurrency", "virtual-threads", "jvm"),
-                    "/blog/java-21-virtual-threads",
+                    "/blog/posts/Getting Started with Java 21 Virtual Threads",
                     "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
-                    "Java code on a laptop screen"
+                    "Java code on a laptop screen",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Spring Boot 3.x Migration Guide",
@@ -36,7 +38,8 @@ public class BlogCardService {
                     List.of("spring", "spring-boot", "migration", "jakarta-ee"),
                     "/blog/spring-boot-3-migration",
                     "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
-                    "Spring Boot logo on a monitor"
+                    "Spring Boot logo on a monitor",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Reactive Programming with Spring WebFlux",
@@ -46,7 +49,8 @@ public class BlogCardService {
                     List.of("spring", "webflux", "reactive", "java"),
                     "/blog/reactive-spring-webflux",
                     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
-                    "Abstract data flow visualization"
+                    "Abstract data flow visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Building REST APIs with Spring Data JPA",
@@ -56,7 +60,8 @@ public class BlogCardService {
                     List.of("spring", "jpa", "rest", "database"),
                     "/blog/rest-apis-spring-data-jpa",
                     "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800",
-                    "Database schema diagram"
+                    "Database schema diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Docker and Kubernetes for Java Developers",
@@ -66,7 +71,8 @@ public class BlogCardService {
                     List.of("docker", "kubernetes", "devops", "java"),
                     "/blog/docker-kubernetes-java",
                     "https://images.unsplash.com/photo-1605745341112-85968b19335b?w=800",
-                    "Container ship representing Docker containers"
+                    "Container ship representing Docker containers",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Securing Spring Boot Apps with OAuth2",
@@ -76,7 +82,8 @@ public class BlogCardService {
                     List.of("spring", "security", "oauth2", "authentication"),
                     "/blog/spring-boot-oauth2",
                     "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800",
-                    "Lock and key representing security"
+                    "Lock and key representing security",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Mastering Java Streams API",
@@ -86,7 +93,8 @@ public class BlogCardService {
                     List.of("java", "streams", "functional-programming", "collections"),
                     "/blog/java-streams-api-mastery",
                     "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800",
-                    "Stream of data flowing through pipes"
+                    "Stream of data flowing through pipes",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Event-Driven Architecture with Apache Kafka",
@@ -96,7 +104,8 @@ public class BlogCardService {
                     List.of("kafka", "microservices", "event-driven", "architecture"),
                     "/blog/event-driven-kafka",
                     "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
-                    "Network topology diagram"
+                    "Network topology diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Clean Architecture in Spring Boot",
@@ -106,7 +115,8 @@ public class BlogCardService {
                     List.of("architecture", "spring-boot", "clean-code", "design-patterns"),
                     "/blog/clean-architecture-spring-boot",
                     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
-                    "Blueprint drawing representing clean architecture"
+                    "Blueprint drawing representing clean architecture",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Testing Spring Boot Applications",
@@ -116,7 +126,8 @@ public class BlogCardService {
                     List.of("testing", "spring-boot", "junit", "mockito"),
                     "/blog/testing-spring-boot",
                     "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800",
-                    "Checklist representing test cases"
+                    "Checklist representing test cases",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "GraphQL with Spring Boot",
@@ -126,7 +137,8 @@ public class BlogCardService {
                     List.of("graphql", "spring-boot", "api", "java"),
                     "/blog/graphql-spring-boot",
                     "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800",
-                    "GraphQL schema visualization"
+                    "GraphQL schema visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Observability with Micrometer and Prometheus",
@@ -136,7 +148,8 @@ public class BlogCardService {
                     List.of("observability", "monitoring", "spring-boot", "devops"),
                     "/blog/observability-micrometer-prometheus",
                     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
-                    "Dashboard with metrics and charts"
+                    "Dashboard with metrics and charts",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Java Records and Sealed Classes",
@@ -146,7 +159,8 @@ public class BlogCardService {
                     List.of("java", "records", "sealed-classes", "modern-java"),
                     "/blog/java-records-sealed-classes",
                     "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?w=800",
-                    "Java programming concepts visualization"
+                    "Java programming concepts visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Microservices Communication Patterns",
@@ -156,7 +170,8 @@ public class BlogCardService {
                     List.of("microservices", "architecture", "grpc", "messaging"),
                     "/blog/microservices-communication-patterns",
                     "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800",
-                    "Network nodes communicating with each other"
+                    "Network nodes communicating with each other",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Spring Cloud Gateway Deep Dive",
@@ -166,7 +181,8 @@ public class BlogCardService {
                     List.of("spring", "cloud", "gateway", "microservices"),
                     "/blog/spring-cloud-gateway",
                     "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
-                    "Gateway representing API routing"
+                    "Gateway representing API routing",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Redis Caching Strategies with Spring",
@@ -176,7 +192,8 @@ public class BlogCardService {
                     List.of("redis", "caching", "spring", "performance"),
                     "/blog/redis-caching-spring",
                     "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
-                    "Redis cache architecture diagram"
+                    "Redis cache architecture diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Pattern Matching in Java",
@@ -186,7 +203,8 @@ public class BlogCardService {
                     List.of("java", "pattern-matching", "modern-java", "switch"),
                     "/blog/java-pattern-matching",
                     "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=800",
-                    "Code patterns on screen"
+                    "Code patterns on screen",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Database Migrations with Flyway",
@@ -196,7 +214,8 @@ public class BlogCardService {
                     List.of("database", "flyway", "spring-boot", "migrations"),
                     "/blog/database-migrations-flyway",
                     "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800",
-                    "Database migration flow chart"
+                    "Database migration flow chart",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "CI/CD Pipelines for Spring Boot with GitHub Actions",
@@ -206,7 +225,8 @@ public class BlogCardService {
                     List.of("cicd", "github-actions", "devops", "spring-boot"),
                     "/blog/cicd-github-actions-spring",
                     "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800",
-                    "Pipeline flow diagram"
+                    "Pipeline flow diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Functional Interfaces and Lambdas in Java",
@@ -216,7 +236,8 @@ public class BlogCardService {
                     List.of("java", "functional-programming", "lambdas", "streams"),
                     "/blog/java-functional-interfaces",
                     "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=800",
-                    "Lambda symbol on a chalkboard"
+                    "Lambda symbol on a chalkboard",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Spring Batch for Large-Scale Data Processing",
@@ -226,7 +247,8 @@ public class BlogCardService {
                     List.of("spring", "batch", "data-processing", "java"),
                     "/blog/spring-batch-processing",
                     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-                    "Data processing pipeline visualization"
+                    "Data processing pipeline visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Building CLI Tools with Spring Shell",
@@ -236,7 +258,8 @@ public class BlogCardService {
                     List.of("spring", "cli", "spring-shell", "tools"),
                     "/blog/cli-tools-spring-shell",
                     "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800",
-                    "Terminal window with CLI commands"
+                    "Terminal window with CLI commands",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Hexagonal Architecture with Spring Boot",
@@ -246,7 +269,8 @@ public class BlogCardService {
                     List.of("architecture", "hexagonal", "spring-boot", "design-patterns"),
                     "/blog/hexagonal-architecture-spring",
                     "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
-                    "Hexagonal architecture diagram"
+                    "Hexagonal architecture diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Native Images with Spring Boot and GraalVM",
@@ -256,7 +280,8 @@ public class BlogCardService {
                     List.of("spring-boot", "graalvm", "native-image", "performance"),
                     "/blog/native-images-graalvm-spring",
                     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
-                    "Rocket representing fast startup times"
+                    "Rocket representing fast startup times",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Exception Handling Best Practices in Spring",
@@ -266,7 +291,8 @@ public class BlogCardService {
                     List.of("spring", "exception-handling", "rest", "best-practices"),
                     "/blog/exception-handling-spring",
                     "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800",
-                    "Error handling flow diagram"
+                    "Error handling flow diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Reactive Streams with RxJava and Spring",
@@ -276,7 +302,8 @@ public class BlogCardService {
                     List.of("reactive", "rxjava", "spring", "async"),
                     "/blog/rxjava-spring-integration",
                     "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800",
-                    "Stream processing visualization"
+                    "Stream processing visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Distributed Tracing with OpenTelemetry",
@@ -286,7 +313,8 @@ public class BlogCardService {
                     List.of("observability", "tracing", "opentelemetry", "microservices"),
                     "/blog/distributed-tracing-opentelemetry",
                     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
-                    "Distributed trace visualization"
+                    "Distributed trace visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Advanced Spring Security: JWT Authentication",
@@ -296,7 +324,8 @@ public class BlogCardService {
                     List.of("spring", "security", "jwt", "authentication"),
                     "/blog/spring-security-jwt",
                     "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800",
-                    "JWT token structure visualization"
+                    "JWT token structure visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Zero Downtime Deployments with Spring Boot",
@@ -306,7 +335,8 @@ public class BlogCardService {
                     List.of("devops", "deployment", "spring-boot", "kubernetes"),
                     "/blog/zero-downtime-deployments",
                     "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800",
-                    "Blue green deployment diagram"
+                    "Blue green deployment diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Structured Concurrency in Java 21",
@@ -316,7 +346,8 @@ public class BlogCardService {
                     List.of("java", "concurrency", "virtual-threads", "modern-java"),
                     "/blog/java-21-structured-concurrency",
                     "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
-                    "Concurrent threads visualization"
+                    "Concurrent threads visualization",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "API Versioning Strategies in Spring Boot",
@@ -326,7 +357,8 @@ public class BlogCardService {
                     List.of("rest", "api", "spring-boot", "versioning"),
                     "/blog/api-versioning-spring",
                     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-                    "API version branching diagram"
+                    "API version branching diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Spring AI: Building LLM-powered Applications",
@@ -336,7 +368,8 @@ public class BlogCardService {
                     List.of("spring", "ai", "llm", "spring-ai"),
                     "/blog/spring-ai-llm-applications",
                     "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800",
-                    "Neural network representing AI"
+                    "Neural network representing AI",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             ),
             new BlogCard(
                     "Idempotency in REST APIs",
@@ -346,12 +379,27 @@ public class BlogCardService {
                     List.of("rest", "api", "architecture", "best-practices"),
                     "/blog/idempotency-rest-apis",
                     "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800",
-                    "Retry mechanism flow diagram"
+                    "Retry mechanism flow diagram",
+                    "https://raw.githubusercontent.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/refs/heads/main/README.md"
             )
     );
 
     public Page<BlogCardResponse> getBlogCards(Pageable pageable, String tag, String title) {
-        Stream<BlogCard> stream = MOCK_DATA.stream();
+        Stream<BlogCard> stream = MOCK_DATA.stream().map(
+                (BlogCard it) -> {
+                        return new BlogCard(
+                                it.title(),
+                                it.date(),
+                                it.duration(),
+                                it.description(),
+                                it.tags(),
+                                "/blog/posts/".concat(it.title()),
+                                it.imageSrc(),
+                                it.imageAlt(),
+                                it.urlRawMarkDown()
+                        );
+                }
+        );
 
         // Filter by tag (case-insensitive)
         if (tag != null && !tag.isBlank()) {

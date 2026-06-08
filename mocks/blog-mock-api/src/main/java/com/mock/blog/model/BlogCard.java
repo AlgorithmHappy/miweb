@@ -11,5 +11,6 @@ public record BlogCard(
         List<String> tags,
         String link,
         String imageSrc,
-        String imageAlt
+        String imageAlt,
+        String urlRawMarkDown
 ) {}

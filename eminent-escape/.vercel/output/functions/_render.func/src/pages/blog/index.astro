@@ -1,0 +1,52 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import SideBar from "../../components/SideBar.astro";
+import Footer from "../../components/Footer.astro";
+import ListBlogCards from '../../components/ListBlogCards.astro';
+import MainHeaderCenter from "../../components/MainHeaderCenter.astro";
+
+export const prerender = false;
+
+type SortParam = `${string},${'asc' | 'desc'}`;
+interface ListBlogCardsProps {
+    page: number;
+    size: number;
+    sort: SortParam; // Ejemplos: "date,desc", "title,asc", ""tag,desc""
+    search?: {
+        tag?: string;
+        title?: string;
+    };
+}
+
+const url = new URL(Astro.request.url);
+const page = Number(url.searchParams.get('page')) || 0;
+const size = Number(url.searchParams.get('size')) || 6;
+const sort = url.searchParams.get('sort') || "date,desc" as SortParam;
+const search = url.searchParams.get('search') as string;
+
+const request = {
+    page: page,
+    size: size,
+    sort: sort,
+    search: {
+        tag: search,
+        title: search
+    }
+} as ListBlogCardsProps;
+
+---
+<MainLayout
+    title="Gerardo Márquez Dev - Blog"
+    description=`Bienvenido a mi Blog. En esta sección encontrarás diversos articulos escritos por mi, aportaciones para los desarrolladores, temas interesantes, cursos de programacion
+    y demas cosas que te haran mejorar como desarrollador.`
+>
+    <SideBar slot="nav" />
+
+    <section slot="main" class="fade-in">
+        <MainHeaderCenter firstText="Mi" secondText="Blog"/>
+    
+        <ListBlogCards request={ request } />
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>

@@ -1,0 +1,64 @@
+<!DOCTYPE html><meta charset="utf-8"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		var script = document.createElement('script');
+		script.defer = true;
+		script.src = '/_vercel/insights/script.js';
+		var head = document.querySelector('head');
+		head.appendChild(script);
+	</script><h1 id="filtrado-de-datos-con-el-operador-like">Filtrado de datos con el operador <code>LIKE</code></h1>
+<p><strong><code>LIKE</code></strong> es un <strong>operador</strong> que se utiliza con <strong><code>WHERE</code></strong> para el <strong>filtrado de datos de tipo texto</strong> (varchar, string)
+<strong>haciendolos coincidir con algun patron de caracteres</strong>, utilizando los siguientes <em>“comodines”</em>.</p>
+<ul>
+<li><strong><code>%</code></strong>: Indica que en el patron de texto puede haber 0 ó mas caracteres cualesquiera.</li>
+<li><strong><code>_</code></strong>: Indica que en el patron de texto puede haber solo un caracter cualquiera.</li>
+</ul>
+<h2 id="consultas">Consultas</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> nombre </span><span style="color:#F97583">LIKE</span><span style="color:#9ECBFF"> '%end'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui filtramos todos los datos de la columna "nombre" que terminen en "end" ya</span></span>
+<span class="line"><span style="color:#6A737D">-- que con el "%" indicamos que antes de "end" puede haber 0 o mas caracteres</span></span>
+<span class="line"><span style="color:#6A737D">-- cualesquiera</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> PERFILES </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> sitio_web </span><span style="color:#F97583">LIKE</span><span style="color:#9ECBFF"> '%tps://%'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Esta consulta devuelve todos los renglones donde la columna "sitio_web" contenga</span></span>
+<span class="line"><span style="color:#6A737D">-- "tps://" en medio del texto</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> USUARIOS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> email </span><span style="color:#F97583">LIKE</span><span style="color:#9ECBFF"> 'carlos_example.com'</span><span style="color:#E1E4E8">; </span></span>
+<span class="line"><span style="color:#6A737D">-- Devuelve todos los renglones donde la columna "email" tenga un caracter</span></span>
+<span class="line"><span style="color:#6A737D">-- cualquiera entre "carlos" y "example.com"</span></span>
+<span class="line"></span></code></pre>
+<h2 id="escapar-caracteres--y-_">Escapar caracteres <code>%</code> y <code>_</code></h2>
+<p>Puedes <strong>escapar los caracteres “<code>%</code>”</strong> y <strong>“<code>_</code>”</strong> si en tu patron de busqueda <strong>necesitas dichos caracteres</strong> como caracteres reales y no
+como <em>“comodines”</em> con <strong><code>ESCAPE</code></strong> y un caracter con el que indiques que quieres <em>“escapar”</em>.</p>
+<p>Ejemplo:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> cursos </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> titulo </span><span style="color:#F97583">LIKE</span><span style="color:#9ECBFF"> '_Boot\%'</span><span style="color:#E1E4E8"> ESCAPE </span><span style="color:#9ECBFF">'\'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui indicas que quieres incluir el caracter "%" como caracter real y no como</span></span>
+<span class="line"><span style="color:#6A737D">-- comodin en tu patron de busqueda ya que es el caracter que le sigue despues del</span></span>
+<span class="line"><span style="color:#6A737D">-- caracter "\", por eso es que la consulta no devuelve nada</span></span>
+<span class="line"></span></code></pre>
+<h2 id="notas">Notas</h2>
+<p><strong>Nota</strong>: El uso de mayusculas y minusculas afecta al patron que quieras definir.</p>
+<p><strong>Nota</strong>: Con este operador tambien se pueden utilizar tipos de datos <strong><code>CLOB</code></strong> como por ejemplo en la columna <strong>“<code>BIOGRAFIA</code>”</strong> de la tabla <strong>“<code>PERFILES</code>”</strong>.</p>
+<h2 id="ejercicios">Ejercicios:</h2>
+<ol>
+<li>
+<p>Devolver los <strong>usuarios</strong> que almenos tengan un acento en su nombre.</p>
+</li>
+<li>
+<p>Devolver todos los <strong>usuarios</strong> que tengan <strong>“ia”</strong> en su correo electronico.</p>
+</li>
+<li>
+<p>Devolver todos los <strong>cursos</strong> que tengan <strong>“UX/UI”</strong>.</p>
+</li>
+<li>
+<p>Devolver todos los <strong>perfiles</strong> que en su sitio web solo tengan su “.dominio” con 2 letras.</p>
+</li>
+<li>
+<p>Devolver todos los <strong>cursos</strong> que en la descripcion tengan <strong>“spring”</strong> no importando si este en mayusculas o minusculas.</p>
+</li>
+</ol>
+<h2 id="enlaces-relacionados">Enlaces relacionados</h2>
+<p><strong>GitHub</strong>: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/Filtrado%20de%20datos%20con%20el%20operador%20LIKE.md" target="_blank">Filtrado de datos con el operador LIKE</a></p>
+<p><strong>Pagina WEB</strong>: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Filtrado_de_datos_con_el_operador_LIKE" target="_blank">Filtrado de datos con el operador LIKE</a></p>
+<h2 id="apa">APA</h2>
+<p>Marquez Mendez, L. G. (2025, 8 de agosto). *Filtrado de datos con el operador LIKE. Recuperado de <span style="word-break: break-all;"><a href="http://www.gerardomarquez.dev/blog/posts/Filtrado_de_datos_con_el_operador_LIKE">http://www.gerardomarquez.dev/blog/posts/Filtrado_de_datos_con_el_operador_LIKE</a></span></p>

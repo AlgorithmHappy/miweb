@@ -22,7 +22,22 @@ interface BlogCardProps {
     link: string;
     imageSrc: string;
     imageAlt: string;
+    urlRawMarkDown: string;
 };
+
+
+interface PageInfo {
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+};
+
+interface BlogResponse {
+  content: BlogCardProps[];
+  page: PageInfo;
+};
+
 
 const { request } = Astro.props as {
     request: ListBlogCardsProps;
@@ -32,8 +47,9 @@ const { request } = Astro.props as {
 const res = await fetch(
   `http://localhost:1690/api/blog-cards?page=${request.page}&size=${request.size}&sort=${request.sort}`
 );
-const data = await res.json();
+const data: BlogResponse = await res.json();
 const cards: BlogCardProps[] = data.content;
+const lastPage: number = data.page.totalPages - 1;
 const nextPage = `/blog?page=${request.page + 1}&size=${request.size}&sort=${request.sort}`
 const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)}&size=${request.size}&sort=${request.sort}`
 
@@ -58,10 +74,10 @@ const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)
     }
 </section>
 <div class="arrow-container">
-    <PaginationArrowButton customHref={ previusPage } customTitle="Página anterior">
+    <PaginationArrowButton id="arrow-back" customHref={ previusPage } customTitle="Página anterior">
         <span class="material-icons-round" slot="arrowIcon">arrow_back</span>
     </PaginationArrowButton>
-    <PaginationArrowButton customHref={ nextPage } customTitle="Página siguiente">
+    <PaginationArrowButton id="arrow-forward" customHref={ nextPage } customTitle="Página siguiente" lastPage={ lastPage }>
         <span class="material-icons-round" slot="arrowIcon">arrow_forward</span>
     </PaginationArrowButton>
 </div>
@@ -93,3 +109,26 @@ const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)
         }
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const arrowBack = document.getElementById('arrow-back') as HTMLAnchorElement;
+        const arrowForward = document.getElementById('arrow-forward') as HTMLAnchorElement;
+        const url = window.location.href;
+        const params = new URL(url).searchParams;
+        const page = Number(params.get("page"));
+
+
+        if(url.includes("page=0")){
+            arrowBack.classList.add("disabled")
+        } else {
+            arrowBack.classList.remove("disabled")
+        }
+
+        if(Number(arrowForward.dataset.lastPage) <= page){
+            arrowForward.classList.add("disabled")
+        } else {
+            arrowForward.classList.remove("disabled")
+        }
+    });
+</script>

@@ -1,0 +1,78 @@
+<!DOCTYPE html><meta charset="utf-8"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		var script = document.createElement('script');
+		script.defer = true;
+		script.src = '/_vercel/insights/script.js';
+		var head = document.querySelector('head');
+		head.appendChild(script);
+	</script><h1 id="filtrado-complejo-con-operaciones-lógicas-and-or-y-not">Filtrado complejo con operaciones lógicas: AND, OR y NOT</h1>
+<p>Si se <strong>requiere realizar un filtrado más complejo</strong> de las filas arrojadas por tu gestor de bases de datos, se pueden utilizar los operadores lógicos, con los cuales <strong>es posible combinar filtros en la cláusula <code>WHERE</code></strong>.<br>
+Estos operadores son los siguientes:</p>
+<ul>
+<li><strong><code>AND</code></strong>: Filtra los datos que <strong>cumplan todas las condiciones dadas</strong>, sin excepción.</li>
+<li><strong><code>OR</code></strong>: Filtra los datos que <strong>cumplan al menos una de las condiciones dadas</strong>.</li>
+<li><strong><code>NOT</code></strong>: Filtra los datos que <strong>NO cumplan</strong> con las condiciones dadas.</li>
+</ul>
+<h2 id="consultas">Consultas</h2>
+<p>Estos son ejemplos con los cuales puedes entender mejor estos operadores:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> nombre </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aquí se están filtrando los renglones cuyo dato "ID" sea igual a 1</span></span>
+<span class="line"><span style="color:#6A737D">-- y, además, que su nombre sea igual a "Programación". Es decir,</span></span>
+<span class="line"><span style="color:#6A737D">-- si el renglón con id igual a 1 no tuviera el "nombre" de</span></span>
+<span class="line"><span style="color:#6A737D">-- "Programación", esta consulta no devolvería ningún resultado, ya</span></span>
+<span class="line"><span style="color:#6A737D">-- que se deben cumplir todas las condiciones dadas.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CURSOS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> titulo </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Curso de SQL Básico'</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> creador_id </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Se pueden agregar tantos filtros (condiciones) como se requieran.</span></span>
+<span class="line"><span style="color:#6A737D">-- También puedes utilizar diferentes operadores (=, &#x3C;, >, !=, &#x3C;>) en cada condición.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> PERFILES </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> usuario_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> OR</span><span style="color:#E1E4E8"> usuario_id </span><span style="color:#F97583">=</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Con el operador OR se filtran los datos que cumplan al menos una</span></span>
+<span class="line"><span style="color:#6A737D">-- de las condiciones. Es decir, no devolvera resultados para "usuario_id = 1" pero si</span></span>
+<span class="line"><span style="color:#6A737D">-- para "usuario_id = 2." Igual que con AND, se pueden agregar tantas condiciones como</span></span>
+<span class="line"><span style="color:#6A737D">-- se necesiten y usar cualquier operador (=, &#x3C;, >, !=, &#x3C;>).</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> INSCRIPCIONES </span><span style="color:#F97583">WHERE</span><span style="color:#F97583"> NOT</span><span style="color:#E1E4E8"> curso_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- El operador NOT niega la condición, es decir, filtra todos los</span></span>
+<span class="line"><span style="color:#6A737D">-- renglones que "NO" tengan el "curso_id" igual a 1. No es posible</span></span>
+<span class="line"><span style="color:#6A737D">-- usar múltiples NOT a menos que se combinen con AND u OR.</span></span></code></pre>
+<h2 id="combinar-operadores">Combinar operadores</h2>
+<p>Es posible la combinacion de operadores <strong><code>AND</code>, <code>OR</code> y <code>NOT</code></strong> en una misma <strong>cláusula <code>WHER</code></strong> para realizar filtraos con más precisos. Sin embargo, se recomienda el uso de <strong>paréntesis para mejorar la legibilidad</strong> y evitar ambigüedades en la evaluación de las condiciones.</p>
+<p>Ejemplos:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> INSCRIPCIONES </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> (curso_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> OR</span><span style="color:#E1E4E8"> curso_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AND</span><span style="color:#E1E4E8"> (usuario_id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">-- Esta consulta filtra las inscripciones para los cursos con ID 1 o 2,</span></span>
+<span class="line"><span style="color:#6A737D">-- pero solo si el usuario tiene un ID igual a 3.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CURSOS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> (creador_id </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> AND</span><span style="color:#E1E4E8"> creador_id </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">AND</span><span style="color:#E1E4E8"> (TITULO </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Diseño UX/UI'</span><span style="color:#F97583"> OR</span><span style="color:#E1E4E8"> titulo </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Spring Boot Avanzado'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">-- Esta consulta filtra los cursos que como "creador_id" este entre</span></span>
+<span class="line"><span style="color:#6A737D">-- el 1 y el 2 y que ademas el titulo del curso sea o "Diseño UX/UI"</span></span>
+<span class="line"><span style="color:#6A737D">-- o "Spring Boot Avanzado"</span></span></code></pre>
+<h2 id="notas">Notas:</h2>
+<p><strong>Nota</strong>: El uso de paréntesis es opcional.</p>
+<p><strong>Nota</strong>: Se pueden realizar todas las combinaciones necesarias, sin importar su nivel de complejidad.</p>
+<p><strong>Nota</strong>: El operador mas ocupado y necesario en el aspecto laboral es el <strong><code>AND</code></strong>. El <strong><code>OR</code></strong> y <strong><code>NOT</code></strong> se ocupane en filtrados máas particulares.</p>
+<h2 id="ejercicios">Ejercicios:</h2>
+<ol>
+<li>
+<p>Devolver los registros de los <strong>“usuarios”</strong> que tengan como <strong>“Nombre” “Luis Marquez”</strong> ó en todo caso al usuario con <strong>“id”</strong> igual a 3.</p>
+</li>
+<li>
+<p>Devolver los registros de los <strong>“usuarios”</strong> con los correos <strong>“<a href="mailto:ana@example.com">ana@example.com</a>”</strong> y <strong>“<a href="mailto:ana@example.com">ana@example.com</a>”</strong>.</p>
+</li>
+<li>
+<p>Devolver los registros de las <strong>“categorias”</strong> con el <strong>“Nombre”</strong> de <strong>“Programación”</strong> ademas de los <strong>“id” “3”</strong> y <strong>“4”</strong>.</p>
+</li>
+<li>
+<p>Devolver los registros de las <strong>“insripciones”</strong> del <strong>“usuario”</strong> con el <strong>“id”</strong> 3 y el <strong>“curso”</strong> con el <strong>“id”</strong> 1.</p>
+</li>
+<li>
+<p>Devolver los registros de los <strong>“curso”</strong> con el <strong>“titulo”</strong> de <strong>“Curso de SQL Básico”</strong> y el <strong>“curso”</strong> con el <strong>“creador”</strong> del <strong>“id”</strong> 2.</p>
+</li>
+<li>
+<p>Devolver los registros de los <strong>“perfiles”</strong> que no tengan el <strong>“sitio web”</strong> <a href="https://anaart.com">https://anaart.com</a>, que tampoco tengan el <strong>“usuario”</strong> con el <strong>“id”</strong> 2 pero que si sea el <strong>“registro”</strong> con el <strong>“id”</strong> 1</p>
+</li>
+</ol>
+<h2 id="enlaces-relacionados">Enlaces relacionados</h2>
+<p><strong>GitHub</strong>: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/Filtrado%20complejo%20con%20operaciones%20logicas%20AND%20OR%20y%20NOT.md" target="_blank">Filtrado complejo con operaciones lógicas: AND, OR y NOT</a></p>
+<p><strong>Pagina WEB</strong>: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Filtrado_complejo_con_operaciones_logicas_AND_OR_y_NOT" target="_blank">Filtrado complejo con operaciones lógicas: AND, OR y NOT</a></p>
+<h2 id="apa">APA</h2>
+<p>Marquez Mendez, L. G. (2025, 8 de agosto). <em>Filtrado complejo con operaciones lógicas: AND, OR y NOT</em>. Recuperado de <span style="word-break: break-all;"><a href="http://www.gerardomarquez.dev/blog/posts/Filtrado_complejo_con_operaciones_logicas_AND_OR_y_NOT">http://www.gerardomarquez.dev/blog/posts/Filtrado_complejo_con_operaciones_logicas_AND_OR_y_NOT</a></span></p>

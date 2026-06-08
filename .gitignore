@@ -64,3 +64,5 @@ backend/mail_whatsapp_send/.nb-gradle/
 
 ### VS Code ###
 backend/mail_whatsapp_send/.vscode/
+
+mocks/blog-mock-api/target/

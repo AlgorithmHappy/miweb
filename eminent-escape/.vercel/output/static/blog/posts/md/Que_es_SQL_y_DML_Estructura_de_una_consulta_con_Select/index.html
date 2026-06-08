@@ -1,0 +1,55 @@
+<!DOCTYPE html><meta charset="utf-8"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		var script = document.createElement('script');
+		script.defer = true;
+		script.src = '/_vercel/insights/script.js';
+		var head = document.querySelector('head');
+		head.appendChild(script);
+	</script><h1 id="que-es-sql-y-dml-estructura-de-una-consulta-con-select">¿Que es SQL y DML?. Estructura de una consulta con “Select”</h1>
+<h2 id="definicion-de-sql-y-dml">Definicion de SQL y DML</h2>
+<p><strong>SQL</strong> son las siglas en inglés de <em>Structured Query Language</em>, que se traduce al español como <strong>Lenguaje de Consulta Estructurado</strong>. Es un lenguaje de programación <em>declarativo</em> que permite manipular grandes volúmenes de datos almacenados en una base de datos, mediante instrucciones específicas.
+<strong>SQL</strong> está compuesto por cuatro subconjuntos de comandos: <strong>DML, DDL, DCL y TCL</strong>. El subconjunto más utilizado es el <strong>DML</strong>.
+<strong>DML</strong> significa <em>Data Manipulation Language (Lenguaje de Manipulación de Datos)</em>. Este conjunto de comandos se utiliza para consultar y modificar los datos almacenados en las tablas de una base de datos, lo que lo convierte en el más usado en el día a día del trabajo con bases de datos.
+Los principales comandos de <strong>DML</strong> son:</p>
+<ul>
+<li><strong>SELECT</strong>: <em>para consultar datos de una tabla</em></li>
+<li><strong>INSERT</strong>: <em>para insertar nuevos registros</em></li>
+<li><strong>UPDATE</strong>: <em>para actualizar datos existentes</em></li>
+<li><strong>DELETE</strong>: <em>para eliminar registros</em></li>
+</ul>
+<p>En este curso nos enfocaremos exclusivamente en el comando <strong>SELECT</strong> y en todo lo que se puede lograr con él.</p>
+<h3 id="glosario">Glosario</h3>
+<ul>
+<li><strong>Lenguaje de programacion</strong>: Un lenguaje de programación es una herramienta que permite a los seres humanos “comunicarse” con una computadora para darle instrucciones. Estas instrucciones pueden utilizarse para crear software (aplicaciones) que pueden ser usados por personas a través de distintos dispositivos.</li>
+<li><strong>Declarativo</strong>: Es un tipo de lenguaje de programación cuyo enfoque está en describir lo que se quiere lograr, en lugar de explicar cómo hacerlo paso a paso. En otras palabras, su semántica se basa en el <em>“qué” se desea obtener, no en el “cómo” se debe ejecutar</em>.</li>
+<li><strong>Comando</strong>: Es la instrucción más básica que se le puede dar a una computadora para que realice una acción específica.</li>
+<li><strong>Base de datos</strong>: Es un software (aplicacion) que permite la gestion de una gran cantidad de datos.</li>
+</ul>
+<h2 id="primera-consulta">Primera consulta</h2>
+<p>La consulta mas basica que se puede realizar es:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> email </span><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> usuarios;</span></span>
+<span class="line"><span style="color:#6A737D">-- La palabra "SELECT" indica las columnas que quieres de la tabla, con el "FROM" indicas que tabla de la base de datos quieres y con el ";" indicas que hasta ahi acaba la instruccion.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#E1E4E8"> nombre, email </span><span style="color:#F97583">FROM</span><span style="color:#E1E4E8"> usuarios;</span></span>
+<span class="line"><span style="color:#6A737D">-- Si deseas consultar varias columnas puedes separar por coma cada una de las columnas que quieras.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">-- Si quisieramos traducir estas linea a lenguaje humano yo las traduciria asi "Selecciona la columna email desde la tabla usuarios"</span></span></code></pre>
+<h3 id="variante">Variante</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> usuarios;</span></span>
+<span class="line"><span style="color:#6A737D">-- Con el "*" indicas que quieres mostrar todas las columnas de dicha tabla, en este caso "usuarios"</span></span></code></pre>
+<h2 id="notas">Notas:</h2>
+<p><strong>Nota:</strong> Las sentencias utilizadas pueden ser en mayusculas o en minusculas</p>
+<p><strong>Nota:</strong> Es importante contar con los permisos adecuados sobre las tablas a las que se les aplica una sentencia SELECT, ya que podrían estar restringidas y provocar el siguiente error: ”
+ORA-00942: table or view does not exist”</p>
+<h2 id="ejercicios">Ejercicios:</h2>
+<ol>
+<li><em>Consulta todos los datos de la tabla “CURSOS”</em></li>
+<li><em>Consulta las columnas “BIOGRAFIA” y “SITIO_WEB” de la tabla “PERFILES”</em></li>
+<li><em>¿Que columnas tiene la tabla “INSCRIPCIONES”?</em></li>
+<li><em>¿Que cursos existen en la base de datos?</em></li>
+</ol>
+<h2 id="enlaces-relacionados">Enlaces relacionados</h2>
+<p><strong>GitHub</strong>: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/¿Que%20es%20SQL%20y%20DML%3F%20Estructura%20de%20una%20consulta%20con%20Select.md" target="_blank">¿Que es SQL y DML?. Estructura de una consulta con “Select”</a></p>
+<p><strong>Pagina WEB</strong>: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select" target="_blank">¿Que es SQL y DML?. Estructura de una consulta con “Select”</a></p>
+<p><strong>YouTube</strong>: <a class="postLinks" href="https://www.youtube.com/watch?v=Oh9TlzXZ01Q&#x26;t=23s" target="_blank">Curso de SQL “SELECT” Facil y Rapido cap 1</a></p>
+<h2 id="apa">APA</h2>
+<p>Marquez Mendez, L. G. (2025, 8 de agosto). <em>¿Que es SQL y DML?. Estructura de una consulta con “Select”</em>. Recuperado de <span style="word-break: break-all;"><a href="https://www.gerardomarquez.dev/blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select">https://www.gerardomarquez.dev/blog/posts/Que_es_SQL_y_DML_Estructura_de_una_consulta_con_Select</a></span></p>

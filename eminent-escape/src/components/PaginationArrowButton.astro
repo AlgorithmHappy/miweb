@@ -1,16 +1,12 @@
 ---
-const {class: className, customHref, customTitle} = Astro.props;
+const {class: className, id, lastPage, customHref, customTitle} = Astro.props;
 ---
-<a class={ `${className} fab` } href={ customHref } title={ customTitle }>
+<a data-last-page={ lastPage } id={ id } class={ `${className} fab` } href={ customHref } title={ customTitle }>
     <slot name="arrowIcon"></slot>
-    <!--<span class="material-icons-round">mail</span> -->
 </a>
 
 <style>
     .fab {
-        /*position: fixed;
-        bottom: 32px; right: 32px;
-        z-index: 200;*/
         width: 56px;
         height: 56px;
         border-radius: 50%;
@@ -29,5 +25,11 @@ const {class: className, customHref, customTitle} = Astro.props;
     .fab:hover {
         transform: scale(1.1) translateY(-3px);
         box-shadow: 0 10px 32px rgba(64,224,208,0.5);
+    }
+    .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        filter: grayscale(50%);
     }
 </style>

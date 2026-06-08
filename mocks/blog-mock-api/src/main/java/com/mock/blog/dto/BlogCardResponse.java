@@ -17,7 +17,8 @@ public record BlogCardResponse(
         List<String> tags,
         String link,
         String imageSrc,
-        String imageAlt
+        String imageAlt,
+        String urlRawMarkDown
 ) {
     public static BlogCardResponse from(BlogCard card) {
         return new BlogCardResponse(
@@ -28,7 +29,8 @@ public record BlogCardResponse(
                 card.tags(),
                 card.link(),
                 card.imageSrc(),
-                card.imageAlt()
+                card.imageAlt(),
+                card.urlRawMarkDown()
         );
     }
 }

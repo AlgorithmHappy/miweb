@@ -2,6 +2,7 @@ package dev.gerardomarquez.mail_whatsapp_send.services;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import dev.gerardomarquez.mail_whatsapp_send.entities.PostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.RelationPostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.TagEntity;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsCrud;
+import dev.gerardomarquez.mail_whatsapp_send.repositories.RelationsPostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.TagsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 
@@ -36,6 +38,9 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
 
     @Autowired
     private TagsCrud tagsCrud;
+
+    @Autowired
+    private RelationsPostsCrud relationsPostsCrud;
 
     /*
      * Asunto a donde se va enviar
@@ -170,14 +175,14 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
      * {@inheritDoc}
      */
     @Override
-    public void insertOne(String owner, String repo, String branch, String filePath) {
+    public PostEntity insertOnePost(String owner, String repo, String branch, String filePath) {
         PostEntity newPost = new PostEntity();
         newPost.setTitle(filePath.split("/")[0]);
         newPost.setAverageReadDuration(Constants.GENERIC_AVERAGE_DURATION);
         newPost.setDescription(Constants.GENERIC_POST_DESCRIPTION);
         String linkRawMarkDown = Constants.URL_RAW_MARK_DOWN.formatted(owner, repo, branch, Constants.encodePath(filePath) );
         newPost.setLinkRawMarkdown(linkRawMarkDown);
-        postsCrud.save(newPost);
+        return postsCrud.save(newPost);
     }
 
     /**
@@ -185,12 +190,50 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
      */
     @Override
     public void deleteOne(String filePath) {
-        String title = filePath.split("/")[0];
+        List<String> listDirectories = Arrays.asList(filePath.split("/") );
 
-        Optional<PostEntity> post = postsCrud.findFirstByTitle(title);
+        Optional<PostEntity> post = postsCrud.findByTitle(listDirectories.getLast() );
         if(post.isPresent() ){
             postsCrud.delete(post.get() );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PostEntity findOnePostByFilePath(String filePath) {
+        List<String> listDirectories = Arrays.asList(filePath.split("/") );
+        Optional<PostEntity> entity = postsCrud.findByTitle(listDirectories.getLast() );
+        if(entity.isPresent() ) return entity.get();
+        
+        return new PostEntity();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertOrUpdateOneRelationPost(RelationPostEntity relationPost) {
+        relationsPostsCrud.save(relationPost);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteOneRelationPost(RelationPostEntity relationPost) {
+        relationsPostsCrud.delete(relationPost);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PostEntity findLastPost() {
+        Optional<PostEntity> post = postsCrud.findTopByOrderByCreatedAtDesc();
+        if(post.isPresent() ) return post.get();
+        return new PostEntity();
     }
 
 }

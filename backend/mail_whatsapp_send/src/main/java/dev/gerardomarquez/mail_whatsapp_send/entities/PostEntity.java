@@ -35,7 +35,7 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title", nullable = false, length = 70)
+    @Column(name = "title", nullable = false, length = 70, unique = true)
     private String title;
 
     @CreationTimestamp

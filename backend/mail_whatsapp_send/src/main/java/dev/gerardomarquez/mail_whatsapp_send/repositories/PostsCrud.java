@@ -22,5 +22,7 @@ public interface PostsCrud extends JpaRepository<PostEntity, Integer> {
 
     Page<PostEntity> findDistinctByTitleContainingIgnoreCaseAndTags_IdIn(String title, List<Integer> tags, Pageable pageable);
 
-    Optional<PostEntity> findFirstByTitle(String title);
+    Optional<PostEntity> findByTitle(String title);
+
+    Optional<PostEntity> findTopByOrderByCreatedAtDesc();
 }

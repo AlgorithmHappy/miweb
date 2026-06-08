@@ -1,0 +1,86 @@
+<!DOCTYPE html><meta charset="utf-8"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		var script = document.createElement('script');
+		script.defer = true;
+		script.src = '/_vercel/insights/script.js';
+		var head = document.querySelector('head');
+		head.appendChild(script);
+	</script><h1 id="filtra-datos-con-la-cláusula-where">Filtra datos con la cláusula “Where”</h1>
+<p><strong>WHERE</strong> es una cláusula que se utiliza para <strong>filtrar filas</strong> en una consulta <strong>SQL</strong> con <strong>SELECT</strong>. Esta cláusula permite establecer condiciones específicas para mostrar únicamente los registros que cumplan ciertos criterios.</p>
+<p>Para realizar estas filtraciones, <strong>WHERE</strong> emplea operadores de comparación, que se describen a continuación:</p>
+<ul>
+<li>
+<p><strong>=</strong> : Filtra los datos que sean <strong>iguales</strong> al valor especificado.</p>
+</li>
+<li>
+<p><strong>&#x3C;</strong> : Filtra los datos que sean <strong>menores que</strong> el valor especificado.</p>
+</li>
+<li>
+<p><strong>></strong> : Filtra los datos que sean <strong>mayores que</strong> el valor especificado.</p>
+</li>
+<li>
+<p><strong>&#x3C;=</strong> : Filtra los datos que sean <strong>menores o iguales</strong> al valor especificado.</p>
+</li>
+<li>
+<p><strong>>=</strong> : Filtra los datos que sean <strong>mayores o iguales</strong> al valor especificado.</p>
+</li>
+<li>
+<p>!= o &#x3C;> : Filtra los datos que sean <strong>diferentes</strong> al valor especificado.</p>
+</li>
+</ul>
+<h2 id="consultas">Consultas</h2>
+<p>Las consultas que se pueden realizar con esto son:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui se esta filtrando los renglones cuyo dato "ID" sea igual a 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui se filtran los renglones cuyo dato "ID" es mayor a 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui se filtran los renglones cuyo dato "ID" es menor a 3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">&#x3C;></span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- En estas 2 consultas se filtran los renglones cuyo dato "ID" es diferente a 3</span></span></code></pre>
+<h2 id="uso-de-textos-o-strings">Uso de textos o (strings)</h2>
+<p>Si se desea comparar datos de tipo cadena de <strong>texto (strings)</strong>, es necesario encerrar los valores entre comillas simples (’ ’).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> NOMBRE </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Aqui se esta filtrando los renglones que en cuyo dato "NOMBRE" sea igual que el texto 'Programación'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> NOMBRE </span><span style="color:#F97583">&#x3C;</span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Se puede utilizar los operadors "&#x3C;" y ">" con textos para compararlos alfabeticamente</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> NOMBRE </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> NOMBRE </span><span style="color:#F97583">!=</span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">SELECT</span><span style="color:#F97583"> *</span><span style="color:#F97583"> FROM</span><span style="color:#E1E4E8"> CATEGORIAS </span><span style="color:#F97583">WHERE</span><span style="color:#E1E4E8"> NOMBRE </span><span style="color:#F97583">&#x3C;></span><span style="color:#9ECBFF"> 'Programación'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">-- Los demas operadores se trabajan igual que con los numeros</span></span></code></pre>
+<h3 id="notas">Notas:</h3>
+<p><strong>Nota</strong>: En los datos de tipo <strong>texto “strings”</strong> sí son sensibles a mayúsculas y minúsculas.</p>
+<p><strong>Nota</strong>: Los datos numéricos con punto decimal son tratados igual que los numéricos normales.</p>
+<p><strong>Nota</strong>: Los datos de tipo fecha (date) se explicarán más adelante.</p>
+<p><strong>Nota:</strong> Los datos de tipo <strong>CLOB no se pueden comparar</strong>; si se intentan, arroja el siguiente error: ORA-22848: cannot use CLOB type as comparison key</p>
+<h2 id="ejercicios">Ejercicios:</h2>
+<ol>
+<li>
+<p>¿Quién es el usuario con el id 2?</p>
+</li>
+<li>
+<p>¿Cuáles son los usuarios con id mayor a 1?</p>
+</li>
+<li>
+<p>¿Qué ID tiene la categoría “Diseño”?</p>
+</li>
+<li>
+<p>En orden alfabético por nombre de usuario, ¿quién es menor que ‘Carlos Méndez’?</p>
+</li>
+<li>
+<p>¿Cuáles son los cursos del usuario con id 1?</p>
+</li>
+<li>
+<p>¿Qué consulta harías para mostrar el “CURSO_ID” 1 Y 3?</p>
+</li>
+</ol>
+<h2 id="enlaces-relacionados">Enlaces relacionados</h2>
+<p><strong>GitHub</strong>: <a class="postLinks" href="https://github.com/AlgorithmHappy/Curso-de-SQL-SELECT-Facil-y-Rapido/blob/main/Filtra%20datos%20con%20la%20clausula%20Where.md" target="_blank">Filtra datos con la cláusula “Where”</a></p>
+<p><strong>Pagina WEB</strong>: <a class="postLinks" href="http://www.gerardomarquez.dev/blog/posts/Filtra_datos_con_la_clausula_Where" target="_blank">Filtra datos con la cláusula “Where”</a></p>
+<h2 id="apa">APA</h2>
+<p>Marquez Mendez, L. G. (2025, 8 de agosto). <em>Filtra datos con la cláusula “Where”</em>. Recuperado de <span style="word-break: break-all;"><a href="http://www.gerardomarquez.dev/blog/posts/Filtra_datos_con_la_clausula_Where">http://www.gerardomarquez.dev/blog/posts/Filtra_datos_con_la_clausula_Where</a></span></p>

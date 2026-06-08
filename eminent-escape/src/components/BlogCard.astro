@@ -8,6 +8,7 @@ interface BlogCardProps {
     link: string;
     imageSrc: string;
     imageAlt: string;
+    urlRawMarkDown: string;
 }
 const { title, date, duration, description, tags, link, imageSrc, imageAlt } = Astro.props as BlogCardProps;
 ---
