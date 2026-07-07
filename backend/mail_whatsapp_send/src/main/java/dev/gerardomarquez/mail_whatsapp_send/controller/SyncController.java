@@ -1,0 +1,206 @@
+package dev.gerardomarquez.mail_whatsapp_send.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.tomcat.util.bcel.Const;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import dev.gerardomarquez.mail_whatsapp_send.entities.PostSyncEntity;
+import dev.gerardomarquez.mail_whatsapp_send.entities.RepositoryEntity;
+import dev.gerardomarquez.mail_whatsapp_send.errors.GitHubException;
+import dev.gerardomarquez.mail_whatsapp_send.errors.HedgeDocException;
+import dev.gerardomarquez.mail_whatsapp_send.errors.SyncException;
+import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsSyncCrud;
+import dev.gerardomarquez.mail_whatsapp_send.services.ServiceSync;
+import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
+
+/**
+ * Controller del panel de sincronización entre HedgeDoc y GitHub.
+ * Protegido por Spring Security, accesible únicamente en /sync.
+ */
+@Controller
+@RequestMapping("/sync")
+public class SyncController {
+    private final ServiceSync serviceSync;
+    private final PostsSyncCrud postSyncCrud;
+    private final MessageSource messageSource;
+
+    @Value("${hedgedoc.url}")
+    private String hedgedocUrl;
+
+    /**
+     * @param serviceSync   Servicio orquestador de sincronización
+     * @param messageSource Para obtener mensajes desde messages.properties
+     */
+    public SyncController(ServiceSync serviceSync, MessageSource messageSource, PostsSyncCrud postSyncCrud) {
+        this.serviceSync = serviceSync;
+        this.messageSource = messageSource;
+        this.postSyncCrud = postSyncCrud;
+    }
+
+    /**
+     * Muestra el panel principal de sincronización.
+     * Lista todos los pares nota-repo agrupados por repositorio.
+     *
+     * @param model Modelo de Thymeleaf
+     * @return Vista sync/index
+     */
+    @GetMapping
+    public String index(Model model) {
+
+        // Obtener todos los pares y agruparlos por repositorio
+        Map<RepositoryEntity, List<PostSyncEntity>> postsSyncByRepo = postSyncCrud.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(PostSyncEntity::getRepository));
+
+        model.addAttribute("postsSyncByRepo", postsSyncByRepo);
+        model.addAttribute("hedgedocUrl", hedgedocUrl);
+
+        return "sync/index";
+    }
+
+    /**
+     * Ejecuta un Pull para un post específico.
+     * Obtiene el contenido del archivo en GitHub y crea
+     * una nota nueva en HedgeDoc con ese contenido.
+     *
+     * @param idPost             ID del post a sincronizar
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
+    @PostMapping("/pull/{idPost}")
+    public String pull(@PathVariable Integer idPost, RedirectAttributes redirectAttributes) {
+        try {
+            String noteId = serviceSync.pull(idPost);
+            redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PULL_SUCCESS,
+                    new Object[]{noteId},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (GitHubException e) {
+            redirectAttributes.addFlashAttribute(
+                Constants.ERROR,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PULL_GITHUB,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (HedgeDocException e) {
+            redirectAttributes.addFlashAttribute(
+                Constants.ERROR,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PULL_HEDGEDOC,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (SyncException e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage() );
+        }
+
+        return "redirect:/sync";
+    }
+
+    /**
+     * Ejecuta un Push para un post específico.
+     * Obtiene el contenido de la nota en HedgeDoc y lo
+     * sube al archivo correspondiente en GitHub.
+     *
+     * @param idPost             ID del post a sincronizar
+     * @param commitMessage      Mensaje del commit en GitHub
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
+    @PostMapping("/push/{idPost}")
+    public String push(
+            @PathVariable Integer idPost,
+            @RequestParam String commitMessage,
+            RedirectAttributes redirectAttributes) {
+        try {
+            serviceSync.push(idPost, commitMessage);
+            redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_SUCCESS,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+                );
+        } catch (GitHubException e) {
+            redirectAttributes.addFlashAttribute(
+                Constants.ERROR,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_GITHUB,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (HedgeDocException e) {
+            redirectAttributes.addFlashAttribute(
+                Constants.ERROR,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_HEDGEDOC,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (SyncException e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage() );
+        }
+
+        return "redirect:/sync";
+    }
+
+    /**
+     * Muestra el formulario de login del panel de sync.
+     *
+     * @param error   Presente si el login falló
+     * @param logout  Presente si el usuario cerró sesión
+     * @param model   Modelo de Thymeleaf
+     * @return Vista sync/login
+     */
+    @GetMapping("/login")
+    public String login(
+        @RequestParam(required = false) String error,
+        @RequestParam(required = false) String logout,
+        Model model
+    ) {
+        if (error != null) {
+            model.addAttribute(
+                Constants.ERROR,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_LOGIN_ERROR,
+                    null,
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        }
+        if (logout != null) {
+            model.addAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_LOGOUT_ERROR,
+                    null,
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        }
+        return "sync/login";
+    }
+}

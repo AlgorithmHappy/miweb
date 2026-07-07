@@ -1,7 +1,6 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -11,11 +10,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class ImplementationServiceRebuildAndDeploy implements ServiceRebuildAndDeploy {
 
-    @Autowired
-    private WebClient webClient;
+    private final WebClient webClient;
 
-    @Value("${vercel.rebuild.deploy.url}")
-    private String completedUrs;
+    ImplementationServiceRebuildAndDeploy(
+        @Qualifier("telegramWebClient") WebClient webClient
+    ) {
+        this.webClient = webClient;
+    }
 
     /**
      * {@inheritDoc}
@@ -23,7 +24,6 @@ public class ImplementationServiceRebuildAndDeploy implements ServiceRebuildAndD
     @Override
     public void rebuildAndDeploy() {
         webClient.post()
-            .uri(completedUrs)
             .retrieve()
             .bodyToMono(String.class)
             .block();        

@@ -33,7 +33,7 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
     public void pushEventWebHook(String json, String signature) {
         String expected = new String();
         try {
-            expected = Constants.calculateSignature(json, signature);    
+            expected = Constants.calculateSignature(json, signature, Constants.GITHUB);    
         } catch (Exception e) {
             System.out.println(e.getMessage() );
         }
@@ -84,8 +84,6 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
                             );
                             postsCrud.insertOrUpdateOneRelationPost(lastRelationPost);
                         }
-                        
-                        serviceRebuildAndDeploy.rebuildAndDeploy();
 
                         System.out.println("AGREGADO: " + file.asText() );
                     }
@@ -117,11 +115,15 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
                             postsCrud.deleteOneRelationPost(it);
                         }
                         postsCrud.deleteOne(file.asText() );
+
+
                         System.out.println("ELIMINADO: " + file.asText() );
                     }
                 );
 
             }
+
+            serviceRebuildAndDeploy.rebuildAndDeploy();
         } catch (Exception e) {
             System.out.println("Hubo un error en el parseo del json");
         }

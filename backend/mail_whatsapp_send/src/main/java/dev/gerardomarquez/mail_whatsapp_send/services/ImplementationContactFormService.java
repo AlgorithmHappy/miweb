@@ -50,7 +50,7 @@ public class ImplementationContactFormService implements ContactFormService {
         );
         serviceSendMessage.sendMessage(requestTelegram);
 
-        return new ApiResponse<>(true, Constants.SUCCESS, null);
+        return new ApiResponse<>(true, Constants.SUCCESS_OPERATION, null);
     }
 
 }

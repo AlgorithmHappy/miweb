@@ -26,7 +26,8 @@ public class BlogPosts {
     private ServicePostsCrud servicePostsCrud;
 
     /**
-     * Metodo que se ejecuta al enviar una peticion de tipo post en la url: /v1/messages/send
+     * Metodo que se ejecuta al enviar una peticion de tipo post en la url: /v1/messages/send para devolver
+     * todos los posts (entradas del blog) para que los pueda compilar a html astro
      * @param contactMessage Request que mando el cliente con los atributos del formulario
      * de contacto
      */

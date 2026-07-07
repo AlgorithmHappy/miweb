@@ -29,10 +29,11 @@ public class MessagesContactForm {
     @Autowired
     private ContactFormService contactFormService;
 
-    /*
+    /**
      * Metodo que se ejecuta al enviar una peticion de tipo post en la url: /v1/messages/send
      * @param contactMessage Request que mando el cliente con los atributos del formulario
      * de contacto
+     * @return Devuelve un response generico para indicar que fue exitosa el request
      */
     @PostMapping("/messages")
     public ResponseEntity<ApiResponse<?> > send(@Valid @RequestBody ContactFormRequest contactMessage) {

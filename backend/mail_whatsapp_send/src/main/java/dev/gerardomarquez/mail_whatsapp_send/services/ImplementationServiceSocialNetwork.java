@@ -1,9 +1,19 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import dev.gerardomarquez.mail_whatsapp_send.configurations.PostizProperties;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.requests.Post;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.requests.PostizRequest;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.PostizResponse;
 
 /**
  * Clase de implementation que realiza el posteo a cada red social con postiz
@@ -11,27 +21,57 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class ImplementationServiceSocialNetwork implements ServiceSocialNetwork {
 
-    @Autowired
-    private WebClient postizWebClient;
+    /**
+     * Cliente rest para realizar la peticion http
+     */
+    private final WebClient postizWebClient;
 
-    @Value("${postiz.integration.facebook}")
-    private String facebookIntegrationId;
+    private final PostizProperties postizProperties;
 
-    @Value("${postiz.integration.linkedin}")
-    private String linkedinIntegrationId;
+    ImplementationServiceSocialNetwork(
+        @Qualifier("postizWebClient") WebClient postizWebClient,
+        PostizProperties postizProperties
+    ) {
+        this.postizWebClient = postizWebClient;
+        this.postizProperties = postizProperties;
+    }
 
-    @Value("${postiz.integration.x}")
-    private String xIntegrationId;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void toPostOnSocialNetworks(String description, String linkPost) {
 
-    @Value("${postiz.integration.instagram}")
-    private String instagramIntegrationId;
+        for(Post it: postizProperties.getPosts() ){
+            it.value().add(
+                new dev.gerardomarquez.mail_whatsapp_send.dtos.requests.Value(
+                    description + " " + linkPost,
+                    new ArrayList<String>()
+                )
+            );
+        }
 
-    @Value("${postiz.integration.telegram}")
-    private String telegramIntegrationId;
+        
+        String fecha = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now() );
 
-    @Value("${postiz.integration.whatsapp}")
-    private String whatsappIntegrationId;
+        PostizRequest request = new PostizRequest(
+            "now",
+            fecha,
+            false,
+            new ArrayList<String>(),
+            postizProperties.getPosts()
+        );
 
-    @Value("${postiz.integration.discord}")
-    private String discordIntegrationId;
+        List<PostizResponse> response = postizWebClient
+            .post()
+            .bodyValue(request)
+            .retrieve()
+            .bodyToFlux(PostizResponse.class)
+            .collectList()
+            .block();
+
+    }
 }

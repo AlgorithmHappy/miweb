@@ -125,7 +125,7 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
 
         return new ApiResponse<>(
             true,
-            Constants.SUCCESS,
+            Constants.SUCCESS_OPERATION,
             new PageResponse<>(
                 responsePage.getContent(),
                 responsePage.getNumber(),

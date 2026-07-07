@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Evita que Google indexe esta página -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Sync Manager</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            padding: 2rem;
+            color: #333;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: #555;
+        }
+
+        /* ---- Alertas ---- */
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* ---- Sección por repositorio ---- */
+        .repo-section {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ---- Tabla ---- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            background-color: #f0f0f0;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ---- Botones ---- */
+        .btn {
+            padding: 0.4rem 0.85rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-right: 0.4rem;
+        }
+
+        .btn-pull {
+            background-color: #4a90e2;
+            color: #fff;
+        }
+
+        .btn-pull:hover {
+            background-color: #357abd;
+        }
+
+        .btn-push {
+            background-color: #27ae60;
+            color: #fff;
+        }
+
+        .btn-push:hover {
+            background-color: #1e8449;
+        }
+
+        /* ---- Input commit message ---- */
+        .commit-input {
+            padding: 0.35rem 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            width: 200px;
+            margin-right: 0.4rem;
+        }
+
+        /* ---- Badge último sync ---- */
+        .badge-sync {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        /* ---- Sin pares ---- */
+        .empty {
+            font-size: 0.9rem;
+            color: #999;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sync Manager</h1>
+
+<!-- Mensaje de éxito -->
+<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+<!-- Mensaje de error -->
+<div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+<!-- Una sección por repositorio -->
+<div th:each="entry : ${postsSyncByRepo}" class="repo-section">
+
+    <!-- Nombre del repositorio -->
+    <h2>
+        📁 <span th:text="${entry.key.owner + '/' + entry.key.name}"></span>
+        &nbsp;·&nbsp;
+        <small th:text="${entry.key.defaultBranch}"></small>
+    </h2>
+
+    <!-- Tabla de pares nota-repo -->
+    <table th:if="${not #lists.isEmpty(entry.value)}">
+        <thead>
+            <tr>
+                <th>Post</th>
+                <th>Archivo en GitHub</th>
+                <th>Nota en HedgeDoc</th>
+                <th>Último sync</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pair : ${entry.value}">
+
+                <!-- Título del post -->
+                <td th:text="${pair.post.title}"></td>
+
+                <!-- Ruta del archivo en GitHub -->
+                <td th:text="${pair.filePath}"></td>
+
+                <!-- ID de la nota en HedgeDoc con link directo -->
+                <td>
+                    <a th:href="${hedgedocUrl + '/' + pair.hedgedocNoteId}"
+                       target="_blank"
+                       th:text="${pair.hedgedocNoteId}">
+                    </a>
+                </td>
+
+                <!-- Último sync -->
+                <td>
+                    <span class="badge-sync"
+                          th:text="${pair.lastSyncedAt != null ? #temporals.format(pair.lastSyncedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}">
+                    </span>
+                </td>
+
+                <!-- Acciones: Pull y Push -->
+                <td>
+                    <!-- Pull -->
+                    <form th:action="@{/sync/pull/{id}(id=${pair.idPost})}"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-pull">⬇ Pull</button>
+                    </form>
+
+                    <!-- Push con input para el commit message -->
+                    <form th:action="@{/sync/push/{id}(id=${pair.idPost})}"
+                          method="post"
+                          style="display:inline;">
+                        <input type="text"
+                               name="commitMessage"
+                               class="commit-input"
+                               placeholder="Mensaje del commit"
+                               required/>
+                        <button type="submit" class="btn btn-push">⬆ Push</button>
+                    </form>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${#lists.isEmpty(entry.value)}" class="empty">
+        No hay posts sincronizados en este repositorio.
+    </p>
+
+</div>
+
+<!-- Sin repositorios configurados -->
+<p th:if="${#maps.isEmpty(postsSyncByRepo)}" class="empty">
+    No hay repositorios configurados todavía.
+</p>
+
+</body>
+</html>
