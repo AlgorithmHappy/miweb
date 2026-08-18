@@ -96,12 +96,19 @@
             margin-right: 0.4rem;
         }
 
+        .btn:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         .btn-pull {
             background-color: #4a90e2;
             color: #fff;
         }
 
-        .btn-pull:hover {
+        .btn-pull:not(:disabled):hover {
             background-color: #357abd;
         }
 
@@ -110,7 +117,7 @@
             color: #fff;
         }
 
-        .btn-push:hover {
+        .btn-push:not(:disabled):hover {
             background-color: #1e8449;
         }
 
@@ -149,40 +156,47 @@
 <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
 <!-- Una sección por repositorio -->
-<div th:each="entry : ${postsSyncByRepo}" class="repo-section">
+<div th:each="entry : ${repositorySections}" class="repo-section">
 
     <!-- Nombre del repositorio -->
     <h2>
-        📁 <span th:text="${entry.key.owner + '/' + entry.key.name}"></span>
+        📁 <span th:text="${entry.owner + '/' + entry.name}"></span>
         &nbsp;·&nbsp;
-        <small th:text="${entry.key.defaultBranch}"></small>
+        <small th:text="${entry.branch}"></small>
     </h2>
+    <!-- Push con input para el commit message -->
+    <form th:action="@{/sync/download/{idRepository}(idRepository=${entry.id})}"
+            method="post"
+            style="display:inline;">
+        <button type="submit" class="btn btn-push">Descargar MarkDowns</button>
+    </form>
 
     <!-- Tabla de pares nota-repo -->
-    <table th:if="${not #lists.isEmpty(entry.value)}">
+    <table th:if="${entry != null and !entry.rowsNotesForPublicPosts.isEmpty()}">
         <thead>
             <tr>
                 <th>Post</th>
                 <th>Archivo en GitHub</th>
                 <th>Nota en HedgeDoc</th>
                 <th>Último sync</th>
-                <th>Acciones</th>
+                <th>Publicar</th>
+                <th>Descargar</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="pair : ${entry.value}">
+            <tr th:each="pair : ${entry.rowsNotesForPublicPosts}">
 
                 <!-- Título del post -->
-                <td th:text="${pair.post.title}"></td>
+                <td th:text="${pair.title}"></td>
 
                 <!-- Ruta del archivo en GitHub -->
-                <td th:text="${pair.filePath}"></td>
+                <td th:text="${pair.gitHubFilePath}"></td>
 
                 <!-- ID de la nota en HedgeDoc con link directo -->
                 <td>
-                    <a th:href="${hedgedocUrl + '/' + pair.hedgedocNoteId}"
+                    <a th:href="${hedgedocUrl + '/' + pair.hedgeDocNoteId}"
                        target="_blank"
-                       th:text="${pair.hedgedocNoteId}">
+                       th:text="${pair.hedgeDocNoteId}">
                     </a>
                 </td>
 
@@ -195,13 +209,6 @@
 
                 <!-- Acciones: Pull y Push -->
                 <td>
-                    <!-- Pull -->
-                    <form th:action="@{/sync/pull/{id}(id=${pair.idPost})}"
-                          method="post"
-                          style="display:inline;">
-                        <button type="submit" class="btn btn-pull">⬇ Pull</button>
-                    </form>
-
                     <!-- Push con input para el commit message -->
                     <form th:action="@{/sync/push/{id}(id=${pair.idPost})}"
                           method="post"
@@ -211,7 +218,15 @@
                                class="commit-input"
                                placeholder="Mensaje del commit"
                                required/>
-                        <button type="submit" class="btn btn-push">⬆ Push</button>
+                        <button th:disabled="${!pair.enabledNote}" type="submit" class="btn btn-push">⬆ Push</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- Pull -->
+                    <form th:action="@{/sync/pull/{id}(id=${pair.idPost})}"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-pull">⬇ Pull</button>
                     </form>
                 </td>
 
@@ -219,14 +234,14 @@
         </tbody>
     </table>
 
-    <p th:if="${#lists.isEmpty(entry.value)}" class="empty">
+    <p th:if="${entry.rowsNotesForPublicPosts.isEmpty()}" class="empty">
         No hay posts sincronizados en este repositorio.
     </p>
 
 </div>
 
 <!-- Sin repositorios configurados -->
-<p th:if="${#maps.isEmpty(postsSyncByRepo)}" class="empty">
+<p th:if="${repositorySections.isEmpty()}" class="empty">
     No hay repositorios configurados todavía.
 </p>
 

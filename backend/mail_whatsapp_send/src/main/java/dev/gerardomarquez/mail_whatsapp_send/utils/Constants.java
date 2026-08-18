@@ -53,6 +53,7 @@ public final class Constants {
     public static final String ERR_MSG_SERVICE_HEDGEDOC_CREATENOTE = "service.hedgedoc.createnote";
     public static final String ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND = "service.sync.pair.not.found";
     public static final String ERR_MSG_SERVICE_SYNC_SHA_MISSING = "service.sync.sha.missing";
+    public static final String ERR_MSG_SERVICE_SYNC_REPOSITORY_NOT_FOUND = "service.sync.repository.not.found";
     //public static final String ERR_MSG_SERVICE_SYNC_REPO_NOT_FOUND = "service.sync.repo.not.found";
     public static final String ERR_MSG_CONTROLLER_SYNC_PULL_SUCCESS = "controller.sync.pull.success";
     public static final String ERR_MSG_CONTROLLER_SYNC_PULL_GITHUB = "controller.sync.pull.error.github";

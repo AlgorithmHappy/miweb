@@ -3,6 +3,8 @@ package dev.gerardomarquez.mail_whatsapp_send.configurations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -60,14 +62,15 @@ public class WebClientConfig {
      * WebClient configurado para la API de HedgeDoc.
      *
      * @param hedgedocUrl URL base de HedgeDoc
-     * @return WebClient listo para llamar a HedgeDoc
+     * @return RestClient listo para llamar a HedgeDoc
      */
     @Bean(name = "hedgedocWebClient")
-    public WebClient hedgedocWebClient(
+    public RestClient hedgedocWebClient(
         @Value("${hedgedoc.url}") String hedgedocUrl
     ) {
-        return WebClient.builder()
+        return RestClient.builder()
             .baseUrl(hedgedocUrl)
+            .requestFactory(new SimpleClientHttpRequestFactory() )
             .build();
     }
 }

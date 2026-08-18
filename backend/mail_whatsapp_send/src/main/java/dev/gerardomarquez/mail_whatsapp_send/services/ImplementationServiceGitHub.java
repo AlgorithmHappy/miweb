@@ -1,8 +1,11 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -15,6 +18,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 
 /**
@@ -27,12 +32,16 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
     private final WebClient githubWebClient;
     private final ObjectMapper objectMapper;
     private final MessageSource messageSource;
+    private static final Logger log = LoggerFactory.getLogger(ImplementationServiceGitHub.class);
 
     @Value("${github.api.uri.branch}")
     private String uriBranch;
 
     @Value("${github.api.uri}")
     private String uri;
+
+    @Value("${github.api.uri.files}")
+    private String uriFiles;
 
     /**
      * @param githubWebClient WebClient configurado para la API de GitHub
@@ -53,67 +62,12 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
      * {@inheritDoc}
      */
     @Override
-    public String getFileContent(String owner, String repo, String filePath, String branch, String token) {
-        try {
-            String response = githubWebClient.get()
-                .uri(uriBranch, owner, repo, filePath, branch)
-                .header(Constants.AUTHORIZATION, Constants.BEARER + token)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
-            JsonNode jsonNode = objectMapper.readTree(response);
-
-            String contentBase64 = jsonNode.get(Constants.JSON_NODE_CONTENT).asText().replace(Constants.LINE_BREAK, new String() );
-
-            return new String(Base64.getDecoder().decode(contentBase64) );
-
-        } catch (Exception e) {            
-            String message = messageSource.getMessage(
-                    Constants.ERR_MSG_SERVICE_GITHUB_GETFILECONTENT,
-                    new Object[]{filePath},
-                    Locale.getDefault()
-            );
-            throw new RuntimeException(message, e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getFileSha(String owner, String repo, String filePath, String branch, String token) {
-        try {
-            String response = githubWebClient.get()
-                .uri(uriBranch, owner, repo, filePath, branch)
-                .header(Constants.AUTHORIZATION, Constants.BEARER + token)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
-            JsonNode jsonNode = objectMapper.readTree(response);
-            return jsonNode.get(Constants.JSON_NODE_SHA).asText();
-
-        } catch (Exception e) {
-            String message = messageSource.getMessage(
-                    Constants.ERR_MSG_SERVICE_GITHUB_GETFILESHA,
-                    new Object[]{filePath},
-                    Locale.getDefault()
-            );
-            throw new RuntimeException(message, e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String updateFileContent(
         String owner, String repo, String filePath, String branch, String token, String content, String sha,
         String commitMessage
     ) {
         try {
-            String contentBase64 = Base64.getEncoder().encodeToString(content.getBytes());
+            String contentBase64 = Base64.getEncoder().encodeToString(content.getBytes() );
 
             ObjectNode body = objectMapper.createObjectNode();
             body.put(Constants.JSON_NODE_MESSAGE, commitMessage);
@@ -135,6 +89,7 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
             return jsonNode.path(Constants.JSON_NODE_CONTENT).path(Constants.JSON_NODE_SHA).asText();
 
         } catch (Exception e) {
+            log.error("Error al actualizar el contenido del archivo en GitHub: {}", e.getMessage(), e);
             String message = messageSource.getMessage(
                     Constants.ERR_MSG_SERVICE_GITHUB_UPDATEFILECONTENT,
                     new Object[]{filePath},
@@ -142,6 +97,88 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
             );
             throw new RuntimeException(message, e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GitHubFileResponse getFileAndSha(
+        String owner,
+        String repo,
+        String filePath,
+        String branch,
+        String token
+    ) {
+        try {
+            GitHubFileResponse crudResponse = githubWebClient.get()
+                .uri(uriBranch, owner, repo, filePath, branch)
+                .header(Constants.AUTHORIZATION, Constants.BEARER + token)
+                .retrieve()
+                .bodyToMono(GitHubFileResponse.class)
+                .block();
+
+            return new GitHubFileResponse(
+                crudResponse.name(),
+                crudResponse.path(),
+                crudResponse.sha(),
+                crudResponse.size(),
+                crudResponse.url(),
+                crudResponse.htmlUrl(),
+                crudResponse.gitUrl(),
+                crudResponse.downloadUrl(),
+                crudResponse.type(),
+                new String(
+                    Base64.getDecoder().decode(
+                        crudResponse.content().replace(Constants.LINE_BREAK, new String() )
+                    ),
+                    StandardCharsets.UTF_8
+                ),
+                crudResponse.encoding(),
+                crudResponse.links()
+            );
+        } catch (Exception e) {
+            log.error("Error al obtener el archivo y su SHA desde GitHub: {}", e.getMessage(), e);
+            return new GitHubFileResponse(
+                null,
+                null,
+                null,
+                null, 
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GitTreeResponse getRepositoryTree(String owner, String name, String branch) {
+        try {
+            GitTreeResponse repositoryTree = githubWebClient.get()
+                .uri(uriFiles, owner, name, branch)
+                .retrieve()
+                .bodyToMono(GitTreeResponse.class)
+                .block();
+
+            return repositoryTree;
+        } catch (Exception e) {
+            log.error("Error al obtener el árbol de archivos del repositorio en GitHub: {}", e.getMessage(), e);
+        }
+        
+        return new GitTreeResponse(
+            null,
+            null,
+            null,
+            null
+        );
     }
 
 }

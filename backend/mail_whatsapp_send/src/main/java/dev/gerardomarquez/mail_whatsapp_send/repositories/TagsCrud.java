@@ -10,4 +10,5 @@ import dev.gerardomarquez.mail_whatsapp_send.entities.TagEntity;
 @Repository
 public interface TagsCrud extends JpaRepository<TagEntity, Integer>{
     public List<TagEntity> findByNameContainingIgnoreCase(String name);
+    public List<TagEntity> findByNameIgnoreCase(String name);
 }

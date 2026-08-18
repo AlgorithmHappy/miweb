@@ -14,7 +14,7 @@ public interface ServiceSync {
      * @param idPost ID del post a sincronizar
      * @return ID de la nota recién creada en HedgeDoc
      */
-    String pull(Integer idPost);
+    public String pull(Integer idPost);
 
     /**
      * Push: obtiene el contenido de la nota en HedgeDoc
@@ -24,5 +24,11 @@ public interface ServiceSync {
      * @param idPost        ID del post a sincronizar
      * @param commitMessage Mensaje del commit en GitHub
      */
-    void push(Integer idPost, String commitMessage);
+    public void push(Integer idPost, String commitMessage);
+
+    /**
+     * Actualiza todos los archivos de un repositorio en GitHub
+     * @param idRepository ID del repositorio a actualizar
+     */
+    public void updateAllFilesInRepository(Integer idRepository);
 }

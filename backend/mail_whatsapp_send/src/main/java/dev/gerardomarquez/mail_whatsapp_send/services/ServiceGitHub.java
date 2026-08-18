@@ -1,5 +1,8 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
+
 /**
  * Servicio para interactuar con la API REST de GitHub.
  * Permite obtener y actualizar archivos Markdown en repositorios.
@@ -7,32 +10,24 @@ package dev.gerardomarquez.mail_whatsapp_send.services;
 public interface ServiceGitHub {
 
     /**
-     * Obtiene el contenido de un archivo Markdown de un repositorio de GitHub.
-     * El contenido viene en Base64 desde la API, este método lo decodifica
-     * y devuelve el texto plano.
-     *
-     * @param owner      Usuario u organización dueña del repo (ej. "AlgorithmHappy")
-     * @param repo       Nombre del repositorio (ej. "curso-java")
-     * @param filePath   Ruta del archivo dentro del repo (ej. "docs/intro.md")
-     * @param branch     Rama a consultar (ej. "main")
-     * @param token      Personal Access Token de GitHub con scope "repo"
-     * @return           Contenido del archivo en texto plano (Markdown)
-     */
-    public String getFileContent(String owner, String repo, String filePath, String branch, String token);
-
-    /**
-     * Obtiene el SHA actual de un archivo en GitHub.
+     * Obtiene el SHA y el archivo markdown actual en GitHub.
      * El SHA es requerido por la API de GitHub para actualizar un archivo
      * sin generar un conflicto 409.
-     *
      * @param owner    Usuario u organización dueña del repo
      * @param repo     Nombre del repositorio
      * @param filePath Ruta del archivo dentro del repo
      * @param branch   Rama a consultar
      * @param token    Personal Access Token de GitHub
-     * @return         SHA actual del archivo
+     * @return         Objeto con el SHA y el contenido del archivo en texto plano (Markdown),
+     * este es el response de GitHub al hacer pull
      */
-    public String getFileSha(String owner, String repo, String filePath, String branch, String token);
+    public GitHubFileResponse getFileAndSha(
+        String owner,
+        String repo,
+        String filePath,
+        String branch,
+        String token
+    );
 
     /**
      * Actualiza el contenido de un archivo Markdown en GitHub.
@@ -50,7 +45,25 @@ public interface ServiceGitHub {
      * @return              SHA nuevo del archivo tras el push
      */
     public String updateFileContent(
-        String owner, String repo, String filePath, String branch, String token, String content, String sha,
+        String owner,
+        String repo,
+        String filePath,
+        String branch,
+        String token,
+        String content,
+        String sha,
         String commitMessage
+    );
+
+    /**
+     * Obtiene el árbol de archivos de un repositorio en GitHub mediante
+     * una peticion rest full a la api de github.
+     * @param owner
+     * @param name
+     * @param branch
+     * @return
+     */
+    public GitTreeResponse getRepositoryTree(
+        String owner, String name, String branch
     );
 }

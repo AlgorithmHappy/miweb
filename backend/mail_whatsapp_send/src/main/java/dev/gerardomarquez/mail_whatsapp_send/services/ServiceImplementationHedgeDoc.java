@@ -6,15 +6,17 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.NoteInfoResponse;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 
 @Service
 public class ServiceImplementationHedgeDoc implements ServiceHedgeDoc {
     
-    private final WebClient hedgedocWebClient;
+    private final RestClient hedgedocWebClient;
     private final MessageSource messageSource;
 
     @Value("${hedgedoc.url.download}")
@@ -23,9 +25,12 @@ public class ServiceImplementationHedgeDoc implements ServiceHedgeDoc {
     @Value("${hedgedoc.url.new}")            
     private String urlNew;
 
+    @Value("${hedgedoc.url.info}")
+    private String urlInfo;
+
     
     public ServiceImplementationHedgeDoc(
-        @Qualifier("hedgedocWebClient") WebClient hedgedocWebClient,
+        @Qualifier("hedgedocWebClient") RestClient hedgedocWebClient,
         MessageSource messageSource
     ) {
         this.hedgedocWebClient = hedgedocWebClient;
@@ -41,9 +46,10 @@ public class ServiceImplementationHedgeDoc implements ServiceHedgeDoc {
             return hedgedocWebClient.get()
                 .uri(urlDownload, noteId)
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .body(String.class);
         } catch (Exception e) {
+            System.out.println("Error al obtener el contenido de la nota: " + e.getMessage() );
+            e.printStackTrace();
             throw new RuntimeException(
                 messageSource.getMessage(
                     Constants.ERR_MSG_SERVICE_HEDGEDOC_GETNOTECONTENT,
@@ -59,23 +65,24 @@ public class ServiceImplementationHedgeDoc implements ServiceHedgeDoc {
      * {@inheritDoc}
      */
     @Override
-    public String createNote(String content) {
+    public NoteInfoResponse createNote(String content) {
         try {
-            return hedgedocWebClient.post()
-                    .uri(urlNew)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_MARKDOWN_VALUE)
-                    .bodyValue(content)
-                    .exchangeToMono(response -> {
-                        String location = response.headers()
-                                .asHttpHeaders()
-                                .getFirst(Constants.HEADER_LOCATION);
-                        if (location != null) {
-                            return reactor.core.publisher.Mono.just(
-                                    location.replace(Constants.SLASH, new String() ) );
-                        }
-                        return response.bodyToMono(String.class);
-                    })
-                    .block();
+            ResponseEntity<String> response = hedgedocWebClient.post()
+                .uri(urlNew)
+                .header(HttpHeaders.CONTENT_TYPE, "text/markdown;charset=UTF-8")
+                .body(content)
+                .retrieve()
+                .toEntity(String.class);
+            String location = response.getHeaders().getFirst(HttpHeaders.LOCATION);
+
+            String id = location.substring(location.lastIndexOf('/') + 1);
+
+            NoteInfoResponse noteInforResponse = hedgedocWebClient.get()
+                .uri(urlInfo, id)
+                .retrieve()
+                .body(NoteInfoResponse.class);
+
+            return noteInforResponse;
         } catch (Exception e) {
             throw new RuntimeException(
                 messageSource.getMessage(

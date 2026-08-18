@@ -1,10 +1,9 @@
 package dev.gerardomarquez.mail_whatsapp_send.controller;
-
+import dev.gerardomarquez.mail_whatsapp_send.services.ServicePresentationIndex;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.RepositorySection;
 import dev.gerardomarquez.mail_whatsapp_send.entities.PostSyncEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.RepositoryEntity;
 import dev.gerardomarquez.mail_whatsapp_send.errors.GitHubException;
@@ -36,6 +36,7 @@ public class SyncController {
     private final ServiceSync serviceSync;
     private final PostsSyncCrud postSyncCrud;
     private final MessageSource messageSource;
+    private final ServicePresentationIndex servicePresentationIndex;
 
     @Value("${hedgedoc.url}")
     private String hedgedocUrl;
@@ -44,10 +45,16 @@ public class SyncController {
      * @param serviceSync   Servicio orquestador de sincronización
      * @param messageSource Para obtener mensajes desde messages.properties
      */
-    public SyncController(ServiceSync serviceSync, MessageSource messageSource, PostsSyncCrud postSyncCrud) {
+    public SyncController(
+        ServiceSync serviceSync,
+        MessageSource messageSource,
+        PostsSyncCrud postSyncCrud,
+        ServicePresentationIndex servicePresentationIndex
+    ) {
         this.serviceSync = serviceSync;
         this.messageSource = messageSource;
         this.postSyncCrud = postSyncCrud;
+        this.servicePresentationIndex = servicePresentationIndex;
     }
 
     /**
@@ -60,12 +67,9 @@ public class SyncController {
     @GetMapping
     public String index(Model model) {
 
-        // Obtener todos los pares y agruparlos por repositorio
-        Map<RepositoryEntity, List<PostSyncEntity>> postsSyncByRepo = postSyncCrud.findAll()
-                .stream()
-                .collect(Collectors.groupingBy(PostSyncEntity::getRepository));
+        List<RepositorySection> repositorySections = servicePresentationIndex.getRowsNotesForPublicPosts();
 
-        model.addAttribute("postsSyncByRepo", postsSyncByRepo);
+        model.addAttribute("repositorySections", repositorySections);
         model.addAttribute("hedgedocUrl", hedgedocUrl);
 
         return "sync/index";
@@ -81,7 +85,10 @@ public class SyncController {
      * @return Redirect al panel /sync
      */
     @PostMapping("/pull/{idPost}")
-    public String pull(@PathVariable Integer idPost, RedirectAttributes redirectAttributes) {
+    public String pull(
+        @PathVariable("idPost") Integer idPost,
+        RedirectAttributes redirectAttributes
+    ) {
         try {
             String noteId = serviceSync.pull(idPost);
             redirectAttributes.addFlashAttribute(
@@ -129,9 +136,10 @@ public class SyncController {
      */
     @PostMapping("/push/{idPost}")
     public String push(
-            @PathVariable Integer idPost,
-            @RequestParam String commitMessage,
-            RedirectAttributes redirectAttributes) {
+            @PathVariable("idPost") Integer idPost,
+            @RequestParam(value = "commitMessage", required = true) String commitMessage,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
             serviceSync.push(idPost, commitMessage);
             redirectAttributes.addFlashAttribute(
@@ -141,7 +149,7 @@ public class SyncController {
                     new Object[]{idPost},
                     LocaleContextHolder.getLocale()
                 )
-                );
+            );
         } catch (GitHubException e) {
             redirectAttributes.addFlashAttribute(
                 Constants.ERROR,
@@ -177,8 +185,8 @@ public class SyncController {
      */
     @GetMapping("/login")
     public String login(
-        @RequestParam(required = false) String error,
-        @RequestParam(required = false) String logout,
+        @RequestParam(value = "error", required = false) String error,
+        @RequestParam(value = "logout", required = false) String logout,
         Model model
     ) {
         if (error != null) {
@@ -202,5 +210,23 @@ public class SyncController {
             );
         }
         return "sync/login";
+    }
+
+    /**
+     * Ejecuta un Pull para un post específico.
+     * Obtiene el contenido del archivo en GitHub y crea
+     * una nota nueva en HedgeDoc con ese contenido.
+     *
+     * @param idPost             ID del post a sincronizar
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
+    @PostMapping("/download/{idRepository}")
+    public String syncRepositories(
+        @PathVariable("idRepository") Integer idRepository,
+        RedirectAttributes redirectAttributes
+    ) {
+        serviceSync.updateAllFilesInRepository(idRepository);
+        return "redirect:/sync";
     }
 }

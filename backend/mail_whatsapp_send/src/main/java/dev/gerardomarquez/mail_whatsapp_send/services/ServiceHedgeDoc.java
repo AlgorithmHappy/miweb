@@ -1,5 +1,7 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.NoteInfoResponse;
+
 /**
  * Contrato del servicio para interactuar con la API de HedgeDoc.
  * Solo lectura, ya que HedgeDoc es el editor principal y
@@ -13,7 +15,7 @@ public interface ServiceHedgeDoc {
      * @param noteId ID de la nota en HedgeDoc
      * @return Contenido de la nota en texto plano (Markdown)
      */
-    String getNoteContent(String noteId);
+    public String getNoteContent(String noteId);
 
     /**
      * Crea una nota nueva en HedgeDoc con el contenido proporcionado.
@@ -21,7 +23,7 @@ public interface ServiceHedgeDoc {
      * Es decir no actualiza la crea, no se puede actualizar
      *
      * @param content Contenido Markdown en texto plano
-     * @return ID de la nota recién creada en HedgeDoc
+     * @return Informacion de hedgeNote de la nota creada
      */
-    String createNote(String content);
+    public NoteInfoResponse createNote(String content);
 }
