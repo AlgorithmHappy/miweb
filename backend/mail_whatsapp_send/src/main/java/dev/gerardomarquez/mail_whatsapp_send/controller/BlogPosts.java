@@ -35,8 +35,8 @@ public class BlogPosts {
     public ResponseEntity<ApiResponse<PageResponse<InformationPostResponse> > > send(
         @PageableDefault(size = 6, sort = "date", direction = Sort.Direction.DESC)
         Pageable pageable,
-        @RequestParam(required = false) String tag,
-        @RequestParam(required = false) String title
+        @RequestParam(value = "tag", required = false) String tag,
+        @RequestParam(value = "title", required = false) String title
     ) {
         ApiResponse<PageResponse<InformationPostResponse> > response = servicePostsCrud.findAllByPageAndTitleAndTag(pageable, tag, title);
         return ResponseEntity.ok(response);

@@ -6,43 +6,58 @@ import Footer from "../../../components/Footer.astro";
 import FloatButton from "../../../components/FloatButton.astro"
 import { marked } from "marked";
 
+type SortParam = `${string},${'asc' | 'desc'}`;
+interface ListBlogCardsProps {
+    page: number;
+    size: number;
+    sort: SortParam; // Ejemplos: "date,desc", "title,asc", ""tag,desc""
+    search?: {
+        tag?: string;
+        title?: string;
+    };
+}
+
 interface BlogCardProps {
     title: string;
     date: string;
     duration: number; // Duracion en minutos
     description: string;
     tags: string[];
-    link: string;
     imageSrc: string;
     imageAlt: string;
     urlRawMarkDown: string;
+    titleNextPost: string;
+    titlePreviousPost: string;
+    titleSlug: string;
 };
+
 interface PageInfo {
+  content: BlogCardProps[];
+  page: number;
   size: number;
-  number: number;
   totalElements: number;
   totalPages: number;
 };
-interface BlogResponse {
-  content: BlogCardProps[];
-  page: PageInfo;
-};
 
-const res = await fetch(
-  `http://localhost:1690/api/blog-cards?page=0&size=33`
-);
+interface BlogResponse {
+  success: boolean;
+  message: string;
+  data: PageInfo;
+  timestamp: string;
+};
 
 export const getStaticPaths = (
     async () => {
-        const res = await fetch(`http://localhost:1690/api/blog-cards?page=0&size=33`);
-        const data: BlogResponse = await res.json();
-        const cards: BlogCardProps[] = data.content;
+        const res = await fetch(`http://localhost:8080/v1/blog/posts`);
+        const response: BlogResponse = await res.json();
+        const data: PageInfo = response.data;
+        const post: BlogCardProps[] = data.content;
 
-        return cards.map(
+        return post.map(
             (it) => {
                 return {
                     params: {
-                        title: it.title
+                        title: it.titleSlug
                     },
                     props: {
                         urlRawMarkDown: it.urlRawMarkDown,

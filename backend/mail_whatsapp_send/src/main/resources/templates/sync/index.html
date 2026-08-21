@@ -164,11 +164,12 @@
         &nbsp;·&nbsp;
         <small th:text="${entry.branch}"></small>
     </h2>
-    <!-- Push con input para el commit message -->
+
+    <!-- Pull de todo el repositorio -->
     <form th:action="@{/sync/download/{idRepository}(idRepository=${entry.id})}"
             method="post"
             style="display:inline;">
-        <button type="submit" class="btn btn-push">Descargar MarkDowns</button>
+        <button type="submit" class="btn btn-push">Pull de todo el repositorio</button>
     </form>
 
     <!-- Tabla de pares nota-repo -->
@@ -181,6 +182,8 @@
                 <th>Último sync</th>
                 <th>Publicar</th>
                 <th>Descargar</th>
+                <th>Compartido</th>
+                <th>Publicar en redes sociales</th>
             </tr>
         </thead>
         <tbody>
@@ -207,6 +210,8 @@
                     </span>
                 </td>
 
+                <td th:text="${pair.permission}"></td>
+
                 <!-- Acciones: Pull y Push -->
                 <td>
                     <!-- Push con input para el commit message -->
@@ -230,6 +235,25 @@
                     </form>
                 </td>
 
+                <td>
+                    <span th:text="${pair.sharedPost ? 'Sí' : 'No'}"></span>
+                </td>
+
+                <td>
+                    <!-- Publicar en redes sociales -->
+                    <form th:action="@{/sync/socialMedia/{idPost}(id=${pair.idPost})}"
+                          method="post"
+                          style="display:inline;">
+
+                        <textarea
+                            rows="5"
+                            cols="50"
+                            name="contenido"
+                            placeholder="Escribe la descripción para las redes sociales">
+                        </textarea>
+                        <button th:disabled="${!pair.enabledNote}" type="submit" class="btn btn-push">🌐 Publicar</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -244,6 +268,102 @@
 <p th:if="${repositorySections.isEmpty()}" class="empty">
     No hay repositorios configurados todavía.
 </p>
+
+<!-- Una sección para las notas de hedgedoc que no son publicas -->
+<div th:if="${notesNoPublic != null and !notesNoPublic.isEmpty()}" class="repo-section">
+
+    <!-- Nombre del repositorio -->
+    <h2>
+        📁 <span>Notas de HedgeDoc</span>
+        &nbsp;·&nbsp;
+        <small>No publicas</small>
+    </h2>
+
+    <!-- Pull de todo el repositorio -->
+    <form th:action="@{/sync}"
+            method="get"
+            style="display:inline;">
+        <button type="submit" class="btn btn-push">Actualizar</button>
+    </form>
+
+    <!-- Tabla de pares nota-repo -->
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Fecha de ultima actualizacion</th>
+                <th>Permisos</th>
+                <th>Publicar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pair : ${notesNoPublic}">
+
+                <!-- ID de la nota en HedgeDoc con link directo -->
+                <td>
+                    <a th:href="${hedgedocUrl + '/' + pair.shortId}"
+                       target="_blank"
+                       th:text="${pair.shortId}">
+                    </a>
+                </td>
+
+                <!-- Título del post -->
+                <td th:text="${pair.title}"></td>
+
+                <!-- Última actualizacion -->
+                <td>
+                    <span class="badge-sync"
+                          th:text="${pair.updatedAt != null ? #temporals.format(pair.updatedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}">
+                    </span>
+                </td>
+
+                <!-- Permisos -->
+                <td th:text="${pair.permission}"></td>
+
+                <!-- Acciones: Publicar -->
+                <td>
+                    <!-- Push con input para el commit message -->
+                    <form 
+                        th:action="@{/sync/publicar/{shortId}(shortId=${pair.shortId})}"
+                        method="post"
+                        style="display:inline;"
+                    >
+                        <select name="repositoryId" required>
+                            <option value="">Seleccione...</option>
+
+                            <option
+                                th:each="repository : ${repositorySections}"
+                                th:value="${repository.id}"
+                                th:text="${repository.name}">
+                            </option>
+                        </select>
+
+                        <input
+                            type="text"
+                            name="commitMessage"
+                            class="commit-input"
+                            placeholder="Mensaje del commit"
+                            required
+                        />
+                        <button th:disabled="${!pair.isEnabled}" type="submit" class="btn btn-push">⬆ Publicar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p th:if="${notesNoPublic == null or notesNoPublic.isEmpty()}" class="empty">
+    No hay posts sincronizados en este repositorio.
+</p>
+
+<!-- Pull de todo el repositorio -->
+<form th:action="@{/sync/rebuild}"
+        method="post"
+        style="display:inline;">
+    <button type="submit" class="btn btn-push">Vercel Rebuild</button>
+</form>
 
 </body>
 </html>

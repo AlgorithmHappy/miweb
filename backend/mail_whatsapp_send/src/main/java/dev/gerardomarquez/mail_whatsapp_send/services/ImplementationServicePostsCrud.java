@@ -25,6 +25,7 @@ import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.RelationsPostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.TagsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
+import dev.gerardomarquez.mail_whatsapp_send.utils.Methods;
 
 /**
  * Clase que implementa de ServicePostsCrud para poder gestionar la tabla de Posts en base
@@ -106,8 +107,6 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
                 if(previousPostOptional.isPresent() && previousPostOptional.get().getPreviousPost() != null)
                     previousPostTitle = previousPostOptional.get().getPreviousPost().getTitle();
 
-
-
                 return new InformationPostResponse(
                     it.getTitle(),
                     it.getCreatedAt().format(formatter),
@@ -118,7 +117,8 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
                     it.getAltImage(),
                     it.getLinkRawMarkdown(),
                     nextPostTitle,
-                    previousPostTitle
+                    previousPostTitle,
+                    Methods.toSlug(it.getTitle() )
                 );
             }
         );

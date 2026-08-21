@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
 import dev.gerardomarquez.mail_whatsapp_send.entities.PostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.RelationPostEntity;
+import dev.gerardomarquez.mail_whatsapp_send.entities.RepositoryEntity;
+import dev.gerardomarquez.mail_whatsapp_send.repositories.RepositoryCrud;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 
 @Service
@@ -22,6 +25,12 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
 
     @Autowired
     private ServiceRebuildAndDeploy serviceRebuildAndDeploy;
+
+    @Autowired
+    private ImplementationServiceGitHub serviceGitHub;
+
+    @Autowired
+    private RepositoryCrud repositoryCrud;
 
     @Value("${github.webhook.secret}")
     private String secret;
@@ -46,6 +55,15 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(json);
+            String ref = jsonNode.get("ref").asText();
+            if(!ref.equals("refs/heads/main") ){
+                System.out.println("No es la rama main, no se hace nada");
+                return;
+            }
+            String repoFullName = jsonNode.path("repository").path("full_name").asText();
+            String[] repoParts = repoFullName.split("/");
+            String owner = repoParts[0];
+            String repo = repoParts[1];
 
             JsonNode commits = jsonNode.get("commits");
             for (JsonNode commit : commits) {
@@ -54,6 +72,27 @@ public class ImplementationServiceGitHubWebHook implements ServiceGitHubWebHook 
 
                 added.forEach(
                     (file) -> {
+                        if(!file.asText().endsWith(".md") ){
+                            System.out.println("No es un archivo markdown, no se hace nada");
+                            return;
+                        }
+                        
+                        Optional<RepositoryEntity> optRepositoryEntity = repositoryCrud.findByOwnerAndName(owner, repoFullName);
+                        
+                        if(!optRepositoryEntity.isPresent() ){
+                            System.out.println("No se encontro el repositorio en la base de datos, no se hace nada");
+                            return;
+                        }
+                        
+                        RepositoryEntity repository = optRepositoryEntity.get();
+                        GitHubFileResponse serviceGitHubResponse = serviceGitHub.getFileAndSha(
+                            repository.getOwner(),
+                            repository.getName(),
+                            file.asText(),
+                            repository.getDefaultBranch(),
+                            repository.getGithubToken()
+                        );
+
                         PostEntity penultimatePost = postsCrud.findLastPost();
                         PostEntity lastPost = postsCrud.insertOnePost(
                             jsonNode.path("repository").path("owner").path("name").asText(),

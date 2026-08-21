@@ -39,7 +39,7 @@ public class PostEntity {
     private String title;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = true)
     private LocalDateTime createdAt;
 
     @Column(name = "average_read_duration", nullable = false)
@@ -56,6 +56,9 @@ public class PostEntity {
 
     @Column(name = "alt_image", length = 70)
     private String altImage;
+
+    @Column(nullable = false)
+    private Boolean shared = false;
 
     @ManyToMany
     @JoinTable(

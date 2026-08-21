@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubCreateResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
@@ -181,4 +182,53 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GitHubCreateResponse createFileContent(
+        String owner, String repo, String filePath, String branch, String token, String content, String commitMessage
+    ) {
+        try {
+            String contentBase64 = Base64.getEncoder().encodeToString(content.getBytes() );
+
+            ObjectNode body = objectMapper.createObjectNode();
+            body.put(Constants.JSON_NODE_MESSAGE, commitMessage);
+            body.put(Constants.JSON_NODE_CONTENT, contentBase64);
+            body.put(Constants.JSON_NODE_BRANCH, branch);
+
+            // Llamada PUT a la API de GitHub
+            String response = githubWebClient.put()
+                .uri(uri, owner, repo, filePath)
+                .header(Constants.AUTHORIZATION, Constants.BEARER + token)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .bodyValue(body.toString() )
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+            JsonNode jsonNode = objectMapper.readTree(response);
+
+            String downloadUrl = jsonNode
+                .path(Constants.JSON_NODE_CONTENT)
+                .path(Constants.JSON_NODE_DOWNLOAD_URL)
+                .asText();
+
+            String fileSha = jsonNode
+                .path(Constants.JSON_NODE_CONTENT)
+                .path(Constants.JSON_NODE_SHA)
+                .asText();
+            
+            return new GitHubCreateResponse(fileSha, downloadUrl);
+
+        } catch (Exception e) {
+            log.error("Error al crear el archivo en GitHub: {}", e.getMessage(), e);
+            String message = messageSource.getMessage(
+                    Constants.ERR_MSG_SERVICE_GITHUB_CREATEFILECONTENT,
+                    new Object[]{filePath, repo},
+                    Locale.getDefault()
+            );
+            throw new RuntimeException(message, e);
+        }
+    }
 }

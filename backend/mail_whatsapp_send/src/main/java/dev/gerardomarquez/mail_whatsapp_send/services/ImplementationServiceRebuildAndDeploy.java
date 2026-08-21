@@ -13,7 +13,7 @@ public class ImplementationServiceRebuildAndDeploy implements ServiceRebuildAndD
     private final WebClient webClient;
 
     ImplementationServiceRebuildAndDeploy(
-        @Qualifier("telegramWebClient") WebClient webClient
+        @Qualifier("vercelWebClient") WebClient webClient
     ) {
         this.webClient = webClient;
     }

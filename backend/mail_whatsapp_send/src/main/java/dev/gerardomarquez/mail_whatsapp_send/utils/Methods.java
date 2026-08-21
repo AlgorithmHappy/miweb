@@ -2,9 +2,11 @@ package dev.gerardomarquez.mail_whatsapp_send.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.text.Normalizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.util.List;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +36,7 @@ public final class Methods {
                 null,
                 null,
                 null,
-                null,
+                List.of(),
                 null
             );
         }
@@ -45,7 +47,7 @@ public final class Methods {
             null,
             null,
             null,
-            null,
+            List.of(),
             null
         );
 
@@ -60,11 +62,22 @@ public final class Methods {
 
     public static String truncate(String text, int maxLength) {
         if (text == null) {
-            return null;
+            return new String();
         }
 
         return text.length() > maxLength
-                ? text.substring(0, maxLength) + "..."
+                ? text.substring(0, maxLength - 3) + "..."
                 : text;
     }
+
+    public static String toSlug(String text) {
+        return Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replaceAll("\\p{M}", "")          // quita acentos
+            .replaceAll("[^a-zA-Z0-9\\s-]", "") // quita símbolos
+            .trim()
+            .replaceAll("\\s+", "-")           // espacios -> -
+            .replaceAll("-+", "-")             // evita -- --
+            .toLowerCase();
+    }
+
 }

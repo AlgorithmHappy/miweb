@@ -1,8 +1,7 @@
 package dev.gerardomarquez.mail_whatsapp_send.controller;
+import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceRebuildAndDeploy;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServicePresentationIndex;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.HedgeDocNotesNoPublic;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.RepositorySection;
-import dev.gerardomarquez.mail_whatsapp_send.entities.PostSyncEntity;
-import dev.gerardomarquez.mail_whatsapp_send.entities.RepositoryEntity;
 import dev.gerardomarquez.mail_whatsapp_send.errors.GitHubException;
 import dev.gerardomarquez.mail_whatsapp_send.errors.HedgeDocException;
 import dev.gerardomarquez.mail_whatsapp_send.errors.SyncException;
-import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsSyncCrud;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServiceSync;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 
@@ -34,9 +31,9 @@ import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
 @RequestMapping("/sync")
 public class SyncController {
     private final ServiceSync serviceSync;
-    private final PostsSyncCrud postSyncCrud;
     private final MessageSource messageSource;
     private final ServicePresentationIndex servicePresentationIndex;
+    private final ImplementationServiceRebuildAndDeploy serviceRebuildAndDeploy;
 
     @Value("${hedgedoc.url}")
     private String hedgedocUrl;
@@ -48,13 +45,13 @@ public class SyncController {
     public SyncController(
         ServiceSync serviceSync,
         MessageSource messageSource,
-        PostsSyncCrud postSyncCrud,
-        ServicePresentationIndex servicePresentationIndex
+        ServicePresentationIndex servicePresentationIndex,
+        ImplementationServiceRebuildAndDeploy serviceRebuildAndDeploy
     ) {
         this.serviceSync = serviceSync;
         this.messageSource = messageSource;
-        this.postSyncCrud = postSyncCrud;
         this.servicePresentationIndex = servicePresentationIndex;
+        this.serviceRebuildAndDeploy = serviceRebuildAndDeploy;
     }
 
     /**
@@ -68,8 +65,10 @@ public class SyncController {
     public String index(Model model) {
 
         List<RepositorySection> repositorySections = servicePresentationIndex.getRowsNotesForPublicPosts();
+        List<HedgeDocNotesNoPublic> notesNoPublic = servicePresentationIndex.getAllNotesNoPublic();
 
         model.addAttribute("repositorySections", repositorySections);
+        model.addAttribute("notesNoPublic", notesNoPublic);
         model.addAttribute("hedgedocUrl", hedgedocUrl);
 
         return "sync/index";
@@ -229,4 +228,68 @@ public class SyncController {
         serviceSync.updateAllFilesInRepository(idRepository);
         return "redirect:/sync";
     }
+
+    @PostMapping("/rebuild")
+    public String vercelRebuildAndDeploy(RedirectAttributes redirectAttributes){
+        try{
+            serviceRebuildAndDeploy.rebuildAndDeploy();
+            redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_SUCCESS,
+                    new Object[]{},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage() );
+        }
+        return "redirect:/sync";
+    }
+
+    @PostMapping("/publicar/{shortId}")
+    public String postMethodName(
+        @PathVariable("shortId") String shortId,
+        @RequestParam(value = "repositoryId", required = true) Integer repositoryId,
+        @RequestParam(value = "commitMessage", required = true) String commitMessage,
+        RedirectAttributes redirectAttributes
+    ) {
+        try {
+            serviceSync.push(shortId, repositoryId, commitMessage);
+            redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_SUCCESS,
+                    new Object[]{shortId},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage());
+        }
+        return "redirect:/sync";
+    }
+    
+    @PostMapping("/publicar/socialMedia/{idPost}")
+    public String socialMediaShare(
+        @PathVariable("idPost") Integer idPost,
+        @RequestParam(value = "repositoryId", required = true) Integer repositoryId,
+        RedirectAttributes redirectAttributes
+    ) {
+        /*try {
+            serviceSync.socialMediaShare(shortId, repositoryId);
+            redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                messageSource.getMessage(
+                    Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_SUCCESS,
+                    new Object[]{shortId},
+                    LocaleContextHolder.getLocale()
+                )
+            );
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage());
+        }*/
+        return "redirect:/sync";
+    }
+
 }

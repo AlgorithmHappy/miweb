@@ -1,5 +1,6 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubCreateResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
 
@@ -65,5 +66,20 @@ public interface ServiceGitHub {
      */
     public GitTreeResponse getRepositoryTree(
         String owner, String name, String branch
+    );
+
+    /**
+     * Crea un nuevo archivo en un repositorio de GitHub
+     * @param owner          Usuario u organización dueña del repo
+     * @param repo           Nombre del repositorio
+     * @param filePath       Ruta del archivo dentro del repo
+     * @param branch         Rama donde se hará el push
+     * @param token          Personal Access Token de GitHub
+     * @param content        Contenido Markdown en texto plano
+     * @param commitMessage  Mensaje del commit
+     * @return               DTO con el SHA y la URL de descarga del archivo recién creado en GitHub
+     */
+    public GitHubCreateResponse createFileContent(
+        String owner, String repo, String filePath, String branch, String token, String content, String commitMessage
     );
 }

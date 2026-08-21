@@ -1,10 +1,8 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.FrontMatter;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubCreateResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitHubFileResponse;
-import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeItem;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.NoteInfoResponse;
 import dev.gerardomarquez.mail_whatsapp_send.entities.PostEntity;
@@ -155,15 +153,15 @@ public class ImplementationServiceSync implements ServiceSync {
     public void push(Integer idPost, String commitMessage) {
 
         PostSyncEntity postSync = postSyncCrud.findById(idPost)
-                .orElseThrow(
-                    () -> new SyncException(
-                        messageSource.getMessage(
-                            Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
-                            new Object[]{idPost},
-                            LocaleContextHolder.getLocale()
-                        )
+            .orElseThrow(
+                () -> new SyncException(
+                    messageSource.getMessage(
+                        Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
+                        new Object[]{idPost},
+                        LocaleContextHolder.getLocale()
                     )
-                );
+                )
+            );
 
         if (postSync.getGithubSha() == null || postSync.getGithubSha().isBlank() ) {
             throw new SyncException(
@@ -192,8 +190,34 @@ public class ImplementationServiceSync implements ServiceSync {
             );
 
             postSync.setGithubSha(newSha);
-            postSync.setLastSyncedAt(LocalDateTime.now());
+            postSync.setLastSyncedAt(LocalDateTime.now() );
             postSyncCrud.save(postSync);
+
+            FrontMatter frontMatter = Methods.getFrontMetterToMap(content);
+            Set<TagEntity> tagsForNewPost = new HashSet<>();
+            if(frontMatter.tags() != null){
+                for(String tag : frontMatter.tags() ) {
+                    List<TagEntity> listTagsWithSameName = tagsCrud.findByNameIgnoreCase(tag);
+
+                    if(listTagsWithSameName.isEmpty() ) {
+                        TagEntity newTag = new TagEntity(null, tag, null);
+                        newTag = tagsCrud.save(newTag);
+                        tagsForNewPost.add(newTag);
+                    } else {
+                        tagsForNewPost.add(listTagsWithSameName.get(0) );
+                    }
+                }
+            }
+
+            PostEntity postEntity = postSync.getPost();
+            postEntity.setTitle(frontMatter.title() != null ? frontMatter.title() : "Untitled");
+            postEntity.setCreatedAt(frontMatter.date() );
+            postEntity.setAverageReadDuration(frontMatter.readDuration() != null ? frontMatter.readDuration() : 0);
+            postEntity.setDescription(Methods.truncate(frontMatter.description(), 110) );
+            postEntity.setLinkImage(frontMatter.image() );
+            postEntity.setTags(tagsForNewPost);
+
+            postsCrud.save(postEntity);
 
         } catch (GitHubException | HedgeDocException e) {
             throw e;
@@ -255,27 +279,30 @@ public class ImplementationServiceSync implements ServiceSync {
             FrontMatter frontMatter = Methods.getFrontMetterToMap(responseFile.content() );
 
             Set<TagEntity> tagsForNewPost = new HashSet<>();
-            for(String tag : frontMatter.tags() ) {
-                List<TagEntity> listTagsWithSameName = tagsCrud.findByNameIgnoreCase(tag);
+            if(frontMatter.tags() != null){
+                for(String tag : frontMatter.tags() ) {
+                    List<TagEntity> listTagsWithSameName = tagsCrud.findByNameIgnoreCase(tag);
 
-                if(listTagsWithSameName.isEmpty() ) {
-                    TagEntity newTag = new TagEntity(null, tag, null);
-                    newTag = tagsCrud.save(newTag);
-                    tagsForNewPost.add(newTag);
-                } else {
-                    tagsForNewPost.add(listTagsWithSameName.get(0) );
+                    if(listTagsWithSameName.isEmpty() ) {
+                        TagEntity newTag = new TagEntity(null, tag, null);
+                        newTag = tagsCrud.save(newTag);
+                        tagsForNewPost.add(newTag);
+                    } else {
+                        tagsForNewPost.add(listTagsWithSameName.get(0) );
+                    }
                 }
             }
 
             PostEntity postEntity = new PostEntity(
                 null,
-                filePath.replace(".md", ""),
+                frontMatter.title() != null ? frontMatter.title() : "Untitled",
                 frontMatter.date(),
-                frontMatter.readDuration(),
+                frontMatter.readDuration() != null ? frontMatter.readDuration() : 0,
                 Methods.truncate(frontMatter.description(), 110),
-                responseFile.downloadUrl(),
+                responseFile.downloadUrl() != null ? responseFile.downloadUrl() : new String(),
                 frontMatter.image(),
                 null,
+                false,
                 tagsForNewPost,
                 null
             );
@@ -297,4 +324,99 @@ public class ImplementationServiceSync implements ServiceSync {
             postSyncCrud.save(postSyncEntity);
         }
     }
+
+    @Override
+    public void push(String idNoteHedgeDoc, Integer idRepository, String commitMessage) {
+        String note = serviceHedgeDoc.getNoteContent(idNoteHedgeDoc);
+
+        RepositoryEntity repository = repositoryCrud.findById(idRepository)
+            .orElseThrow(
+                () -> new SyncException(
+                    messageSource.getMessage(
+                        Constants.ERR_MSG_SERVICE_SYNC_REPOSITORY_NOT_FOUND,
+                        new Object[]{ idRepository },
+                        LocaleContextHolder.getLocale()
+                    )
+                )
+            );
+
+        try{
+            FrontMatter frontMatter = Methods.getFrontMetterToMap(note);
+
+            String path = frontMatter.title();
+
+            if(path == null || path.isBlank() ) {
+                path = "Untitled";
+            }
+            path = path + ".md";
+
+            GitHubCreateResponse shaAndRawUrl = serviceGitHub.createFileContent(
+                repository.getOwner(),
+                repository.getName(),
+                path,
+                repository.getDefaultBranch(),
+                repository.getGithubToken(),
+                note,
+                commitMessage
+            );
+
+            Set<TagEntity> tagsForNewPost = new HashSet<>();
+            if(frontMatter.tags() != null){
+                for(String tag : frontMatter.tags() ) {
+                    List<TagEntity> listTagsWithSameName = tagsCrud.findByNameIgnoreCase(tag);
+
+                    if(listTagsWithSameName.isEmpty() ) {
+                        TagEntity newTag = new TagEntity(null, tag, null);
+                        newTag = tagsCrud.save(newTag);
+                        tagsForNewPost.add(newTag);
+                    } else {
+                        tagsForNewPost.add(listTagsWithSameName.get(0) );
+                    }
+                }
+            }
+
+            PostEntity postEntity = new PostEntity(
+                null,
+                frontMatter.title() != null ? frontMatter.title() : "Untitled",
+                frontMatter.date() != null ? frontMatter.date() : LocalDateTime.now(),
+                frontMatter.readDuration() != null ? frontMatter.readDuration() : 0,
+                Methods.truncate(frontMatter.description(), 110),
+                shaAndRawUrl.downloadUrl() != null ? shaAndRawUrl.downloadUrl() : new String(),
+                frontMatter.image(),
+                null,
+                false,
+                tagsForNewPost,
+                null
+            );
+
+            postEntity = postsCrud.save(postEntity);
+
+            PostSyncEntity postSyncEntity = new PostSyncEntity(
+                null,
+                postEntity,
+                repository,
+                path,
+                idNoteHedgeDoc,
+                shaAndRawUrl.sha(),
+                LocalDateTime.now()
+            );
+
+            postSyncCrud.save(postSyncEntity);
+        } catch (GitHubException | HedgeDocException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Error during push operation for HedgeDoc note ID {}: {}", idNoteHedgeDoc, e.getMessage(), e);
+            throw new SyncException(
+                messageSource.getMessage(
+                    Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
+                    new Object[]{idNoteHedgeDoc},
+                    LocaleContextHolder.getLocale()
+                ),
+                e
+            );
+        }
+        
+    }
+
+    
 }

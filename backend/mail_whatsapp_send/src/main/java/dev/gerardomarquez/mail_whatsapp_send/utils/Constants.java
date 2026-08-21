@@ -30,6 +30,7 @@ public final class Constants {
     public static final String JSON_NODE_SHA = "sha";
     public static final String JSON_NODE_MESSAGE = "message";
     public static final String JSON_NODE_BRANCH = "branch";
+    public static final String JSON_NODE_DOWNLOAD_URL = "download_url";
 
     public static final String HEADER_LOCATION = "Location";
 
@@ -49,6 +50,7 @@ public final class Constants {
     public static final String ERR_MSG_SERVICE_GITHUB_GETFILECONTENT = "service.github.getfilecontent";
     public static final String ERR_MSG_SERVICE_GITHUB_GETFILESHA = "service.github.getfilesha";
     public static final String ERR_MSG_SERVICE_GITHUB_UPDATEFILECONTENT = "service.github.updatefilecontent";
+    public static final String ERR_MSG_SERVICE_GITHUB_CREATEFILECONTENT = "service.github.createfilecontent";
     public static final String ERR_MSG_SERVICE_HEDGEDOC_GETNOTECONTENT = "service.hedgedoc.getnotecontent";
     public static final String ERR_MSG_SERVICE_HEDGEDOC_CREATENOTE = "service.hedgedoc.createnote";
     public static final String ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND = "service.sync.pair.not.found";
@@ -63,6 +65,7 @@ public final class Constants {
     public static final String ERR_MSG_CONTROLLER_SYNC_PUSH_HEDGEDOC = "controller.sync.push.error.hedgedoc";
     public static final String ERR_MSG_CONTROLLER_SYNC_LOGIN_ERROR = "controller.sync.login.error";
     public static final String ERR_MSG_CONTROLLER_SYNC_LOGOUT_ERROR = "controller.sync.login.logout";
+    public static final String ERR_MSG_CONTROLLER_SYNC_REBUILD_SUCCESS = "controller.sync.rebuild.success";
 
     public static String calculateSignature(
         String payload,

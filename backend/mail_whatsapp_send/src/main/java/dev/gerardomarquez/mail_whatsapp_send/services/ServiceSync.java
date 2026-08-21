@@ -1,4 +1,6 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
+import java.util.List;
+import dev.gerardomarquez.mail_whatsapp_send.dtos.HedgeDocNotesNoPublic;
 
 /**
  * Contrato del servicio orquestador de sincronización
@@ -31,4 +33,14 @@ public interface ServiceSync {
      * @param idRepository ID del repositorio a actualizar
      */
     public void updateAllFilesInRepository(Integer idRepository);
+
+    /**
+     * Push: obtiene el contenido de la nota en HedgeDoc
+     * y lo sube al archivo correspondiente en GitHub.
+     *
+     * @param idNoteHedgeDoc ID de la nota en HedgeDoc a sincronizar
+     * @param idRepository   ID del repositorio en GitHub
+     * @param commitMessage  Mensaje del commit en GitHub
+     */
+    public void push(String idNoteHedgeDoc, Integer idRepository, String commitMessage);
 }

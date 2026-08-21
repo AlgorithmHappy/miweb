@@ -4,12 +4,14 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.HedgeDocNotesNoPublic;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.NoteEnabled;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.NoteInfoResponse;
 
@@ -42,7 +44,8 @@ public class HedgeDocDataBaseCrud {
                 (rs, rowNum) -> {
                     return new NoteEnabled(
                         rs.getString("shortid"),
-                        ("freely".equals(rs.getString("permission") ) || "editable".equals(rs.getString("permission") ) )
+                        ("freely".equals(rs.getString("permission") ) || "editable".equals(rs.getString("permission") ) ),
+                        rs.getString("permission")
                     );
                 }
             );
@@ -98,5 +101,26 @@ public class HedgeDocDataBaseCrud {
         }
         
         return id;
+    }
+
+    /**
+     * Obtiene todas las notas de HedgeDoc.
+     * @return Un List que contiene la información de todas las notas.
+     */
+    public List<HedgeDocNotesNoPublic> getAllNotes(){
+        String sql = "select shortid, title, \"updatedAt\", permission from \"Notes\"";
+
+        return jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> {
+                return new HedgeDocNotesNoPublic(
+                    rs.getString("shortid"),
+                    rs.getString("title"),
+                    rs.getObject("updatedAt", OffsetDateTime.class).toLocalDateTime(),
+                    rs.getString("permission"),
+                    ("freely".equals(rs.getString("permission") ) || "editable".equals(rs.getString("permission") ) )
+                );
+            }
+        );
     }
 }

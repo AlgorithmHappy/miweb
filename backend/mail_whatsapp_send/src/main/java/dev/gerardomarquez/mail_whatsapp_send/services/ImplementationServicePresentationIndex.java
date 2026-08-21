@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import dev.gerardomarquez.mail_whatsapp_send.dtos.HedgeDocNotesNoPublic;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.NoteEnabled;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.RepositorySection;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.RowNotesForPublicPosts;
@@ -57,6 +58,8 @@ public class ImplementationServicePresentationIndex implements ServicePresentati
                     .findFirst()
                     .orElse(new PostSyncEntity() );
 
+                Boolean sharedPost = postSyncEntity.getPost().getShared();
+
                 rowsNotesForPublicPosts.add(
                     new RowNotesForPublicPosts(
                         postSyncEntity.getIdPost(),
@@ -64,7 +67,9 @@ public class ImplementationServicePresentationIndex implements ServicePresentati
                         postSyncEntity.getPost().getTitle(),
                         postSyncEntity.getFilePath(),
                         postSyncEntity.getLastSyncedAt(),
-                        noteEnabled.enabled()
+                        noteEnabled.enabled(),
+                        sharedPost,
+                        noteEnabled.permission()
                     )
                 );
             }
@@ -83,4 +88,30 @@ public class ImplementationServicePresentationIndex implements ServicePresentati
         return repositorySections;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<HedgeDocNotesNoPublic> getAllNotesNoPublic() {
+        List<HedgeDocNotesNoPublic> allHedgeDocNotes = hedgedocDataBaseCrud.getAllNotes();
+
+        List<PostSyncEntity> allPostSyncs = postSyncCrud.findAll();
+
+        // Filtrar las notas que no están asociadas a ningún postSync
+        List<HedgeDocNotesNoPublic> notesNoPublic = new ArrayList<>();
+        for(HedgeDocNotesNoPublic note : allHedgeDocNotes) {
+            boolean isPublic = false;
+            for(PostSyncEntity postSync : allPostSyncs) {
+                if(postSync.getHedgedocNoteId().equals(note.shortId() ) ) {
+                    isPublic = true;
+                    break;
+                }
+            }
+            if(!isPublic) {
+                notesNoPublic.add(note);
+            }
+        }
+
+        return notesNoPublic;
+    }
 }

@@ -12,7 +12,9 @@ public record RowNotesForPublicPosts(
     String title,
     String gitHubFilePath,
     LocalDateTime lastSyncedAt,
-    Boolean enabledNote
+    Boolean enabledNote,
+    Boolean sharedPost,
+    String permission
 ) {
 
 }

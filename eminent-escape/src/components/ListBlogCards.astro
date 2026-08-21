@@ -16,26 +16,30 @@ interface ListBlogCardsProps {
 interface BlogCardProps {
     title: string;
     date: string;
-    duration: number; // Duracion en minutos
+    duration: number;
     description: string;
     tags: string[];
-    link: string;
     imageSrc: string;
     imageAlt: string;
     urlRawMarkDown: string;
+    titleNextPost: string;
+    titlePreviousPost: string;
+    titleSlug: string;
 };
 
-
 interface PageInfo {
+  content: BlogCardProps[];
+  page: number;
   size: number;
-  number: number;
   totalElements: number;
   totalPages: number;
 };
 
 interface BlogResponse {
-  content: BlogCardProps[];
-  page: PageInfo;
+  success: boolean;
+  message: string;
+  data: PageInfo;
+  timestamp: string;
 };
 
 
@@ -43,13 +47,13 @@ const { request } = Astro.props as {
     request: ListBlogCardsProps;
 };
 
-
 const res = await fetch(
-  `http://localhost:1690/api/blog-cards?page=${request.page}&size=${request.size}&sort=${request.sort}`
+  `http://localhost:8080/v1/blog/posts?page=${request.page}&size=${request.size}&sort=${request.sort}`
 );
-const data: BlogResponse = await res.json();
+const response: BlogResponse = await res.json();
+const data: PageInfo = response.data;
 const cards: BlogCardProps[] = data.content;
-const lastPage: number = data.page.totalPages - 1;
+const lastPage: number = data.totalPages - 1;
 const nextPage = `/blog?page=${request.page + 1}&size=${request.size}&sort=${request.sort}`
 const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)}&size=${request.size}&sort=${request.sort}`
 
@@ -65,7 +69,7 @@ const previusPage = `/blog?page=${(request.page - 1) < 0 ? 0: (request.page - 1)
                     duration={ card.duration }
                     description={ card.description }
                     tags={ card.tags }
-                    link={ card.link }
+                    link={ `/blog/posts/${card.titleSlug}` }
                     imageSrc={ card.imageSrc }
                     imageAlt={ card.imageAlt }
                 />

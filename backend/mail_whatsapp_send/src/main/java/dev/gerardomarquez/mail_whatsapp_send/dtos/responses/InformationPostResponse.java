@@ -54,7 +54,12 @@ public record InformationPostResponse(
     /**
      * Titulo del post anterior de acuerdo a la fecha o a la lista de posts en la que esta este (this) post
      */
-    String titlePreviousPost
+    String titlePreviousPost,
+
+    /**
+     * Slug del titulo del post
+     */
+    String titleSlug
 ) {
 
 }

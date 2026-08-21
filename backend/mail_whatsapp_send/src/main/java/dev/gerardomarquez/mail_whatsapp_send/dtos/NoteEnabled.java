@@ -5,7 +5,8 @@ package dev.gerardomarquez.mail_whatsapp_send.dtos;
  */
 public record NoteEnabled(
     String noteId,
-    Boolean enabled
+    Boolean enabled,
+    String permission
 ) {
 
 }
