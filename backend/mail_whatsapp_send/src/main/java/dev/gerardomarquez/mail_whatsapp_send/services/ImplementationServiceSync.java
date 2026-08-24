@@ -48,6 +48,7 @@ public class ImplementationServiceSync implements ServiceSync {
     private final RepositoryCrud repositoryCrud;
     private final TagsCrud tagsCrud;
     private final PostsCrud postsCrud;
+    private final ImplementationServiceSocialNetwork serviceSocialNetwork;
 
     private static final Logger log = LoggerFactory.getLogger(ImplementationServiceSync.class);
 
@@ -65,7 +66,8 @@ public class ImplementationServiceSync implements ServiceSync {
         HedgeDocDataBaseCrud hedgeDocDataBaseCrud,
         RepositoryCrud repositoryCrud,
         TagsCrud tagsCrud,
-        PostsCrud postsCrud
+        PostsCrud postsCrud,
+        ImplementationServiceSocialNetwork serviceSocialNetwork
     ) {
         this.serviceGitHub = serviceGitHub;
         this.serviceHedgeDoc = serviceHedgeDoc;
@@ -75,6 +77,7 @@ public class ImplementationServiceSync implements ServiceSync {
         this.repositoryCrud = repositoryCrud;
         this.tagsCrud = tagsCrud;
         this.postsCrud = postsCrud;
+        this.serviceSocialNetwork = serviceSocialNetwork;
     }
 
     /**
@@ -418,5 +421,37 @@ public class ImplementationServiceSync implements ServiceSync {
         
     }
 
-    
+    @Override
+    public void sharedWithPostiz(Integer idPost, String content) {
+        PostEntity postEntity = postsCrud.findById(idPost)
+            .orElseThrow(
+                () -> new SyncException(
+                    messageSource.getMessage(
+                        Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
+                        new Object[]{idPost},
+                        LocaleContextHolder.getLocale()
+                    )
+                )
+            );
+
+        String endUrl = Methods.toSlug(postEntity.getTitle() );
+        String fullUrl = "www.gerardomarquez.dev/blog/posts/" + endUrl;
+        
+        try {
+            serviceSocialNetwork.toPostOnSocialNetworks(content, fullUrl);
+            postEntity.setShared(true);
+            postsCrud.save(postEntity);
+        } catch (Exception e) {
+            log.error("Error during sharing post ID {} to social networks: {}", idPost, e.getMessage(), e);
+            throw new SyncException(
+                messageSource.getMessage(
+                    Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                ),
+                e
+            );
+        }
+        
+    }    
 }

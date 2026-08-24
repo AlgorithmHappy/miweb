@@ -1,24 +1,27 @@
 ---
+interface Props {
+    title: string;
+    url: string;
+}
 
+const { title, url } = Astro.props;
 ---
 <div id="container-floating">
     <div class="nd4 nds">
-        <!--<p class="letter">--><span class="material-icons-round">arrow_back</span><!--</p>-->
+        <span class="material-icons-round">arrow_back</span>
     </div>
     
     <div class="nd3 nds">
         <span class="material-icons-round">arrow_forward</span>
-        <!--<img class="reminder" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/ic_reminders_speeddial_white_24dp.png" /> -->
     </div>
     
-    <div class="nd1 nds">
-        <!--<p class="letter">--><span class="material-icons-round">share</span><!--</p>-->
-    </div>
+    <button class="nd1 nds" id="share-btn">
+        <span class="material-icons-round">share</span>
+    </button>
 
     <div id="floating-button">
         <p class="plus">+</p>
         <p class="edit"><span class="material-icons-round">close</span></p>
-        <!--<img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png"> -->
     </div>
 </div>
 
@@ -256,3 +259,20 @@
         right: 20px;
     }
 </style>
+
+<script define:vars={{ title, url }}>
+    document
+        .getElementById("share-btn")
+        ?.addEventListener("click", async () => {
+
+            if (navigator.share) {
+                await navigator.share({
+                    title,
+                    url
+                });
+            } else {
+                await navigator.clipboard.writeText(url);
+            }
+
+        });
+</script>

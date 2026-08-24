@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record Settings(
     @JsonProperty("__type")
     String type,
-    String who_can_reply_post,
+    @JsonProperty("who_can_reply_post")
+    String whoCanReplyPost,
     String channel
 ) {
 }

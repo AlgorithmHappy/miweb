@@ -1,5 +1,6 @@
 package dev.gerardomarquez.mail_whatsapp_send.controller;
 import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceRebuildAndDeploy;
+import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSocialNetwork;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServicePresentationIndex;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import dev.gerardomarquez.mail_whatsapp_send.errors.HedgeDocException;
 import dev.gerardomarquez.mail_whatsapp_send.errors.SyncException;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServiceSync;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
+import jakarta.validation.constraints.Size;
 
 /**
  * Controller del panel de sincronización entre HedgeDoc y GitHub.
@@ -273,22 +275,22 @@ public class SyncController {
     @PostMapping("/publicar/socialMedia/{idPost}")
     public String socialMediaShare(
         @PathVariable("idPost") Integer idPost,
-        @RequestParam(value = "repositoryId", required = true) Integer repositoryId,
+        @RequestParam(value = "contenido", required = true) @Size(max = 200) String contenido,
         RedirectAttributes redirectAttributes
     ) {
-        /*try {
-            serviceSync.socialMediaShare(shortId, repositoryId);
-            redirectAttributes.addFlashAttribute(
+        try {
+           serviceSync.sharedWithPostiz(idPost, contenido);
+           redirectAttributes.addFlashAttribute(
                 Constants.SUCCESS,
                 messageSource.getMessage(
                     Constants.ERR_MSG_CONTROLLER_SYNC_PUSH_SUCCESS,
-                    new Object[]{shortId},
+                    new Object[]{idPost},
                     LocaleContextHolder.getLocale()
                 )
             );
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage());
-        }*/
+        }
         return "redirect:/sync";
     }
 

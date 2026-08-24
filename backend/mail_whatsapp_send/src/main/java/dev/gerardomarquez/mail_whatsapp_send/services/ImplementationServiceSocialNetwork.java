@@ -43,7 +43,8 @@ public class ImplementationServiceSocialNetwork implements ServiceSocialNetwork 
     public void toPostOnSocialNetworks(String description, String linkPost) {
 
         for(Post it: postizProperties.getPosts() ){
-            it.value().add(
+            it.getValue().clear();
+            it.getValue().add(
                 new dev.gerardomarquez.mail_whatsapp_send.dtos.requests.Value(
                     description + " " + linkPost,
                     new ArrayList<String>()

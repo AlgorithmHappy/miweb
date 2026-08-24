@@ -143,13 +143,13 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
      * @return Paginacion ya mapeado correctamente para la entidad
      */
     private Pageable mapSort(Pageable pageable) {
-        if (pageable.getSort().isUnsorted()) {
+        if (pageable.getSort().isUnsorted() ) {
             return pageable;
         }
 
         List<Sort.Order> orders = new ArrayList<>();
 
-        for (Sort.Order order : pageable.getSort()) {
+        for (Sort.Order order : pageable.getSort() ) {
             String property = order.getProperty();
 
             
@@ -158,17 +158,17 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
         }
 
 
-            if (property.equals("date")) {
+            if (property.equals("date") ) {
                 property = "createdAt";
             }
-            if (property.equals("title")) {
+            if (property.equals("title") ) {
                 property = "title";
             }
 
-            orders.add(new Sort.Order(order.getDirection(), property));
+            orders.add(new Sort.Order(order.getDirection(), property) );
         }
 
-        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders));
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders) );
     }
 
     /**

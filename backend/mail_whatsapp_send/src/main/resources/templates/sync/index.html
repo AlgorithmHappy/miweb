@@ -176,14 +176,15 @@
     <table th:if="${entry != null and !entry.rowsNotesForPublicPosts.isEmpty()}">
         <thead>
             <tr>
-                <th>Post</th>
+                <th>Titulo</th>
+                <th>Editar en HedgeDoc</th>
                 <th>Archivo en GitHub</th>
-                <th>Nota en HedgeDoc</th>
-                <th>Último sync</th>
-                <th>Publicar</th>
-                <th>Descargar</th>
-                <th>Compartido</th>
-                <th>Publicar en redes sociales</th>
+                <th>Última Sincronizacion</th>
+                <th>Permisos</th>
+                <th>Cargar a github</th>
+                <th>Descargar de github</th>
+                <th>Compartido en redes sociales</th>
+                <th>Compartir</th>
             </tr>
         </thead>
         <tbody>
@@ -192,18 +193,18 @@
                 <!-- Título del post -->
                 <td th:text="${pair.title}"></td>
 
-                <!-- Ruta del archivo en GitHub -->
-                <td th:text="${pair.gitHubFilePath}"></td>
-
                 <!-- ID de la nota en HedgeDoc con link directo -->
                 <td>
                     <a th:href="${hedgedocUrl + '/' + pair.hedgeDocNoteId}"
                        target="_blank"
-                       th:text="${pair.hedgeDocNoteId}">
+                       th:text="${hedgedocUrl + '/' + pair.hedgeDocNoteId}">
                     </a>
                 </td>
 
-                <!-- Último sync -->
+                <!-- Ruta del archivo en GitHub -->
+                <td th:text="${pair.gitHubFilePath}"></td>
+
+                <!-- Última Sincronizacion -->
                 <td>
                     <span class="badge-sync"
                           th:text="${pair.lastSyncedAt != null ? #temporals.format(pair.lastSyncedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}">
@@ -241,7 +242,7 @@
 
                 <td>
                     <!-- Publicar en redes sociales -->
-                    <form th:action="@{/sync/socialMedia/{idPost}(id=${pair.idPost})}"
+                    <form th:action="@{/sync/publicar/socialMedia/{idPost}(idPost=${pair.idPost})}"
                           method="post"
                           style="display:inline;">
 
@@ -249,9 +250,9 @@
                             rows="5"
                             cols="50"
                             name="contenido"
-                            placeholder="Escribe la descripción para las redes sociales">
-                        </textarea>
-                        <button th:disabled="${!pair.enabledNote}" type="submit" class="btn btn-push">🌐 Publicar</button>
+                            maxlength="200"
+                            placeholder="Escribe la descripción para las redes sociales" ></textarea>
+                        <button th:disabled="${pair.sharedPost}" type="submit" class="btn btn-push">🌐 Publicar</button>
                     </form>
                 </td>
             </tr>

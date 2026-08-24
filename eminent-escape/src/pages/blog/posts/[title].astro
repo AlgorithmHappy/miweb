@@ -5,6 +5,7 @@ import SideBar from "../../../components/SideBar.astro";
 import Footer from "../../../components/Footer.astro";
 import FloatButton from "../../../components/FloatButton.astro"
 import { marked } from "marked";
+import matter from "gray-matter";
 
 type SortParam = `${string},${'asc' | 'desc'}`;
 interface ListBlogCardsProps {
@@ -48,9 +49,12 @@ interface BlogResponse {
 
 export const getStaticPaths = (
     async () => {
-        const res = await fetch(`http://localhost:8080/v1/blog/posts`);
-        const response: BlogResponse = await res.json();
-        const data: PageInfo = response.data;
+        const response = await fetch(`http://localhost:8080/v1/blog/posts`);
+        const responseObject: BlogResponse = await response.json();
+        const totalElements: number = responseObject.data.totalElements;
+        const finalResponse = await fetch(`http://localhost:8080/v1/blog/posts?page=0&size=${totalElements}`);
+        const finalResponseObject: BlogResponse = await finalResponse.json();
+        const data: PageInfo = finalResponseObject.data;
         const post: BlogCardProps[] = data.content;
 
         return post.map(
@@ -61,7 +65,11 @@ export const getStaticPaths = (
                     },
                     props: {
                         urlRawMarkDown: it.urlRawMarkDown,
-                        description: it.description
+                        description: it.description,
+                        originTitle: it.title,
+                        imageSrc: it.imageSrc,
+                        titleNextPost: it.titleNextPost,
+                        titlePreviousPost: it.titlePreviousPost,
                     }
                 }
             }
@@ -70,17 +78,22 @@ export const getStaticPaths = (
 ) satisfies GetStaticPaths;
 
 const { title } = Astro.params;
-const { urlRawMarkDown, description } = Astro.props;
+const { urlRawMarkDown, description, originTitle, imageSrc, titleNextPost, titlePreviousPost } = Astro.props;
+const url = Astro.url.href;
 
 
 const mdRes = await fetch(urlRawMarkDown);
 const markdown = await mdRes.text();
-const html = marked.parse(markdown);
+const { data, content } = matter(markdown);
+
+const html = marked.parse(content);
 ---
 
 <MainLayout
-    title={`Gerardo Márquez Dev - ${ title }`}
+    title={`Gerardo Márquez Dev - ${ originTitle }`}
     description={ description }
+    image={ imageSrc }
+    url={ url }
 >
     <SideBar slot="nav" />
 
@@ -88,7 +101,7 @@ const html = marked.parse(markdown);
         <article class="markdown" set:html={ html } />
     </section>
 
-    <FloatButton slot="floatButton"/>
+    <FloatButton slot="floatButton" title={originTitle} url={url} />
 
     <Footer slot="footer" />
 </MainLayout>

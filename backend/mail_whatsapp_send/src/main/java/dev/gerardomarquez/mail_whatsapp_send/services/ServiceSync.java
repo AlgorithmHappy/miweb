@@ -43,4 +43,13 @@ public interface ServiceSync {
      * @param commitMessage  Mensaje del commit en GitHub
      */
     public void push(String idNoteHedgeDoc, Integer idRepository, String commitMessage);
+
+    
+    /**
+     * Comparte la url del post en las redes sociales configuradas en Postiz.
+     *
+     * @param idPost ID del post a compartir en las redes sociales
+     * @param content Contenido de la publicacion para que den clic en el link
+     */
+    public void sharedWithPostiz(Integer idPost, String content);
 }

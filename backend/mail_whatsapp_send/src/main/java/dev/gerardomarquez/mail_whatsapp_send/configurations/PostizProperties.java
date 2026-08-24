@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import dev.gerardomarquez.mail_whatsapp_send.dtos.requests.Post;
 
+@ConfigurationProperties(prefix = "postiz")
 @Component
-@ConfigurationProperties(prefix = "postiz.posts")
 public class PostizProperties {
     
     private List<Post> posts;
