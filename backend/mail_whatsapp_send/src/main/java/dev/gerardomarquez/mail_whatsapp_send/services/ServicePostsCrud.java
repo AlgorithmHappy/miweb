@@ -68,4 +68,6 @@ public interface ServicePostsCrud {
      * Metodo que busca el ultimo post (entrada de blog) por fecha en la base de datos
      */
     public PostEntity findLastPost();
+
+    public void deleteOne(Integer idPost);
 }

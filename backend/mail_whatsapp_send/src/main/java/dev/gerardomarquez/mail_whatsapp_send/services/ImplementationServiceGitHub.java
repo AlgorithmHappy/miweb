@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -43,6 +44,9 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
 
     @Value("${github.api.uri.files}")
     private String uriFiles;
+
+    @Value("${github.api.uri.delete}")
+    private String uriDelete;
 
     /**
      * @param githubWebClient WebClient configurado para la API de GitHub
@@ -231,4 +235,36 @@ public class ImplementationServiceGitHub implements ServiceGitHub {
             throw new RuntimeException(message, e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteFile(String owner, String repo, String filePath, String sha, String token) {
+        
+        ObjectNode body = objectMapper.createObjectNode();
+        body.put(
+            Constants.JSON_NODE_MESSAGE,
+            "Se elimina archivo desde el administrador de la pagina web de gerardomarquez.dev"
+        );
+        body.put(Constants.JSON_NODE_SHA, sha);
+
+        try {
+            // Llamada DELETE a la API de GitHub
+            githubWebClient.method(HttpMethod.DELETE)
+                .uri(uriDelete, owner, repo, filePath)
+                .header(Constants.AUTHORIZATION, Constants.BEARER + token)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .bodyValue(body )
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        } catch (Exception e) {
+            log.error("Error al eliminar el archivo en GitHub: {}", e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        
+    }
+
 }

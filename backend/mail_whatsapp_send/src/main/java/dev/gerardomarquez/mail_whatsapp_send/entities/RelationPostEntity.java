@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -38,6 +37,6 @@ public class RelationPostEntity {
     @JoinColumn(name = "id_next_post")
     private PostEntity nextPost;
 
-    @Column(name = "is_in_post_list")
-    private Boolean isInPostList;
+    @Column(name = "is_in_post_list", nullable = false)
+    private Boolean isInPostList = false;
 }

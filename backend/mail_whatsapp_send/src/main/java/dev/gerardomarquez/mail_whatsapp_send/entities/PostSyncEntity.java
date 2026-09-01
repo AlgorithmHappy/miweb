@@ -32,8 +32,11 @@ public class PostSyncEntity {
     private Integer idPost;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id_post")
+    @JoinColumn(
+        name = "id_post",
+        nullable = false,
+        unique = true
+    )
     private PostEntity post; // Relación hacia la entidad Post existente
 
     @ManyToOne(fetch = FetchType.LAZY)

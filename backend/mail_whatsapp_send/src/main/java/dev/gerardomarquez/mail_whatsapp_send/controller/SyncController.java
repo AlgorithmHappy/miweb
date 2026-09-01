@@ -1,6 +1,5 @@
 package dev.gerardomarquez.mail_whatsapp_send.controller;
 import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceRebuildAndDeploy;
-import dev.gerardomarquez.mail_whatsapp_send.services.ImplementationServiceSocialNetwork;
 import dev.gerardomarquez.mail_whatsapp_send.services.ServicePresentationIndex;
 import java.util.List;
 
@@ -231,6 +230,11 @@ public class SyncController {
         return "redirect:/sync";
     }
 
+    /**
+     * Ejecuta un rebuild y despliegue en Vercel.
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
     @PostMapping("/rebuild")
     public String vercelRebuildAndDeploy(RedirectAttributes redirectAttributes){
         try{
@@ -272,6 +276,13 @@ public class SyncController {
         return "redirect:/sync";
     }
     
+    /**
+     * Comparte un post en las redes sociales.
+     * @param idPost ID del post a compartir
+     * @param contenido Contenido del mensaje a compartir junto con el post
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
     @PostMapping("/publicar/socialMedia/{idPost}")
     public String socialMediaShare(
         @PathVariable("idPost") Integer idPost,
@@ -287,6 +298,29 @@ public class SyncController {
                     new Object[]{idPost},
                     LocaleContextHolder.getLocale()
                 )
+            );
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage());
+        }
+        return "redirect:/sync";
+    }
+
+    /**
+     * Elimina un post del repositorio y de la sincronización.
+     * @param idPost ID del post a eliminar
+     * @param redirectAttributes Atributos para pasar mensajes a la vista tras el redirect
+     * @return Redirect al panel /sync
+     */
+    @PostMapping("/eliminar/{idPost}")
+    public String deletePost(
+        @PathVariable("idPost") Integer idPost,
+        RedirectAttributes redirectAttributes
+    ) {
+        try {
+           serviceSync.deletePost(idPost);
+           redirectAttributes.addFlashAttribute(
+                Constants.SUCCESS,
+                "Post eliminado correctamente del repositorio y de la sincronización"
             );
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(Constants.ERROR, e.getMessage());

@@ -1,6 +1,4 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
-import java.util.List;
-import dev.gerardomarquez.mail_whatsapp_send.dtos.HedgeDocNotesNoPublic;
 
 /**
  * Contrato del servicio orquestador de sincronización
@@ -37,7 +35,6 @@ public interface ServiceSync {
     /**
      * Push: obtiene el contenido de la nota en HedgeDoc
      * y lo sube al archivo correspondiente en GitHub.
-     *
      * @param idNoteHedgeDoc ID de la nota en HedgeDoc a sincronizar
      * @param idRepository   ID del repositorio en GitHub
      * @param commitMessage  Mensaje del commit en GitHub
@@ -47,9 +44,14 @@ public interface ServiceSync {
     
     /**
      * Comparte la url del post en las redes sociales configuradas en Postiz.
-     *
      * @param idPost ID del post a compartir en las redes sociales
      * @param content Contenido de la publicacion para que den clic en el link
      */
     public void sharedWithPostiz(Integer idPost, String content);
+
+    /**
+     * Elimina un post de gitHub y de la base de datos de sincronización pero no de hedgedoc
+     * @param idPost ID del post a eliminar de GitHub y de la base de datos de sincronización
+     */
+    public void deletePost(Integer idPost);
 }

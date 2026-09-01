@@ -1,10 +1,12 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import dev.gerardomarquez.mail_whatsapp_send.entities.PostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.RelationPostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.TagEntity;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsCrud;
+import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsSyncCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.RelationsPostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.TagsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
@@ -42,6 +45,11 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
 
     @Autowired
     private RelationsPostsCrud relationsPostsCrud;
+
+    @Autowired
+    private PostsSyncCrud postsSyncCrud;
+
+    private static final Logger log = LoggerFactory.getLogger(ImplementationServicePostsCrud.class);
 
     /*
      * Asunto a donde se va enviar
@@ -234,6 +242,72 @@ public class ImplementationServicePostsCrud implements ServicePostsCrud {
         Optional<PostEntity> post = postsCrud.findTopByOrderByCreatedAtDesc();
         if(post.isPresent() ) return post.get();
         return new PostEntity();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteOne(Integer idPost) {
+        PostEntity post = postsCrud.findById(idPost).orElseThrow(
+            () -> {
+                log.error("El post con el id: {} no fue encontrado", idPost);
+                return new RuntimeException("Post not found with id: " + idPost);
+            }
+        );
+
+        postsSyncCrud.findByIdPost(idPost).ifPresent(postsSyncCrud::delete);
+
+        List<RelationPostEntity> relations = relationsPostsCrud.findByOriginPostId(idPost);
+
+        for(RelationPostEntity relation : relations) {
+            PostEntity previousPost = relation.getPreviousPost();
+            PostEntity nextPost = relation.getNextPost();
+            Set<RelationPostEntity> previousRelations = previousPost.getRelationPost();
+            Set<RelationPostEntity> nextRelations = nextPost.getRelationPost();
+
+            if(relation.getIsInPostList() ){
+                if(previousPost != null){
+                    for(RelationPostEntity previousRelation : previousRelations) {
+                        if(previousRelation.getIsInPostList() ) {
+                            previousRelation.setNextPost(nextPost);
+                            relationsPostsCrud.save(previousRelation);
+                        }
+                    }
+                }
+
+                if(nextPost != null){
+                    for(RelationPostEntity nextRelation : nextRelations) {
+                        if(nextRelation.getIsInPostList() ) {
+                            nextRelation.setPreviousPost(previousPost);
+                            relationsPostsCrud.save(nextRelation);
+                        }
+                    }
+                }
+            } else {
+                if(previousPost != null){
+                    for(RelationPostEntity previousRelation : previousRelations) {
+                        if(!previousRelation.getIsInPostList() ) {
+                            previousRelation.setNextPost(nextPost);
+                            relationsPostsCrud.save(previousRelation);
+                        }
+                    }
+                }
+
+                if(nextPost != null){
+                    for(RelationPostEntity nextRelation : nextRelations) {
+                        if(!nextRelation.getIsInPostList() ) {
+                            nextRelation.setPreviousPost(previousPost);
+                            relationsPostsCrud.save(nextRelation);
+                        }
+                    }
+                }
+            }
+
+            relationsPostsCrud.delete(relation);
+        }
+        postsCrud.delete(post);
+
     }
 
 }

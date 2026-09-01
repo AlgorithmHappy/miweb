@@ -1,6 +1,7 @@
 package dev.gerardomarquez.mail_whatsapp_send.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.GitTreeResponse;
 import dev.gerardomarquez.mail_whatsapp_send.dtos.responses.NoteInfoResponse;
 import dev.gerardomarquez.mail_whatsapp_send.entities.PostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.PostSyncEntity;
+import dev.gerardomarquez.mail_whatsapp_send.entities.RelationPostEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.RepositoryEntity;
 import dev.gerardomarquez.mail_whatsapp_send.entities.TagEntity;
 import dev.gerardomarquez.mail_whatsapp_send.errors.GitHubException;
@@ -28,6 +30,7 @@ import dev.gerardomarquez.mail_whatsapp_send.errors.SyncException;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.HedgeDocDataBaseCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.PostsSyncCrud;
+import dev.gerardomarquez.mail_whatsapp_send.repositories.RelationsPostsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.RepositoryCrud;
 import dev.gerardomarquez.mail_whatsapp_send.repositories.TagsCrud;
 import dev.gerardomarquez.mail_whatsapp_send.utils.Constants;
@@ -49,6 +52,8 @@ public class ImplementationServiceSync implements ServiceSync {
     private final TagsCrud tagsCrud;
     private final PostsCrud postsCrud;
     private final ImplementationServiceSocialNetwork serviceSocialNetwork;
+    private final ImplementationServicePostsCrud servicePostsCrud;
+    private final RelationsPostsCrud relationsPostsCrud;
 
     private static final Logger log = LoggerFactory.getLogger(ImplementationServiceSync.class);
 
@@ -67,7 +72,9 @@ public class ImplementationServiceSync implements ServiceSync {
         RepositoryCrud repositoryCrud,
         TagsCrud tagsCrud,
         PostsCrud postsCrud,
-        ImplementationServiceSocialNetwork serviceSocialNetwork
+        ImplementationServiceSocialNetwork serviceSocialNetwork,
+        ImplementationServicePostsCrud servicePostsCrud,
+        RelationsPostsCrud relationsPostsCrud
     ) {
         this.serviceGitHub = serviceGitHub;
         this.serviceHedgeDoc = serviceHedgeDoc;
@@ -78,6 +85,8 @@ public class ImplementationServiceSync implements ServiceSync {
         this.tagsCrud = tagsCrud;
         this.postsCrud = postsCrud;
         this.serviceSocialNetwork = serviceSocialNetwork;
+        this.servicePostsCrud = servicePostsCrud;
+        this.relationsPostsCrud = relationsPostsCrud;
     }
 
     /**
@@ -221,6 +230,32 @@ public class ImplementationServiceSync implements ServiceSync {
             postEntity.setTags(tagsForNewPost);
 
             postsCrud.save(postEntity);
+
+            List<PostSyncEntity> postSyncEntities = postSyncCrud.findAllByOrderByPostCreatedAtAsc();
+
+            List<PostEntity> postsForRepository = postSyncEntities.stream()
+                .map(PostSyncEntity::getPost)
+                .collect(Collectors.toList() );            
+
+            List<RelationPostEntity> relationsForRepository = new ArrayList<>();
+            for(int i = 0; i < postsForRepository.size(); i++) {
+                PostEntity previousPostEntity = i > 0 ? postsForRepository.get(i - 1) : null;
+                PostEntity nextPostEntity = i < postsForRepository.size() - 1 ? postsForRepository.get(i + 1) : null;
+                PostEntity originPost = postsForRepository.get(i);
+                relationsForRepository.add(
+                    new RelationPostEntity(
+                        null,
+                        originPost,
+                        previousPostEntity,
+                        nextPostEntity,
+                        false
+                    )
+                );
+            }
+            
+            relationsPostsCrud.deleteByIsInPostList(false);
+
+            relationsPostsCrud.saveAll(relationsForRepository);
 
         } catch (GitHubException | HedgeDocException e) {
             throw e;
@@ -395,7 +430,7 @@ public class ImplementationServiceSync implements ServiceSync {
             postEntity = postsCrud.save(postEntity);
 
             PostSyncEntity postSyncEntity = new PostSyncEntity(
-                null,
+                postEntity.getId(),
                 postEntity,
                 repository,
                 path,
@@ -405,6 +440,39 @@ public class ImplementationServiceSync implements ServiceSync {
             );
 
             postSyncCrud.save(postSyncEntity);
+
+            RelationPostEntity relationPostEntity = new RelationPostEntity();
+            relationPostEntity.setIsInPostList(false);
+            relationPostEntity.setOriginPost(postEntity);
+            
+            relationsPostsCrud.save(relationPostEntity);
+
+            List<PostSyncEntity> postSyncEntities = postSyncCrud.findAllByOrderByPostCreatedAtAsc();
+
+            List<PostEntity> postsForRepository = postSyncEntities.stream()
+                .map(PostSyncEntity::getPost)
+                .collect(Collectors.toList() );            
+
+            List<RelationPostEntity> relationsForRepository = new ArrayList<>();
+            for(int i = 0; i < postsForRepository.size(); i++) {
+                PostEntity previousPostEntity = i > 0 ? postsForRepository.get(i - 1) : null;
+                PostEntity nextPostEntity = i < postsForRepository.size() - 1 ? postsForRepository.get(i + 1) : null;
+                PostEntity originPost = postsForRepository.get(i);
+                relationsForRepository.add(
+                    new RelationPostEntity(
+                        null,
+                        originPost,
+                        previousPostEntity,
+                        nextPostEntity,
+                        false
+                    )
+                );
+            }
+            
+            relationsPostsCrud.deleteByIsInPostList(false);
+
+            relationsPostsCrud.saveAll(relationsForRepository);
+
         } catch (GitHubException | HedgeDocException e) {
             throw e;
         } catch (Exception e) {
@@ -421,6 +489,9 @@ public class ImplementationServiceSync implements ServiceSync {
         
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void sharedWithPostiz(Integer idPost, String content) {
         PostEntity postEntity = postsCrud.findById(idPost)
@@ -453,5 +524,34 @@ public class ImplementationServiceSync implements ServiceSync {
             );
         }
         
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deletePost(Integer idPost) {
+
+        PostSyncEntity postSyncEntity = postSyncCrud.findByIdPost(idPost).orElseThrow(
+            () -> new SyncException(
+                messageSource.getMessage(
+                    Constants.ERR_MSG_SERVICE_SYNC_PAIR_NOT_FOUND,
+                    new Object[]{idPost},
+                    LocaleContextHolder.getLocale()
+                )
+            )
+        );
+
+        RepositoryEntity repositoryEntity = postSyncEntity.getRepository();
+
+        serviceGitHub.deleteFile(
+            repositoryEntity.getOwner(),
+            repositoryEntity.getName(),
+            postSyncEntity.getFilePath(),
+            postSyncEntity.getGithubSha(),
+            repositoryEntity.getGithubToken()
+        ); 
+        
+        servicePostsCrud.deleteOne(idPost);
     }    
 }

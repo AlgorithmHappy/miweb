@@ -82,4 +82,14 @@ public interface ServiceGitHub {
     public GitHubCreateResponse createFileContent(
         String owner, String repo, String filePath, String branch, String token, String content, String commitMessage
     );
+
+    /**
+     * Elimina un archivo markdown de un repositorio en GitHub.
+     * @param owner         Usuario u organización dueña del repo
+     * @param repo          Nombre del repositorio
+     * @param filePath      Ruta del archivo dentro del repo
+     * @param sha           SHA actual del archivo
+     * @param token         Personal Access Token de GitHub
+     */
+    public void deleteFile(String owner, String repo, String filePath, String sha, String token);
 }
