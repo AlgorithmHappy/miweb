@@ -363,7 +363,11 @@ public class ImplementationServiceSync implements ServiceSync {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional
     public void push(String idNoteHedgeDoc, Integer idRepository, String commitMessage) {
         String note = serviceHedgeDoc.getNoteContent(idNoteHedgeDoc);
 
@@ -430,7 +434,7 @@ public class ImplementationServiceSync implements ServiceSync {
             postEntity = postsCrud.save(postEntity);
 
             PostSyncEntity postSyncEntity = new PostSyncEntity(
-                postEntity.getId(),
+                null,
                 postEntity,
                 repository,
                 path,

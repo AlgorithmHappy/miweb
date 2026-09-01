@@ -32,6 +32,7 @@ public class PostSyncEntity {
     private Integer idPost;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(
         name = "id_post",
         nullable = false,
